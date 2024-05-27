@@ -103,6 +103,7 @@ public class PantallaSeleccionHistorico extends DialogSupport {
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
+        pack();
     }
     
     @Override

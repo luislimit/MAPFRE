@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblSinonimos" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPermisos" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jScrollPaneSinonimos" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jScrollPanePermisos" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblWithGrantOption" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <Component id="lblEntorno" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <Component id="lblPermisoSinonimo" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <Component id="lblNombreObjeto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <Component id="lblModeloProyecto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                                          <Component id="txtModeloProyecto" min="-2" pref="110" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="txtModeloProyectoDescrip" min="-2" pref="900" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="txtNombreObjeto" alignment="0" max="32767" attributes="0"/>
+                                              <Group type="102" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="cmbPermisoSinonimo" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                      <Component id="cmbEntorno" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                      <Component id="cmbWithGrantOption" min="-2" pref="165" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="lblPropietarioSinonimo" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                                      <Component id="lblFuncionNombre" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                                      <Component id="lblReceptorPermisos" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="txtFuncionNombre" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                      <Component id="cmbPropietarioSinonimo" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                      <Component id="cmbReceptorPermisos" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <EmptySpace min="-2" pref="342" max="-2" attributes="0"/>
+                                                  <Component id="btnBuscar" min="-2" pref="110" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                                  <Component id="btnLimpiar" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                                  <Group type="102" attributes="0">
+                                                      <Component id="lblTipoObjeto" min="-2" pref="120" max="-2" attributes="0"/>
+                                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                                      <Component id="cmbTipoObjeto" min="-2" pref="165" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" attributes="0">
+                                                      <Component id="lblIncluirPDC" min="-2" pref="120" max="-2" attributes="0"/>
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="cmbIncluirPDC" min="-2" pref="165" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="lblPermiso" min="-2" pref="120" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="cmbPermiso" min="-2" pref="165" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="chkHabilitada" alignment="1" min="-2" pref="220" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="412" max="-2" attributes="0"/>
+                      <Component id="btnAlta" min="-2" pref="101" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnModificacion" min="-2" pref="113" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                      <Component id="btnInforme" min="-2" pref="101" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="btnCancelar" min="-2" pref="101" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="247" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblModeloProyecto" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="txtModeloProyectoDescrip" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="txtModeloProyecto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblNombreObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="txtNombreObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="lblTipoObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbTipoObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblPermisoSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbPermisoSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="lblIncluirPDC" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbIncluirPDC" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="lblPropietarioSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbPropietarioSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblEntorno" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbEntorno" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="lblPermiso" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbPermiso" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="lblFuncionNombre" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="txtFuncionNombre" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblWithGrantOption" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbWithGrantOption" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="lblReceptorPermisos" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="chkHabilitada" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbReceptorPermisos" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnLimpiar" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Component id="lblPermisos" min="-2" pref="24" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="jScrollPanePermisos" min="-2" pref="104" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="lblSinonimos" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="jScrollPaneSinonimos" min="-2" pref="104" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnInforme" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnModificacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAlta" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="lblModeloProyecto">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Modelo o Proyecto"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtModeloProyecto">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtModeloProyectoDescrip">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNombreObjeto">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Nombre Objeto"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtNombreObjeto">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTipoObjeto">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Tipo de Objeto"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbTipoObjeto">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPermisoSinonimo">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Permiso/Sin&#xf3;nimo"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbPermisoSinonimo">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPropietarioSinonimo">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Propietario sin&#xf3;nimo"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbPropietarioSinonimo">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Propietario&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblIncluirPDC">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Incluir en PDC"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbIncluirPDC">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblEntorno">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Entorno"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbEntorno">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblFuncionNombre">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Funci&#xf3;n Nombre"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtFuncionNombre">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPermiso">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Permiso"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbPermiso">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWithGrantOption">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="WITH GRANT OPTION"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbWithGrantOption">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblReceptorPermisos">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Receptor Permisos"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbReceptorPermisos">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Grant&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkHabilitada">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Habilitada"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkHabilitadaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnBuscar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnLimpiar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Limpiar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPermisos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Permisos"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPanePermisos">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblPermisos">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="12" rowCount="4">
+                <Column editable="true" title="Receptor" type="java.lang.Object"/>
+                <Column editable="true" title="Tipo Objeto" type="java.lang.Object"/>
+                <Column editable="true" title="Permiso" type="java.lang.Object"/>
+                <Column editable="true" title="Entorno" type="java.lang.Object"/>
+                <Column editable="true" title="Grant Option" type="java.lang.Object"/>
+                <Column editable="true" title="Incluir en PDC" type="java.lang.Object"/>
+                <Column editable="true" title="Habilitada" type="java.lang.Object"/>
+                <Column editable="true" title="Petici&#xf3;n" type="java.lang.Object"/>
+                <Column editable="true" title="Usuario Alta" type="java.lang.Object"/>
+                <Column editable="true" title="Fecha Alta" type="java.lang.Object"/>
+                <Column editable="true" title="Usuario Modificacion" type="java.lang.Object"/>
+                <Column editable="true" title="Fecha Modificacion" type="java.lang.Object"/>
+              </Table>
+            </Property>
+            <Property name="autoResizeMode" type="int" value="0"/>
+            <Property name="cellSelectionEnabled" type="boolean" value="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="lblSinonimos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Sin&#xf3;nimos"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPaneSinonimos">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblSinonimos">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="12" rowCount="4">
+                <Column editable="true" title="Receptor" type="java.lang.Object"/>
+                <Column editable="true" title="Tipo Objeto" type="java.lang.Object"/>
+                <Column editable="true" title="Entorno" type="java.lang.Object"/>
+                <Column editable="true" title="Propietario" type="java.lang.Object"/>
+                <Column editable="true" title="Incluir en PDC" type="java.lang.Object"/>
+                <Column editable="true" title="Habilitada" type="java.lang.Object"/>
+                <Column editable="true" title="Petici&#xf3;n" type="java.lang.Object"/>
+                <Column editable="true" title="Funci&#xf3;n Nombre" type="java.lang.Object"/>
+                <Column editable="true" title="Usuario Alta" type="java.lang.Object"/>
+                <Column editable="true" title="Fecha Alta" type="java.lang.Object"/>
+                <Column editable="true" title="Usuario Modificacion" type="java.lang.Object"/>
+                <Column editable="true" title="Fecha Modificacion" type="java.lang.Object"/>
+              </Table>
+            </Property>
+            <Property name="autoResizeMode" type="int" value="0"/>
+            <Property name="cellSelectionEnabled" type="boolean" value="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="btnAlta">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Alta"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnModificacion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Modificaci&#xf3;n"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModificacionActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnInforme">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Informe"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCancelar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cancelar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>

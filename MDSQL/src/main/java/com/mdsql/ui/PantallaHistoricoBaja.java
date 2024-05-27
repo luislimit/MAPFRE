@@ -92,6 +92,7 @@ public class PantallaHistoricoBaja extends DialogSupport {
                     .addComponent(btnAceptar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        pack();
 	}
 
 	@Override

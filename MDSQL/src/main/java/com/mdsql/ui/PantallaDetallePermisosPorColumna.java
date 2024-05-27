@@ -265,6 +265,7 @@ public class PantallaDetallePermisosPorColumna extends DialogSupport {
 		                    .addComponent(btnAlta))
 		                .addGap(40, 40, 40))
 		        );
+                        pack();
 		 }
 	
 		 @Override

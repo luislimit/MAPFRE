@@ -189,6 +189,7 @@ public class PantallaDescartarScript extends DialogSupport {
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
+        pack();
     }
     
     @Override

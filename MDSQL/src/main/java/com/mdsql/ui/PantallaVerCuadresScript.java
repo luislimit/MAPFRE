@@ -118,6 +118,7 @@ public class PantallaVerCuadresScript extends DialogSupport {
                 .addComponent(btnCancelar)
                 .addContainerGap())
         );
+        pack();
     }
 	
     @Override

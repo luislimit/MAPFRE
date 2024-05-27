@@ -356,6 +356,7 @@ public class PantallaProcesarScript extends DialogSupport implements PantallaPro
                     .addComponent(btnVerProcesado))
                 .addContainerGap())
         );
+        pack();
 	}
 
 	@Override

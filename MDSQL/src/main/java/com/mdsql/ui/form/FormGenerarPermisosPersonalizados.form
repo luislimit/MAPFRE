@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="scrollPanePermisos" alignment="0" max="32767" attributes="0"/>
+                  <Component id="scrollPaneSinonimos" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="lblTablaPermisos" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="234" max="-2" attributes="0"/>
+                              <Component id="btnBuscar" linkSize="4" min="-2" pref="119" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnLimpiar" min="-2" pref="119" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblTablaSinonimos" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblModeloProyecto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <Component id="lblTipoObjeto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <Component id="lblPeticion" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="txtModeloProyecto" min="-2" pref="110" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnModeloProyecto" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="cmbTipoObjeto" min="-2" pref="160" max="-2" attributes="0"/>
+                                  <Component id="txtPeticion" min="-2" pref="160" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblSubModelo" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="cmbSubModelo" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblNombreObjeto" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jScrollPaneNombreObjeto" min="-2" pref="351" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnGenerar" linkSize="4" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
+              <Component id="btnCancelar" linkSize="4" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="cmbSubModelo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="lblSubModelo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btnModeloProyecto" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="lblModeloProyecto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="txtModeloProyecto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblTipoObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="cmbTipoObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblNombreObjeto" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblPeticion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="txtPeticion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="jScrollPaneNombreObjeto" pref="0" max="32767" attributes="0"/>
+              </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="lblTablaPermisos" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnBuscar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="scrollPanePermisos" pref="151" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Component id="lblTablaSinonimos" min="-2" pref="24" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Component id="scrollPaneSinonimos" pref="151" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnCancelar" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnGenerar" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="lblModeloProyecto">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Modelo o Proyecto"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtModeloProyecto">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnModeloProyecto">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/loupe.png"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSubModelo">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Submodelo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbSubModelo">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;SubProyecto&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTipoObjeto">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Tipo de Objeto"/>
+        <Property name="horizontalTextPosition" type="int" value="4"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbTipoObjeto">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPaneNombreObjeto">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="txtNombreObjeto">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="lblNombreObjeto">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Nombre Objeto"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPeticion">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Petici&#xf3;n"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtPeticion">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnBuscar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnLimpiar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Limpiar"/>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
+      </AccessibilityProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTablaPermisos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Permisos"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scrollPanePermisos">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblPermisos">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="11" rowCount="4">
+                <Column editable="true" title="Receptor" type="java.lang.Object"/>
+                <Column editable="true" title="Modelo" type="java.lang.Object"/>
+                <Column editable="true" title="Objeto" type="java.lang.Object"/>
+                <Column editable="true" title="Columna" type="java.lang.Object"/>
+                <Column editable="true" title="Tipo Objeto" type="java.lang.Object"/>
+                <Column editable="true" title="Permiso" type="java.lang.Object"/>
+                <Column editable="true" title="Entorno" type="java.lang.Object"/>
+                <Column editable="true" title="Grant Option" type="java.lang.Object"/>
+                <Column editable="true" title="Incluir en PDC" type="java.lang.Object"/>
+                <Column editable="true" title="Habilitada" type="java.lang.Object"/>
+                <Column editable="true" title="Petici&#xf3;n" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="lblTablaSinonimos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Sin&#xf3;nimos"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scrollPaneSinonimos">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblSinonimos">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="10" rowCount="4">
+                <Column editable="true" title="Receptor" type="java.lang.Object"/>
+                <Column editable="true" title="Modelo" type="java.lang.Object"/>
+                <Column editable="true" title="Objeto" type="java.lang.Object"/>
+                <Column editable="true" title="Tipo Objeto" type="java.lang.Object"/>
+                <Column editable="true" title="Entorno" type="java.lang.Object"/>
+                <Column editable="true" title="Propietario" type="java.lang.Object"/>
+                <Column editable="true" title="Incluir en PDC" type="java.lang.Object"/>
+                <Column editable="true" title="Habilitada" type="java.lang.Object"/>
+                <Column editable="true" title="Petici&#xf3;n" type="java.lang.Object"/>
+                <Column editable="true" title="Funci&#xf3;n Nombre" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="btnGenerar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCancelar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CANCELAR"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

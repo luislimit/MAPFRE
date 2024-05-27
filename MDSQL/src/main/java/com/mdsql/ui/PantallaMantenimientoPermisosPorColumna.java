@@ -237,6 +237,7 @@ public class PantallaMantenimientoPermisosPorColumna extends DialogSupport {
 	                    .addComponent(btnCancelar))
 	                .addContainerGap(75, Short.MAX_VALUE))
 	        );
+                pack();
 	 }
     
 	 @Override

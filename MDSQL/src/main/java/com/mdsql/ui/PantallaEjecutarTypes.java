@@ -252,6 +252,7 @@ public class PantallaEjecutarTypes extends DialogSupport {
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
+        pack();
     }
 
     @Override

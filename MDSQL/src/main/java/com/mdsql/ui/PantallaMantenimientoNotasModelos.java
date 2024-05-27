@@ -261,6 +261,7 @@ public class PantallaMantenimientoNotasModelos extends DialogSupport {
 	                .addComponent(btnCancelar)
 	                .addContainerGap())
 	        );
+                pack();
 	 }
     
 	 @Override

@@ -36,27 +36,31 @@ public class PantallaSeleccionModelosListener extends ListenerSupport implements
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton jButton = (JButton) e.getSource();
+                String actionCommand = jButton.getActionCommand();
 
-		if (MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_BUSCAR.equals(jButton.getActionCommand())) {
+		if (MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_BUSCAR.equals(actionCommand)) {
 			eventBtnBuscar();
 		}
 		
-		if (MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_SELECCIONAR.equals(jButton.getActionCommand())) {
+		if (MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_SELECCIONAR.equals(actionCommand)) {
 			evntBtnSeleccionar();
 		}
 
-		if (MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_NOTAS.equals(jButton.getActionCommand())) {
-			pantallaSeleccionModelos.dispose();
-		}
-
-		if (MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_VARIABLES.equals(jButton.getActionCommand())) {
-			pantallaSeleccionModelos.dispose();
-		}
-
-		if (MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_PERMISOS_GENERALES.equals(jButton.getActionCommand())) {
-			pantallaSeleccionModelos.dispose();
-		}
+                if (actionCommand.equals(MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_NOTAS) ||
+                    actionCommand.equals(MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_PERMISOS_GENERALES) || 
+                    actionCommand.equals(MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_PERMISOS_POR_COLUMNA) ||
+                    actionCommand.equals(MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_PERMISOS_POR_OBJETO) ||
+                    actionCommand.equals(MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_VARIABLES)){
+                    evtCerrar(actionCommand);
+                }
 	}
+        
+        private void evtCerrar(String actionCommand){
+            //Indicamos la opción por la que se ha cerrado la pantalla
+            pantallaSeleccionModelos.getReturnParams().put(MDSQLConstants.P_OUT_EXIT_BUTTON, actionCommand);
+            pantallaSeleccionModelos.dispose();
+        }
+        
 
 	/*
 	 * 
@@ -130,6 +134,7 @@ public class PantallaSeleccionModelosListener extends ListenerSupport implements
 				populateModel(modelos);
 			}
 		} catch (ServiceException e) {
+                        pantallaSeleccionModelos.setErrorOnload(Boolean.TRUE);
 			Map<String, Object> params = MDSQLUIHelper.buildError(e);
 			MDSQLUIHelper.showPopup(pantallaSeleccionModelos.getFrameParent(), MDSQLConstants.CMD_ERROR, params);
 		}

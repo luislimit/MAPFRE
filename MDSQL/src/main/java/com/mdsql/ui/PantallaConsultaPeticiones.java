@@ -210,6 +210,7 @@ public class PantallaConsultaPeticiones extends DialogSupport {
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
+        pack();
     }
     
     @Override

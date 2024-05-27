@@ -86,6 +86,7 @@ public class PantallaBuscadorFicheros extends DialogSupport {
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(btnCancelar)
 								.addComponent(btnAceptar))
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+                pack();
 	}
 
 	@Override

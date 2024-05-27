@@ -116,7 +116,6 @@ public class PantallaVerErroresScript extends DialogSupport {
                 .addComponent(btnCancelar)
                 .addContainerGap())
         );
-
         pack();
     }
 	

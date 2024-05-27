@@ -354,6 +354,7 @@ public class PantallaEjecutarScripts extends DialogSupport {
                     .addComponent(btnAceptar))
                 .addContainerGap())
         );
+        pack();
 	}
 
 	@Override

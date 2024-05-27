@@ -101,6 +101,7 @@ public class DlgExcepcion extends DialogSupport {
         jPanel3.add(btnCancelar);
 
         getContentPane().add(jPanel3, BorderLayout.PAGE_END);
+        pack();
 	}
 
 	@Override

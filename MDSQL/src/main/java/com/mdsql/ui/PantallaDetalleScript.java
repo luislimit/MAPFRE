@@ -77,7 +77,7 @@ public class PantallaDetalleScript extends DialogSupport {
                 .addComponent(btnCancelar)
                 .addGap(16, 16, 16))
         );
-
+pack();
     }
     
     @Override

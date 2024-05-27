@@ -197,6 +197,7 @@ public class PantallaGenerarPermisosPersonalizados extends DialogSupport {
 		                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
 		                    .addContainerGap(321, Short.MAX_VALUE)))
 		        );
+                        pack();
 		 }
 	 
 		 @Override

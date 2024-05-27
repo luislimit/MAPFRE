@@ -336,6 +336,7 @@ public class PantallaConsultaPermisosPersonalizados extends DialogSupport {
 	                .addComponent(jButton1)
 	                .addGap(28, 28, 28))
 	        );
+                pack();
 	 }
 	 
 	 @Override

@@ -245,6 +245,7 @@ public class PantallaRepararScript extends DialogSupport {
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
+        pack();
     }
     
     @Override

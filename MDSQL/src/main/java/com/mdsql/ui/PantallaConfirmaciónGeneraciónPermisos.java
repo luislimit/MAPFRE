@@ -179,6 +179,7 @@ public class PantallaConfirmaciónGeneraciónPermisos extends DialogSupport {
 	                    .addComponent(btnCancelar))
 	                .addContainerGap(11, Short.MAX_VALUE))
 	        );
+                pack();
 	 }
     
 	 @Override

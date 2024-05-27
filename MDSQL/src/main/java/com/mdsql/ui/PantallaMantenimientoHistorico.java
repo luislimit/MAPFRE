@@ -160,7 +160,7 @@ public class PantallaMantenimientoHistorico extends DialogSupport {
 	                    .addComponent(btnBaja))
 	                .addGap(45, 45, 45))
 	        );
-
+pack();
 	 }
 	
 	 @Override

@@ -86,7 +86,7 @@ public class PantallaInformacionModelo extends DialogSupport {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
+pack();
     }
     
     @Override

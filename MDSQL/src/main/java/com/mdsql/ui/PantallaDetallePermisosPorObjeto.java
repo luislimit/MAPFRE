@@ -342,6 +342,7 @@ public class PantallaDetallePermisosPorObjeto extends DialogSupport {
 										 .addComponent(btnAlta))
 								 .addGap(36, 36, 36))
 		 );
+                 pack();
 	 }
     
 	 @Override

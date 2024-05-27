@@ -165,6 +165,7 @@ public class PantallaMantenimientoEntornos extends DialogSupport {
 	                    .addComponent(btnCancelar))
 	                .addContainerGap())
 	        );
+                pack();
 	 }
 	
 	 @Override

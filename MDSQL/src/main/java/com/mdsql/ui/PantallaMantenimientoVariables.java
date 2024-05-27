@@ -330,6 +330,7 @@ public class PantallaMantenimientoVariables extends DialogSupport {
 		                .addComponent(btnCancelar)
 		                .addContainerGap())
 		        );
+                        pack();
 		 }
 	 
 		 @Override

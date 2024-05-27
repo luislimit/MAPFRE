@@ -149,6 +149,7 @@ public class PantallaHistoricoAlta extends DialogSupport {
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
+        pack();
 	}
 
 	@Override

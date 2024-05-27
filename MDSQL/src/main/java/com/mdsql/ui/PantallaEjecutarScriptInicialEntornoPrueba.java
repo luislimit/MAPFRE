@@ -198,6 +198,7 @@ public class PantallaEjecutarScriptInicialEntornoPrueba extends DialogSupport {
 	                    .addComponent(btnCancelar))
 	                .addGap(34, 34, 34))
 	        );
+                pack();
 	 }
 	 
 	 @Override

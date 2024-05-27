@@ -333,6 +333,7 @@ public class PantallaMantenimientoPermisosPorObjeto extends DialogSupport {
 	                    .addComponent(btnCancelar))
 	                .addContainerGap(195, Short.MAX_VALUE))
 	        );
+                pack();
 	 }
 	
 	 @Override

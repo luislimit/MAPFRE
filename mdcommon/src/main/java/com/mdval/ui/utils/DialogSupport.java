@@ -87,15 +87,17 @@ public abstract class DialogSupport extends JDialog {
 	private void initialize() {
 		try {
 			errorOnload = Boolean.FALSE;
-			
+			/*
 			panelLogo = new PanelLogotipo("logotipo.png");
 			panelLogo.setPreferredSize(new Dimension(286, 63));
-
+*/
 			dateFormatter = new DateFormatter();
 			onLoadListeners = new ArrayList<>();
 			returnParams = new HashMap<>();
 
-			initComponents();
+                         //initComponents();
+                        setupComponents();
+                        
 			initLiterals();
 			initEvents();
 
@@ -113,15 +115,15 @@ public abstract class DialogSupport extends JDialog {
 		}
 	}
 
-	/**
-	 * Encapsula la creación de componentes
-	 */
-	private void initComponents() {
+/*	private void initComponents() {
 		setupComponents();
-
 		pack();
 	}
-
+*/
+        /**
+	 * Encapsula la creación de componentes
+     * @param l
+	 */
 	protected void addOnLoadListener(OnLoadListener l) {
 		this.onLoadListeners.add(l);
 	}

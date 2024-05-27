@@ -1,174 +1,152 @@
 package com.mdsql.ui.listener;
 
+import com.mdsql.bussiness.entities.*;
+import com.mdsql.ui.*;
+import com.mdsql.ui.form.FormConsultaPermisosPersonalizados;
+import com.mdsql.ui.form.FormDetallePermisosPorColumna;
+import com.mdsql.ui.form.FormDetallePermisosPorObjeto;
+import com.mdsql.ui.form.FormGenerarPermisosPersonalizados;
+import com.mdsql.ui.form.FormPermisosGeneralesPorModeloPorTipoObjeto;
+import com.mdsql.ui.utils.ListenerSupport;
+import com.mdsql.ui.utils.MDSQLUIHelper;
+import com.mdsql.utils.MDSQLAppHelper;
+import com.mdsql.utils.MDSQLConstants;
+import com.mdval.ui.utils.DialogSupport;
+import com.mdval.ui.utils.FrameSupport;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.swing.JMenuItem;
-
-import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.ui.PantallaEjecutarScriptInicialEntornoPrueba;
-import com.mdsql.ui.PantallaMantenimientoEntornos;
-import com.mdsql.ui.PantallaMantenimientoEntornosPrueba;
-import com.mdsql.ui.PantallaMantenimientoHistorico;
-import com.mdsql.ui.PantallaMantenimientoNotasModelos;
-import com.mdsql.ui.PantallaMantenimientoVariables;
-import com.mdsql.ui.PantallaPermisosGeneralesporModeloporTipoObjeto;
-import com.mdsql.ui.PantallaSeleccionModelos;
-import com.mdsql.ui.utils.ListenerSupport;
-import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.MDSQLConstants;
-import com.mdval.ui.utils.FrameSupport;
-
 /**
  * @author federico
  *
  */
+@Slf4j
 public class MenuMantenimientoActionListener extends ListenerSupport implements ActionListener {
 
-	private FrameSupport framePrincipal;
+    private final FrameSupport framePrincipal;
 
-	/**
-	 * @param framePrincipal
-	 */
-	public MenuMantenimientoActionListener(FrameSupport framePrincipal) {
-		this.framePrincipal = framePrincipal;
-	}
+    /*private PantallaProcesarScript pantallaProcesarScript;
 
-	/**
-	 *
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JMenuItem item = (JMenuItem) e.getSource();
-		String actionCommand = item.getActionCommand();
+    private DialogSupport pantallaEjecutar;*/
+    /**
+     * @param framePrincipal
+     */
+    public MenuMantenimientoActionListener(FrameSupport framePrincipal) {
+        this.framePrincipal = framePrincipal;
+    }
 
-		if (MDSQLConstants.MNU_PERMISOS_GENERALES.equals(actionCommand)) {
-			evtPermisosGenerales();
-		}
+    /**
+     *
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JMenuItem item = (JMenuItem) e.getSource();
+        String actionCommand = item.getActionCommand();
+        if (actionCommand == null) {
+            return;
+        }
 
-		if (MDSQLConstants.MNU_CONSULTA_PERMISOS.equals(actionCommand)) {
-			evtPermisosObjeto();
-		}
+        System.out.println("Seleccionado = " + actionCommand);
 
-		if (MDSQLConstants.MNU_MANTENIMIENTO_HISTORICO.equals(actionCommand)) {
-			evtMntoHistorico();
-		}
+        switch (actionCommand) {
+            case MDSQLConstants.MNU_PERMISOS_GENERALES:
+                selModeloAndShowForm(actionCommand);
+                break;
+            case MDSQLConstants.MNU_CONSULTA_PERMISOS:
+                showForm(FormConsultaPermisosPersonalizados.class);
+                break;
+            case MDSQLConstants.MNU_MANTENIMIENTO_PERMISOS:
+                selModeloAndShowForm(actionCommand);
+                break;
+            case MDSQLConstants.MNU_GENERAR_PERMISOS:
+                evtGenerarPermisos();
+                break;
+            case MDSQLConstants.MNU_MANTENIMIENTO_HISTORICO:
+                showForm(PantallaMantenimientoHistorico.class);
+                break;
+            case MDSQLConstants.MNU_NOTAS_MODELOS:
+                showForm(PantallaMantenimientoNotasModelos.class);
+                break;
+            case MDSQLConstants.MNU_ENTORNOS:
+                showForm(PantallaMantenimientoEntornos.class);
+                break;
+            case MDSQLConstants.MNU_MANTENIMIENTO_ENTORNOS_PRUEBAS:
+                showForm(PantallaMantenimientoEntornosPrueba.class);
+                break;
+            case MDSQLConstants.MNU_EJECUCION_SCRIPT_INICIAL:
+                showForm(PantallaEjecutarScriptInicialEntornoPrueba.class);
+                break;
+            case MDSQLConstants.MNU_VARIABLES:
+                selModeloAndShowForm(actionCommand);
+                break;
+            default:
+                break;
+        }
+    }
 
-		if (MDSQLConstants.MNU_NOTAS_MODELOS.equals(actionCommand)) {
-			evtNotasModelos();
-		}
+    private void evtGenerarPermisos() {
+        Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+        Proceso proceso = session.getProceso();
+        if (proceso == null || "Generado".equals(proceso.getDescripcionEstadoProceso())) {
+            DialogSupport dialog = showForm(FormGenerarPermisosPersonalizados.class);
+            //Si el proceso ha terminado correctamente, mostramos la pantalla de resumen
+            if (dialog.getReturnParams() != null && !dialog.getReturnParams().isEmpty()) {
+                String exitBtn = (String) dialog.getReturnParams().get(MDSQLConstants.P_OUT_EXIT_BUTTON);
+                if (exitBtn.equals(MDSQLConstants.BTN_ACEPTAR)) {
+                    showForm(PantallaResumenProcesado.class);
+                }
+            }
+        } else {
+            // Aviso de que no hay procesado en curso
+            JOptionPane.showMessageDialog(framePrincipal, "Hay procesado en curso, debe finalizarlo o rechazarlo desde la opción ejecutar scripts");
+        }
+    }
 
-		if (MDSQLConstants.MNU_ENTORNOS.equals(actionCommand)) {
-			evtMntoEntornos();
-		}
-		
-		if (MDSQLConstants.MNU_MANTENIMIENTO_ENTORNOS_PRUEBAS.equals(actionCommand)) {
-			evtMntoEntornosPruebas();
-		}
-		
-		if (MDSQLConstants.MNU_EJECUCION_SCRIPT_INICIAL.equals(actionCommand)) {
-			evtScriptInicial();
-		}
+    private DialogSupport showForm(Class<?> dlgClass) {
+        Map<String, Object> params = new HashMap<>();
+        return (DialogSupport) MDSQLUIHelper.showForm(framePrincipal, dlgClass, params);
+    }
 
-		if (MDSQLConstants.MNU_VARIABLES.equals(actionCommand)) {
-			evtMntoVariables();
-		}
-	}
+    private void selModeloAndShowForm(String actionCommand) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(MDSQLConstants.P_IN_OPCION_MENU, actionCommand);
+        PantallaSeleccionModelos pantallaSeleccionModelos = (PantallaSeleccionModelos) MDSQLUIHelper.createDialog(framePrincipal,
+                MDSQLConstants.CMD_SEARCH_MODEL, params);
+        MDSQLUIHelper.show(pantallaSeleccionModelos);
 
-	private void evtScriptInicial() {
-		Map<String, Object> params = new HashMap<>();
-
-		PantallaEjecutarScriptInicialEntornoPrueba ejecutarScriptInicialEntornoPrueba = (PantallaEjecutarScriptInicialEntornoPrueba) MDSQLUIHelper.createDialog(framePrincipal,
-				MDSQLConstants.CMD_MNTO_SCRIPT_INICIAL, params);
-		MDSQLUIHelper.show(ejecutarScriptInicialEntornoPrueba);
-	}
-
-	private void evtMntoVariables() {
-		Map<String, Object> params = new HashMap<>();
-		params.put("opcion", "mntoVariables");
-		Modelo seleccionado = getModelo(params);
-
-		if (!Objects.isNull(seleccionado)) {
-			params = new HashMap<>();
-
-			params.put("modelo", seleccionado);
-
-			PantallaMantenimientoVariables pantallaMantenimientoVariables = (PantallaMantenimientoVariables) MDSQLUIHelper.createDialog(framePrincipal,
-					MDSQLConstants.CMD_MNTO_VARIABLES, params);
-			MDSQLUIHelper.show(pantallaMantenimientoVariables);
-		}
-	}
-
-	private void evtMntoEntornos() {
-		Map<String, Object> params = new HashMap<>();
-
-		PantallaMantenimientoEntornos pantallaMantenimientoEntornos = (PantallaMantenimientoEntornos) MDSQLUIHelper.createDialog(framePrincipal,
-				MDSQLConstants.CMD_MNTO_ENTORNOS, params);
-		MDSQLUIHelper.show(pantallaMantenimientoEntornos);
-	}
-	
-	private void evtMntoEntornosPruebas() {
-		Map<String, Object> params = new HashMap<>();
-
-		PantallaMantenimientoEntornosPrueba pantallaMantenimientoEntornosPrueba = (PantallaMantenimientoEntornosPrueba) MDSQLUIHelper.createDialog(framePrincipal,
-				MDSQLConstants.CMD_MNTO_ENTORNOS_PRUEBAS, params);
-		MDSQLUIHelper.show(pantallaMantenimientoEntornosPrueba);
-	}
-
-	private void evtNotasModelos() {
-		Map<String, Object> params = new HashMap<>();
-		PantallaMantenimientoNotasModelos pantallaMantenimientoNotasModelos = (PantallaMantenimientoNotasModelos) MDSQLUIHelper.createDialog(framePrincipal,
-					MDSQLConstants.CMD_MNTO_NOTAS, params);
-		MDSQLUIHelper.show(pantallaMantenimientoNotasModelos);
-	}
-
-	private void evtMntoHistorico() {
-		Map<String, Object> params = new HashMap<>();
-
-		PantallaMantenimientoHistorico pantallaMantenimientoHistorico = (PantallaMantenimientoHistorico) MDSQLUIHelper.createDialog(framePrincipal,
-				MDSQLConstants.CMD_MNTO_HISTORICO, params);
-		MDSQLUIHelper.show(pantallaMantenimientoHistorico);
-	}
-
-	/**
-	 * 
-	 */
-	private void evtPermisosGenerales() {
-		Map<String, Object> params = new HashMap<>();
-		params.put("opcion", "mntoPermisosGenerales");
-		Modelo seleccionado = getModelo(params);
-
-		if (!Objects.isNull(seleccionado)) {
-			params = new HashMap<>();
-			params.put("modelo", seleccionado);
-
-			PantallaPermisosGeneralesporModeloporTipoObjeto pantallaPermisosGeneralesporModeloporTipoObjeto = (PantallaPermisosGeneralesporModeloporTipoObjeto) MDSQLUIHelper.createDialog(framePrincipal,
-					MDSQLConstants.CMD_PERMISOS_GENERALES, params);
-			MDSQLUIHelper.show(pantallaPermisosGeneralesporModeloporTipoObjeto);
-		}
-	}
-
-	private void evtPermisosObjeto() {
-		/*
-		Modelo seleccionado = getModelo();
-		Map<String, Object> params = new HashMap<>();
-
-		params.put("modelo", seleccionado);
-
-		PantallaDetallePermisosPorObjeto pantallaDetallePermisosPorObjeto = (PantallaDetallePermisosPorObjeto) MDSQLUIHelper.createDialog(framePrincipal,
-				MDSQLConstants.CMD_PERMISOS_OBJETO, params);
-		MDSQLUIHelper.show(pantallaDetallePermisosPorObjeto);
-		 */
-	}
-
-	private Modelo getModelo(Map<String, Object> params) {
-		PantallaSeleccionModelos pantallaSeleccionModelos = (PantallaSeleccionModelos) MDSQLUIHelper.createDialog(framePrincipal,
-				MDSQLConstants.CMD_SEARCH_MODEL, params);
-		MDSQLUIHelper.show(pantallaSeleccionModelos);
-		Modelo seleccionado = pantallaSeleccionModelos.getSeleccionado();
-		return seleccionado;
-	}
+        String btnSeleccionModelo = (String) pantallaSeleccionModelos.getReturnParams().get(MDSQLConstants.P_OUT_EXIT_BUTTON);
+        if (btnSeleccionModelo != null) {
+            Modelo modelo = pantallaSeleccionModelos.getSeleccionado();
+            if (!Objects.isNull(modelo)) {
+                params = new HashMap<>();
+                params.put(MDSQLConstants.P_IN_MODELO, modelo);
+                switch (btnSeleccionModelo) {
+                    case MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_NOTAS:
+                        MDSQLUIHelper.showForm(framePrincipal, PantallaMantenimientoNotasModelos.class, params);
+                        break;
+                    case MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_PERMISOS_GENERALES:
+                        MDSQLUIHelper.showForm(framePrincipal, FormPermisosGeneralesPorModeloPorTipoObjeto.class, params);
+                        break;
+                    case MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_PERMISOS_POR_COLUMNA:
+                        MDSQLUIHelper.showForm(framePrincipal, FormDetallePermisosPorColumna.class, params);
+                        break;
+                    case MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_PERMISOS_POR_OBJETO:
+                        MDSQLUIHelper.showForm(framePrincipal, FormDetallePermisosPorObjeto.class, params);
+                        break;
+                    case MDSQLConstants.PANTALLA_SELECCION_MODELOS_BTN_VARIABLES:
+                        MDSQLUIHelper.showForm(framePrincipal, PantallaMantenimientoVariables.class, params);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 }

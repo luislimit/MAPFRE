@@ -125,6 +125,12 @@ public class MDSQLConstants extends Constants {
 	public static final String ENTORNO_SERVICE = "entornoService";
 	
 	public static final String ENTORNOS_PRUEBA_SERVICE = "entornosPruebaService";
+        
+        public static final String REENTRANTE_SERVICE="REENTRANTE_SERVICE";
+        public static final String PERMISOS_OBJETO_SERVICE = "PERMISOS_OBJETO_SERVICE";
+        public static final String PERMISOS_COLUMNA_SERVICE = "PERMISOS_COLUMNA_SERVICE";
+        public static final String PERMISOS_PERSONALIZADOS_SERVICE = "PERMISOS_PERSONALIZADOS_SERVICE";
+        
 
 	/**
 	 * DataBase Types and constants
@@ -248,10 +254,11 @@ public class MDSQLConstants extends Constants {
 	}
 
 	public static final Color CELL_SELECTED_BGCOLOR = new Color(184, 207, 229);
+        public static final Color TEXT_DISABLED_BGCOLOR = new Color(242, 242, 242);
 
 	// Modos para el procesado
 	public enum Procesado {
-		SCRIPT, TYPE
+		SCRIPT, TYPE, REENTRANTE
 	}
 	
 	// Estados del procesado
@@ -428,6 +435,7 @@ public class MDSQLConstants extends Constants {
 	public static final String CMD_INFORMACION_MODELO = "CMD_INFORMACION_MODELO";
 	public static final String CMD_LIMPIAR_SESION = "CMD_LIMPIAR_SESION";
 	public static final String CMD_LIMPIAR_SCRIPT = "CMD_LIMPIAR_SCRIPT";
+        public static final String CMD_LOAD_REENTRANTE = "CMD_LOAD_REENTRANTE";
 
 	public static final String CMD_PERMISOS_GENERALES = "CMD_PERMISOS_GENERALES";
 
@@ -675,6 +683,7 @@ public class MDSQLConstants extends Constants {
 	public static final String FRAME_PRINCIPAL_PROCESADO_CURSO = "FRAME_PRINCIPAL_PROCESADO_CURSO";
 	public static final String FRAME_PRINCIPAL_REFRESCAR_FICHERO = "FRAME_PRINCIPAL_REFRESCAR_FICHERO";
 	public static final String FRAME_PRINCIPAL_INFORMACION_MODELO = "FRAME_PRINCIPAL_INFORMACION_MODELO";
+        public static final String FRAME_PRINCIPAL_LOAD_REENTRANTE ="FRAME_PRINCIPAL_LOAD_REENTRANTE";
 
 	public static final String PANTALLA_INFORMACION_MODELO_SCRIPT_LIMPIAR = "PANTALLA_INFORMACION_MODELO_SCRIPT_LIMPIAR";
 	public static final String PANTALLA_INFORMACION_MODELO_VER_PROCESADO = "PANTALLA_INFORMACION_MODELO_VER_PROCESADO";
@@ -846,4 +855,30 @@ public class MDSQLConstants extends Constants {
 	public static final String PANTALLA_HISTORICO_ALTA_BTN_CANCELAR = "PANTALLA_HISTORICO_ALTA_BTN_CANCELAR";
 
 	public static final String PANTALLA_HISTORICO_ALTA_BUSCAR_MODELO = "PANTALLA_HISTORICO_ALTA_BUSCAR_MODELO";
+        
+        public static final String BTN_GUARDAR = "BTN_GUARDAR";
+	public static final String BTN_ACEPTAR = "BTN_ACEPTAR";
+	public static final String BTN_CANCELAR = "BTN_CANCELAR";
+	public static final String BTN_ACTUALIZAR = "BTN_ACTUALIZAR";        
+        public static final String BTN_SCRIPT_CAMBIO = "BTN_SCRIPT_CAMBIO";    
+        public static final String BTN_SCRIPT_COMENTARIOS = "BTN_SCRIPT_COMENTARIOS";    
+        public static final String BTN_SCRIPT_CREACION = "BTN_SCRIPT_CREACION";            
+        
+        public static final String PARAM_SCRIPT_REENTRANTE_TABLA_CABECERA = "PARAM_SCRIPT_REENTRANTE_TABLA_CABECERA";
+
+        public static final String FORM_MENU_OPTION_PREFIX = "$";
+        
+        //Parametros de entrada de los formularios
+        public static final String P_IN_MODELO = "modelo";
+        public static final String P_IN_OPCION_MENU = "P_IN_OPCION_MENU";
+        public static final String P_IN_OBJETO = "P_IN_OBJETO";
+        public static final String P_IN_NOM_OBJETO = "P_IN_NOM_OBJETO";
+        public static final String P_IN_SUB_MODELO = "P_IN_SUB_MODELO";
+        public static final String P_IN_TIP_OBJETO = "P_IN_TIP_OBJETO";
+        public static final String P_IN_COD_PETICION = "P_IN_COD_PETICION";
+        
+        //Parametros de salida de los formularios
+        public static final String P_OUT_EXIT_BUTTON = "P_OUT_EXIT_BUTTON";
+        public static final String P_OUT_DATA_CHANGED = "P_OUT_DATA_CHANGED";
+
 }

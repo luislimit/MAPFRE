@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="lblPeticion" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="lblBBDD" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="lblSolicitadaPor" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="lblDemanda" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="lblRuta" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="lblComentario" min="-2" pref="120" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtDemanda" alignment="0" min="-2" pref="485" max="-2" attributes="0"/>
+                          <Component id="cmbBBDD" alignment="0" min="-2" pref="485" max="-2" attributes="0"/>
+                          <Component id="txtSolictadaPor" alignment="0" min="-2" pref="485" max="-2" attributes="0"/>
+                          <Component id="txtPeticion" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="chkGenerarRestoPermisosPersonalizados" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkGenerarPermisosGenerales" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="scrollPaneComentario" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="btnRuta" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <Component id="txtRuta" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnAceptar" linkSize="1" min="-2" pref="91" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+              <Component id="btnCancelar" linkSize="1" min="-2" pref="107" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblPeticion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="txtPeticion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="chkGenerarPermisosGenerales" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="chkGenerarRestoPermisosPersonalizados" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblSolicitadaPor" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="txtSolictadaPor" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblBBDD" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="cmbBBDD" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblDemanda" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="txtDemanda" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="lblRuta" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="btnRuta" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="txtRuta" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblComentario" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="scrollPaneComentario" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnAceptar" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="lblPeticion">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Petici&#xf3;n"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtPeticion">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkGenerarPermisosGenerales">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generar Permisos Generales"/>
+        <Property name="horizontalTextPosition" type="int" value="10"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSolicitadaPor">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Solicitada Por"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtSolictadaPor">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkGenerarRestoPermisosPersonalizados">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generar Resto Permisos Personalizados"/>
+        <Property name="horizontalTextPosition" type="int" value="10"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblBBDD">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="BBDD"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbBBDD">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;BBDD&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblDemanda">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Demanda"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtDemanda">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblRuta">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Ruta"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnRuta">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/folder-open.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtRuta">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblComentario">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Comentario"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scrollPaneComentario">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="txtComentario">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="btnAceptar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Aceptar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCancelar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CANCELAR"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

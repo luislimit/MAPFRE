@@ -336,7 +336,7 @@ public class PantallaProcesadoEnCurso extends DialogSupport implements PantallaP
                             .addComponent(btnVerProcesado))))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
-	
+	pack();
 	}
 	
 	@Override

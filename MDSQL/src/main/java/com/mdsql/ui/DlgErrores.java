@@ -105,6 +105,7 @@ public class DlgErrores extends DialogSupport {
         jPanel3.add(btnCerrar);
 
         getContentPane().add(jPanel3, BorderLayout.PAGE_END);
+        pack();
 	}
 
 	@Override

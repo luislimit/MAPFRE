@@ -30,7 +30,7 @@ public class ServiceSupport {
 	
 	protected DateFormatter oracleDateFormatter;
 	
-	private ConfigurationSingleton configuration;
+	protected ConfigurationSingleton configuration;
 	
 	@SneakyThrows
 	public ServiceSupport() {

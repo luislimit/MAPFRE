@@ -349,6 +349,7 @@ public class PantallaResumenProcesado extends DialogSupport {
                     .addComponent(btnVerLog))
                 .addContainerGap())
         );
+        pack();
 	}
 
 	@Override

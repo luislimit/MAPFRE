@@ -21,13 +21,13 @@ import com.mdval.ui.utils.MenuSupport;
  * @author federico
  */
 public class MainMenuBar extends MenuSupport {
-    
+
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -519829056044806094L;
-	
-	private FrameSupport frameParent;
+     *
+     */
+    private static final long serialVersionUID = -519829056044806094L;
+
+    private FrameSupport frameParent;
 
     private JMenu mnuPermisos;
     private JMenu mnuVariables;
@@ -41,84 +41,84 @@ public class MainMenuBar extends MenuSupport {
     private JMenuItem mnuConsultaPeticiones;
     private JMenu mnuScriptInicial;
     private JMenuItem mnuMantenimientoHistorico;
-    
+
     private JMenuItem mnuPermisosGenerales;
     private JMenu mnuPermisosPersonalizados;
     private JMenuItem mnuConsultaPermisos;
-	private JMenuItem mnuMantenimientoPermisos;
-	private JMenuItem mnuGenerarPermisos;
-    
+    private JMenuItem mnuMantenimientoPermisos;
+    private JMenuItem mnuGenerarPermisos;
+
     private JMenuItem mnuMantenimientoEntornosPruebas;
     private JMenuItem mnuEjecucionScriptInicial;
 //    private JMenuItem mnuConfiguracionEntornosPrueba;
-    
+
     public MainMenuBar(FrameSupport frameParent) {
         super();
         this.frameParent = frameParent;
     }
 
-	/**
-	 *
-	 */
-	protected void initComponents() {
+    /**
+     *
+     */
+    @Override
+    protected void initComponents() {
         mnuPermisos = new JMenu();
-        
+
         mnuPermisosGenerales = new JMenuItem();
         mnuPermisosGenerales.setActionCommand(MDSQLConstants.MNU_PERMISOS_GENERALES); // NOI18N
         mnuPermisos.add(mnuPermisosGenerales);
-      
+
         mnuPermisosPersonalizados = new JMenu();
         mnuConsultaPermisos = new JMenuItem();
         mnuConsultaPermisos.setActionCommand(MDSQLConstants.MNU_CONSULTA_PERMISOS); // NOI18N
         mnuPermisosPersonalizados.add(mnuConsultaPermisos);
-        
+
         mnuMantenimientoPermisos = new JMenuItem();
         mnuMantenimientoPermisos.setActionCommand(MDSQLConstants.MNU_MANTENIMIENTO_PERMISOS); // NOI18N
         mnuPermisosPersonalizados.add(mnuMantenimientoPermisos);
-        
+
         mnuGenerarPermisos = new JMenuItem();
         mnuGenerarPermisos.setActionCommand(MDSQLConstants.MNU_GENERAR_PERMISOS); // NOI18N
         mnuPermisosPersonalizados.add(mnuGenerarPermisos);
-        
+
         mnuPermisos.add(mnuPermisosPersonalizados);
-        
+
         mnuEntornos = new JMenu();
         mnuItemEntornos = new JMenuItem();
         mnuItemEntornos.setActionCommand(MDSQLConstants.MNU_ENTORNOS); // NOI18N
         mnuEntornos.add(mnuItemEntornos);
-        
+
         mnuVariables = new JMenu();
         mnuItemVariables = new JMenuItem();
         mnuItemVariables.setActionCommand(MDSQLConstants.MNU_VARIABLES); // NOI18N
         mnuVariables.add(mnuItemVariables);
-        
+
         mnuNotasModelos = new JMenu();
         mnuItemNotasModelos = new JMenuItem();
         mnuItemNotasModelos.setActionCommand(MDSQLConstants.MNU_NOTAS_MODELOS); // NOI18N
         mnuNotasModelos.add(mnuItemNotasModelos);
-        
+
         mnuConsultas = new JMenu();
         mnuConsultaHistoricoCambios = new JMenuItem();
         mnuConsultaHistoricoCambios.setActionCommand(MDSQLConstants.MNU_CONSULTA_HISTORICO_CAMBIOS); // NOI18N
         mnuConsultas.add(mnuConsultaHistoricoCambios);
-        
+
         mnuConsultaPeticiones = new JMenuItem();
         mnuConsultaPeticiones.setActionCommand(MDSQLConstants.MNU_CONSULTA_PETICIONES); // NOI18N
         mnuConsultas.add(mnuConsultaPeticiones);
-        
+
         mnuScriptInicial = new JMenu();
         mnuMantenimientoEntornosPruebas = new JMenuItem();
         mnuMantenimientoEntornosPruebas.setActionCommand(MDSQLConstants.MNU_MANTENIMIENTO_ENTORNOS_PRUEBAS); // NOI18N
         mnuScriptInicial.add(mnuMantenimientoEntornosPruebas);
-        
+
         mnuEjecucionScriptInicial = new JMenuItem();
         mnuEjecucionScriptInicial.setActionCommand(MDSQLConstants.MNU_EJECUCION_SCRIPT_INICIAL); // NOI18N
         mnuScriptInicial.add(mnuEjecucionScriptInicial);
-        
+
 //        mnuConfiguracionEntornosPrueba = new JMenuItem();
 //        mnuConfiguracionEntornosPrueba.setActionCommand(MDSQLConstants.MNU_CONFIGURACION_ENTORNOS_PRUEBA); // NOI18N
 //        mnuScriptInicial.add(mnuConfiguracionEntornosPrueba);
-        
         mnuMantenimientoHistorico = new JMenuItem();
         mnuMantenimientoHistorico.setActionCommand(MDSQLConstants.MNU_MANTENIMIENTO_HISTORICO); // NOI18N
 
@@ -130,17 +130,17 @@ public class MainMenuBar extends MenuSupport {
         add(mnuScriptInicial);
         add(mnuMantenimientoHistorico);
     }
-	
-	/**
-	 *
-	 */
-	protected void setupLiterals() {
-		mnuPermisos.setText(literales.getLiteral("menu.permisos"));
-		mnuPermisosGenerales.setText(literales.getLiteral("menu.permisos.generales"));
-		mnuPermisosPersonalizados.setText(literales.getLiteral("menu.permisos.personalizados"));
-		mnuConsultaPermisos.setText(literales.getLiteral("menu.permisos.personalizados.consulta"));
-		mnuMantenimientoPermisos.setText(literales.getLiteral("menu.permisos.personalizados.mantenimiento"));
-		mnuGenerarPermisos.setText(literales.getLiteral("menu.permisos.personalizados.generar"));
+
+    /**
+     *
+     */
+    protected void setupLiterals() {
+        mnuPermisos.setText(literales.getLiteral("menu.permisos"));
+        mnuPermisosGenerales.setText(literales.getLiteral("menu.permisos.generales"));
+        mnuPermisosPersonalizados.setText(literales.getLiteral("menu.permisos.personalizados"));
+        mnuConsultaPermisos.setText(literales.getLiteral("menu.permisos.personalizados.consulta"));
+        mnuMantenimientoPermisos.setText(literales.getLiteral("menu.permisos.personalizados.mantenimiento"));
+        mnuGenerarPermisos.setText(literales.getLiteral("menu.permisos.personalizados.generar"));
         mnuEntornos.setText(literales.getLiteral("menu.entornos"));
         mnuItemEntornos.setText(literales.getLiteral("menu.entornos"));
         mnuVariables.setText(literales.getLiteral("menu.variables"));
@@ -155,31 +155,32 @@ public class MainMenuBar extends MenuSupport {
         mnuEjecucionScriptInicial.setText(literales.getLiteral("menu.scriptInicial.ejecucionScript"));
 //        mnuConfiguracionEntornosPrueba.setText(literales.getLiteral("menu.scriptInicial.configuracionEntornos"));
         mnuMantenimientoHistorico.setText(literales.getLiteral("menu.mantenimientoHistorico"));
-	}
-	
-	/**
-	 *
-	 */
-	protected void initEvents() {
-		ActionListener menuActionListener = new MenuListener(frameParent);
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void initEvents() {
+        ActionListener menuActionListener = new MenuListener(frameParent);
         ActionListener menuMantenimientoActionListener = new MenuMantenimientoActionListener(frameParent);
 
         mnuPermisosGenerales.addActionListener(menuMantenimientoActionListener);
 
         mnuConsultaPermisos.addActionListener(menuMantenimientoActionListener);
-		mnuMantenimientoPermisos.addActionListener(menuActionListener);
-		mnuGenerarPermisos.addActionListener(menuActionListener);
-        
-		mnuItemEntornos.addActionListener(menuMantenimientoActionListener);
+        mnuMantenimientoPermisos.addActionListener(menuMantenimientoActionListener);
+        mnuGenerarPermisos.addActionListener(menuMantenimientoActionListener);
+
+        mnuItemEntornos.addActionListener(menuMantenimientoActionListener);
         mnuItemVariables.addActionListener(menuMantenimientoActionListener);
         mnuItemNotasModelos.addActionListener(menuMantenimientoActionListener);
         mnuConsultaHistoricoCambios.addActionListener(menuActionListener);
         mnuConsultaPeticiones.addActionListener(menuActionListener);
-        
+
         mnuMantenimientoEntornosPruebas.addActionListener(menuMantenimientoActionListener);
         mnuEjecucionScriptInicial.addActionListener(menuMantenimientoActionListener);
 //        mnuConfiguracionEntornosPrueba.addActionListener(menuActionListener);
 
         mnuMantenimientoHistorico.addActionListener(menuMantenimientoActionListener);
-	}
+    }
 }

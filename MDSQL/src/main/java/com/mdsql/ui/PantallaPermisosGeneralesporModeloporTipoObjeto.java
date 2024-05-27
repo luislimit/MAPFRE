@@ -375,6 +375,7 @@ public class PantallaPermisosGeneralesporModeloporTipoObjeto extends DialogSuppo
 	                    .addComponent(btnInforme))
 	                .addContainerGap())
 	        );
+                pack();
 	 }
 	 
 	 @Override
