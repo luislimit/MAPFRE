@@ -30,13 +30,7 @@
                   <Component id="scrollPaneSinonimos" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="lblTablaPermisos" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="234" max="-2" attributes="0"/>
-                              <Component id="btnBuscar" linkSize="4" min="-2" pref="119" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btnLimpiar" min="-2" pref="119" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="lblTablaPermisos" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTablaSinonimos" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -44,26 +38,28 @@
                                   <Component id="lblTipoObjeto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
                                   <Component id="lblPeticion" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="txtModeloProyecto" min="-2" pref="110" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtPeticion" min="-2" pref="160" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="txtModeloProyecto" min="-2" pref="160" max="-2" attributes="0"/>
+                                          <Component id="cmbTipoObjeto" min="-2" pref="160" max="-2" attributes="0"/>
+                                      </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnModeloProyecto" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="cmbTipoObjeto" min="-2" pref="160" max="-2" attributes="0"/>
-                                  <Component id="txtPeticion" min="-2" pref="160" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="715" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="lblSubModelo" min="-2" pref="120" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="cmbSubModelo" max="32767" attributes="0"/>
+                                      <Component id="cmbSubModelo" min="-2" pref="351" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="lblNombreObjeto" min="-2" pref="120" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Component id="jScrollPaneNombreObjeto" min="-2" pref="351" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -74,12 +70,20 @@
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnGenerar" linkSize="4" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-              <Component id="btnCancelar" linkSize="4" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="550" pref="550" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btnGenerar" linkSize="4" min="-2" pref="119" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="btnCancelar" linkSize="4" min="-2" pref="119" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btnBuscar" linkSize="4" min="-2" pref="119" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="btnLimpiar" min="-2" pref="119" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -114,31 +118,25 @@
                           <Component id="txtPeticion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="jScrollPaneNombreObjeto" pref="0" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneNombreObjeto" min="-2" pref="60" max="-2" attributes="0"/>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Component id="lblTablaPermisos" min="-2" pref="24" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnBuscar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                          <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnBuscar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="scrollPanePermisos" pref="151" max="32767" attributes="0"/>
+              <Component id="lblTablaPermisos" min="-2" pref="24" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="scrollPanePermisos" pref="177" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Component id="lblTablaSinonimos" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Component id="scrollPaneSinonimos" pref="151" max="32767" attributes="0"/>
+              <Component id="scrollPaneSinonimos" pref="177" max="32767" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnCancelar" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
-                  <Component id="btnGenerar" min="-2" pref="24" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnGenerar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
@@ -265,6 +263,7 @@
                 <Column editable="true" title="Petici&#xf3;n" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="autoResizeMode" type="int" value="0"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -297,6 +296,7 @@
                 <Column editable="true" title="Funci&#xf3;n Nombre" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="autoResizeMode" type="int" value="0"/>
           </Properties>
         </Component>
       </SubComponents>

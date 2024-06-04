@@ -56,25 +56,27 @@ public class PermisosColumnaTableModel extends DefaultTableModel<PermisoColumna>
             case 2:
                 return row.getNomColumna();
             case 3:
-                return row.getValGrant();
+                return row.getTipObjeto();            
             case 4:
-                return row.getDesEntorno();
+                return row.getValGrant();
             case 5:
-                return row.getMcaGrantOption();
+                return row.getDesEntorno();
             case 6:
-                return row.getMcaPdc();
+                return row.getMcaGrantOption();
             case 7:
-                return row.getMcaHabilitado();
+                return row.getMcaPdc();
             case 8:
-                return row.getCodPeticion();
+                return row.getMcaHabilitado();
             case 9:
-                return row.getCodUsrAlta();
+                return row.getCodPeticion();
             case 10:
+                return row.getCodUsrAlta();
+            case 11:
                 dateInformeFormatter = new DateFormatter(MDSQLConstants.INPUT_DATE_FORMAT);
                 return dateInformeFormatter.dateToString(row.getFecAlta());
-            case 11:
-                return row.getCodUsr();
             case 12:
+                return row.getCodUsr();
+            case 13:
                 dateInformeFormatter = new DateFormatter(MDSQLConstants.INPUT_DATE_FORMAT);
                 return dateInformeFormatter.dateToString(row.getFecActu());
             default:

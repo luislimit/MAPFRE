@@ -33,7 +33,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jScrollPaneSinonimos" alignment="0" max="32767" attributes="0"/>
                               <Component id="jScrollPanePermisos" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lblWithGrantOption" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
                                       <Component id="lblEntorno" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
@@ -41,44 +41,46 @@
                                       <Component id="lblNombreObjeto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
                                       <Component id="lblModeloProyecto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Group type="102" attributes="0">
                                           <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
                                           <Component id="txtModeloProyecto" min="-2" pref="110" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtModeloProyectoDescrip" min="-2" pref="900" max="-2" attributes="0"/>
+                                          <Component id="txtModeloProyectoDescrip" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                               <Component id="txtNombreObjeto" alignment="0" max="32767" attributes="0"/>
-                                              <Group type="102" attributes="0">
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="cmbPermisoSinonimo" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
-                                                      <Component id="cmbEntorno" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
-                                                      <Component id="cmbWithGrantOption" min="-2" pref="165" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="lblPropietarioSinonimo" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                                                      <Component id="lblFuncionNombre" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                                                      <Component id="lblReceptorPermisos" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Component id="btnBuscar" min="-2" pref="130" max="-2" attributes="0"/>
+                                                      <Group type="102" attributes="0">
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Component id="cmbPermisoSinonimo" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                              <Component id="cmbEntorno" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                              <Component id="cmbWithGrantOption" min="-2" pref="165" max="-2" attributes="0"/>
+                                                          </Group>
+                                                          <EmptySpace min="-2" pref="295" max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Component id="lblPropietarioSinonimo" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                                              <Component id="lblFuncionNombre" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                                              <Component id="lblReceptorPermisos" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                                          </Group>
+                                                      </Group>
                                                   </Group>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="txtFuncionNombre" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
-                                                      <Component id="cmbPropietarioSinonimo" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
-                                                      <Component id="cmbReceptorPermisos" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                                          <Component id="txtFuncionNombre" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                          <Component id="cmbPropietarioSinonimo" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                          <Component id="cmbReceptorPermisos" alignment="0" min="-2" pref="165" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Component id="btnLimpiar" alignment="1" min="-2" pref="130" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace min="-2" pref="342" max="-2" attributes="0"/>
-                                                  <Component id="btnBuscar" min="-2" pref="110" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                                  <Component id="btnLimpiar" max="32767" attributes="0"/>
-                                              </Group>
                                           </Group>
-                                          <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="360" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                                   <Group type="102" attributes="0">
@@ -106,15 +108,14 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="412" max="-2" attributes="0"/>
-                      <Component id="btnAlta" min="-2" pref="101" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="478" max="-2" attributes="0"/>
+                      <Component id="btnAlta" min="-2" pref="130" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnModificacion" min="-2" pref="113" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      <Component id="btnInforme" min="-2" pref="101" max="-2" attributes="0"/>
+                      <Component id="btnModificacion" min="-2" pref="130" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="btnInforme" min="-2" pref="130" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                      <Component id="btnCancelar" min="-2" pref="101" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="247" max="-2" attributes="0"/>
+                      <Component id="btnCancelar" min="-2" pref="130" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
@@ -132,14 +133,14 @@
                       <Component id="txtModeloProyecto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblNombreObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="txtNombreObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="lblTipoObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="cmbTipoObjeto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblPermisoSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="cmbPermisoSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
@@ -148,7 +149,7 @@
                   <Component id="lblPropietarioSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="cmbPropietarioSinonimo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblEntorno" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="cmbEntorno" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
@@ -157,7 +158,7 @@
                   <Component id="lblFuncionNombre" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="txtFuncionNombre" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblWithGrantOption" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="cmbWithGrantOption" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
@@ -167,23 +168,23 @@
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnLimpiar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnBuscar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Component id="lblPermisos" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="jScrollPanePermisos" min="-2" pref="104" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jScrollPanePermisos" pref="155" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Component id="lblSinonimos" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="jScrollPaneSinonimos" min="-2" pref="104" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jScrollPaneSinonimos" pref="156" max="32767" attributes="0"/>
+              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnInforme" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnModificacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnAlta" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnInforme" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnModificacion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="btnAlta" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>

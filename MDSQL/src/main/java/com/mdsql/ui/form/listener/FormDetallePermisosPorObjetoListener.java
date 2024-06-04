@@ -11,6 +11,7 @@ import com.mdsql.bussiness.entities.OutputConsultaPermisosSinonimos;
 import com.mdsql.bussiness.entities.Propietario;
 import com.mdsql.bussiness.service.ExcelGeneratorService;
 import com.mdsql.bussiness.service.PermisosObjetoService;
+import com.mdsql.ui.adapter.DoubleClickable;
 import com.mdsql.ui.form.FormDetallePermisosPorObjeto;
 import com.mdsql.ui.form.FormMantenimientoPermisosPorObjeto;
 import com.mdsql.ui.model.PermisosObjetoTableModel;
@@ -37,7 +38,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Luis-Enrique.Varona
  */
-public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloPermiso implements ActionListener, ListSelectionListener {
+public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloPermiso implements ActionListener, ListSelectionListener, DoubleClickable {
 
     protected FormDetallePermisosPorObjeto pantalla;
     private Object seleccionado;
@@ -54,8 +55,6 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
 
         if (obj.equals(pantalla.getBtnBuscar())) {
             evtBtnBuscar();
-        } else if (obj.equals(pantalla.getBtnLimpiar())) {
-            evtBtnLimpiar();
         } else if (obj.equals(pantalla.getBtnInforme())) {
             evtBtnInforme();
         } else if (obj.equals(pantalla.getBtnModificacion())) {
@@ -68,10 +67,6 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
     private void evtBtnBuscar() {
         fillTablas();
         seleccionado = null;
-    }
-
-    private void evtBtnLimpiar() {
-        clearForm();
     }
 
     private void evtBtnInforme() {
@@ -93,7 +88,7 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
 
     }
 
-    private void evtBtnModificacion() {
+    public void evtBtnModificacion() {
         if (seleccionado != null) { //Ha seleccionado un elemento de tabla
             showFormMantenimiento(seleccionado);
         }
@@ -139,7 +134,7 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
         }
     }
 
-    private void evtSeleccionTabla(JTable selected, JTable unSelected) {
+    public void evtSeleccionTabla(JTable selected, JTable unSelected) {
         int row = selected.getSelectedRow();
         if (row >= 0) {
             DefaultTableModel tableModel = (DefaultTableModel) selected.getModel();
@@ -211,9 +206,10 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
             pantalla.getBtnInforme().setEnabled(hayDatosParaInforme);
             //No hay elemento seleccionado, no se puede modificar
             pantalla.getBtnModificacion().setEnabled(false);
+            
+            MDSQLUIHelper.showWarnings(pantalla, output.getServiceException());
         } catch (ServiceException e) {
-            Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantalla.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+            MDSQLUIHelper.showErrors(pantalla, e);
         }
     }
 
@@ -231,6 +227,15 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
     @Override
     public void onLoad() {
         super.onLoad();
+        setDefWithGrantOption(COMBOBOX_SINVALOR);
+        setDefIncluirPDC(COMBOBOX_SINVALOR);
+        setDefHabilitada(false);
         clearForm();
     }
+
+    @Override
+    public void evtOnDoubleClick() {
+        evtBtnModificacion();
+    }
+
 }

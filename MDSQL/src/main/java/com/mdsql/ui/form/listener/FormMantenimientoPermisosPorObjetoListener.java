@@ -52,11 +52,11 @@ public class FormMantenimientoPermisosPorObjetoListener extends ListenerSupportM
             }
             PermisosObjetoService permisosObjetoService = (PermisosObjetoService) getService(MDSQLConstants.PERMISOS_OBJETO_SERVICE);
             ServiceException warnings = null;
-            if (pantalla.getCmbPermisoSinonimo().getSelectedIndex() == 1) { // Permiso
+            if (pantalla.getCmbPermisoSinonimo().getSelectedIndex() == COMBOBOX_PERMISOSINONIMO_PERMISO) { // Permiso
                 PermisoObjeto permiso = formToPermisoObjeto();
                 warnings = permisosObjetoService.guardarPermisoObjeto(permiso, mcaAlta);
 
-            } else if (pantalla.getCmbPermisoSinonimo().getSelectedIndex() == 2) {  //Sinonimo
+            } else if (pantalla.getCmbPermisoSinonimo().getSelectedIndex() == COMBOBOX_PERMISOSINONIMO_SINONIMO) {  //Sinonimo
                 SinonimoObjeto sinonimo = formToSinonimoObjeto();
                 warnings = permisosObjetoService.guardarSinonimoObjeto(sinonimo, mcaAlta);
             }
@@ -164,16 +164,18 @@ public class FormMantenimientoPermisosPorObjetoListener extends ListenerSupportM
 
         pantalla.getTxtPeticion().setText(permiso.getCodPeticion());
         pantalla.getCmbPermiso().setSelectedItem(permiso.getValGrant());
-        pantalla.getCmbWithGrantOption().setSelectedItem(permiso.getMcaGrantOption());
+
+        setValueSiNoComboBox(pantalla.getCmbWithGrantOption(),permiso.getMcaGrantOption());
+        setValueSiNoComboBox(pantalla.getCmbIncluirPDC(),permiso.getMcaPdc());
 
         pantalla.getTxtUsuarioModificacion().setText(permiso.getCodUsr());
         pantalla.getTxtUsuarioAlta().setText(permiso.getCodUsrAlta());
 
         dateInformeFormatter = new DateFormatter(MDSQLConstants.INPUT_DATE_FORMAT);
-        
+
         String fecActu = dateInformeFormatter.dateToString(permiso.getFecActu());
         pantalla.getTxtFechaModificacion().setText(fecActu);
-        
+
         String fecAlta = dateInformeFormatter.dateToString(permiso.getFecAlta());
         pantalla.getTxtFechaAlta().setText(fecAlta);
 
@@ -197,7 +199,9 @@ public class FormMantenimientoPermisosPorObjetoListener extends ListenerSupportM
         pantalla.getCmbTipoObjeto().setSelectedItem(sinonimo.getTipObjeto());
         pantalla.getTxtNombreObjeto().setText(sinonimo.getNomObjeto());
         pantalla.getTxtPeticion().setText(sinonimo.getCodPeticion());
-        pantalla.getCmbIncluirPDC().setSelectedItem(sinonimo.getMcaPdc());
+        
+        setValueSiNoComboBox(pantalla.getCmbIncluirPDC(),sinonimo.getMcaPdc());
+        
         pantalla.getTxtFuncionNombre().setText(sinonimo.getValReglaSyn());
 
         setValueChkHabilitada(sinonimo.getMcaHabilitado());
@@ -233,7 +237,7 @@ public class FormMantenimientoPermisosPorObjetoListener extends ListenerSupportM
             }
             pantalla.getCmbPermisoSinonimo().setEnabled(false);
             MDSQLUIHelper.setReadOnlyText(pantalla.getTxtNombreObjeto());
-        }else {
+        } else {
             pantalla.getChkHabilitada().setSelected(true);
         }
     }

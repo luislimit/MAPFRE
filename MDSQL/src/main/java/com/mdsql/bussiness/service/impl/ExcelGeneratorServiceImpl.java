@@ -44,6 +44,8 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
     private static final String FORMATO_ARCHIVO_PERMISOS = "%s_%s_%s.xls";
 
     private static final String FORMATO_ARCHIVO_SINONIMOS = "%s_%s_%s.xls";
+    
+    private static final String FORMATO_ARCHIVO_SINONIMOS_XLSX = "%s_%s_%s.xlsx";
 
     private final DateFormatter dateInformeFormatter;
     private String path;
@@ -106,7 +108,7 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
     public void generarExcelSinonimos(JTable table, String sufijo, String codigoProyecto) {
         String sDate = dateInformeFormatter.dateToString(new Date());
 
-        String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS, codigoProyecto, sufijo, sDate);
+        String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS_XLSX, codigoProyecto, sufijo, sDate);
         fileName = path + File.separator + fileName;
         log.info("Archivo: {}", fileName);
         exportTableToExcel(table, fileName);
@@ -118,7 +120,7 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
     public void generarExcelPermisos(JTable table, String sufijo, String codigoProyecto) {
         String sDate = dateInformeFormatter.dateToString(new Date());
 
-        String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS, codigoProyecto, sufijo, sDate);
+        String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS_XLSX, codigoProyecto, sufijo, sDate);
         fileName = path + File.separator + fileName;
         log.info("Archivo: {}", fileName);
         exportTableToExcel(table, fileName);

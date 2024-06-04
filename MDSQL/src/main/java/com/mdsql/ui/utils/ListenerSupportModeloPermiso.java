@@ -16,7 +16,7 @@ import com.mdsql.ui.model.GrantComboBoxModel;
 import com.mdsql.ui.model.PermisoComboBoxModel;
 import com.mdsql.ui.model.PermisoSinonimoComboBoxModel;
 import com.mdsql.ui.model.PropietarioComboBoxModel;
-import com.mdsql.ui.model.SiNoComboBoxModel;
+import com.mdsql.ui.model.SiNoOpcionalComboBoxModel;
 import com.mdsql.ui.model.TipoObjetoComboBoxModel;
 import com.mdsql.ui.model.VigenteHistoricoComboBoxModel;
 import com.mdsql.ui.renderer.CmbStringRenderer;
@@ -28,7 +28,6 @@ import com.mdval.exceptions.ServiceException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -41,14 +40,22 @@ import org.apache.commons.collections.CollectionUtils;
 public class ListenerSupportModeloPermiso extends ListenerSupportModelo implements ActionListener {
 
     private final DialogSupportModeloPermiso dialogSupportModeloPermiso;
+    public static final int COMBOBOX_SINVALOR = 0;
+    public static final int COMBOBOX_SINO_SI = 1;
+    public static final int COMBOBOX_SINO_NO = 2;
+    public static final int COMBOBOX_PERMISOSINONIMO_PERMISO = 1;
+    public static final int COMBOBOX_PERMISOSINONIMO_SINONIMO = 2;
+    // Valores por defecto correspondientes a los campos, se usan al iniciar y limpiar pantallas
     private int defWithGrantOption;
     private int defIncluirPDC;
+    private boolean defHabilitada;
 
     public ListenerSupportModeloPermiso(DialogSupportModeloPermiso dialogSupportModeloPermiso) {
         super(dialogSupportModeloPermiso);
         this.dialogSupportModeloPermiso = dialogSupportModeloPermiso;
-        this.defWithGrantOption = 1;
-        this.defIncluirPDC = 0;
+        this.defWithGrantOption = COMBOBOX_SINO_NO;
+        this.defIncluirPDC = COMBOBOX_SINO_SI;
+        this.defHabilitada = false;
     }
 
     public void setDefWithGrantOption(int defWithGrantOption) {
@@ -57,6 +64,10 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
 
     public void setDefIncluirPDC(int defIncluirPDC) {
         this.defIncluirPDC = defIncluirPDC;
+    }
+
+    public void setDefHabilitada(boolean defHabilitada) {
+        this.defHabilitada = defHabilitada;
     }
 
     @Override
@@ -86,8 +97,7 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
                 fillCmbTipoObjeto();
             } catch (ServiceException ex) {
                 dialogSupportModeloPermiso.setErrorOnload(Boolean.TRUE);
-                Map<String, Object> errParams = MDSQLUIHelper.buildError(ex);
-                MDSQLUIHelper.showPopup(dialogSupportModeloPermiso.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+                MDSQLUIHelper.showErrors(dialogSupportModeloPermiso, ex);
             }
         }
     }
@@ -112,12 +122,9 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
                     if (permisos.size() == 1) {
                         cmbPermiso.setSelectedItem(permisos.get(0));
                     }
-                    //dialogSupportModeloPermiso.revalidate();
-                    //dialogSupportModeloPermiso.repaint();
                 }
             } catch (ServiceException e) {
-                Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-                MDSQLUIHelper.showPopup(dialogSupportModeloPermiso.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+                MDSQLUIHelper.showErrors(dialogSupportModeloPermiso, e);
             }
         }
     }
@@ -131,30 +138,30 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
         JTextField funcionNombre = dialogSupportModeloPermiso.getTxtFuncionNombre();
         JComboBox CmbWithGrantOption = dialogSupportModeloPermiso.getCmbWithGrantOption();
         JComboBox CmbPermiso = dialogSupportModeloPermiso.getCmbPermiso();
-        switch (opcion){
-            case 1: //Permiso
-                if (cmbPropietarioSinonimo != null){
+        switch (opcion) {
+            case COMBOBOX_PERMISOSINONIMO_PERMISO: //Permiso
+                if (cmbPropietarioSinonimo != null) {
                     cmbPropietarioSinonimo.setEnabled(false);
                     cmbPropietarioSinonimo.setSelectedIndex(-1);
-                }    
-                if (funcionNombre != null){
-                   funcionNombre.setEnabled(false); 
-                   funcionNombre.setText("");
-                } 
+                }
+                if (funcionNombre != null) {
+                    funcionNombre.setEnabled(false);
+                    funcionNombre.setText("");
+                }
                 if (CmbWithGrantOption != null) {
                     CmbWithGrantOption.setEnabled(true);
                 }
                 if (CmbPermiso != null) {
                     CmbPermiso.setEnabled(true);
-                }                 
+                }
                 break;
-            case 2: //Sinónimo
-                if (cmbPropietarioSinonimo != null){
+            case COMBOBOX_PERMISOSINONIMO_SINONIMO: //Sinónimo
+                if (cmbPropietarioSinonimo != null) {
                     cmbPropietarioSinonimo.setEnabled(true);
-                }    
-                if (funcionNombre != null){
-                   funcionNombre.setEnabled(true); 
-                } 
+                }
+                if (funcionNombre != null) {
+                    funcionNombre.setEnabled(true);
+                }
                 if (CmbWithGrantOption != null) {
                     CmbWithGrantOption.setEnabled(false);
                     CmbWithGrantOption.setSelectedIndex(-1);
@@ -162,21 +169,21 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
                 if (CmbPermiso != null) {
                     CmbPermiso.setEnabled(false);
                     CmbPermiso.setSelectedIndex(-1);
-                }                    
+                }
                 break;
             default:
-                if (cmbPropietarioSinonimo != null){
+                if (cmbPropietarioSinonimo != null) {
                     cmbPropietarioSinonimo.setEnabled(true);
-                }    
-                if (funcionNombre != null){
-                   funcionNombre.setEnabled(true); 
-                } 
+                }
+                if (funcionNombre != null) {
+                    funcionNombre.setEnabled(true);
+                }
                 if (CmbWithGrantOption != null) {
                     CmbWithGrantOption.setEnabled(true);
                 }
                 if (CmbPermiso != null) {
                     CmbPermiso.setEnabled(true);
-                } 
+                }
         }
     }
 
@@ -192,6 +199,7 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
     }
 
     private void initModels() {
+
         JComboBox cmbReceptorPermisos = dialogSupportModeloPermiso.getCmbReceptorPermisos();
         if (cmbReceptorPermisos != null) {
             cmbReceptorPermisos.setRenderer(new GrantRenderer());
@@ -210,14 +218,14 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
 
         JComboBox cmbWithGrantOption = dialogSupportModeloPermiso.getCmbWithGrantOption();
         if (cmbWithGrantOption != null) {
-            cmbWithGrantOption.setModel(new SiNoComboBoxModel());
+            cmbWithGrantOption.setModel(new SiNoOpcionalComboBoxModel());
             cmbWithGrantOption.setRenderer(new CmbStringRenderer());
             cmbWithGrantOption.setSelectedIndex(defWithGrantOption); // No por defecto
         }
 
         JComboBox cmbIncluirPDC = dialogSupportModeloPermiso.getCmbIncluirPDC();
         if (cmbIncluirPDC != null) {
-            cmbIncluirPDC.setModel(new SiNoComboBoxModel());
+            cmbIncluirPDC.setModel(new SiNoOpcionalComboBoxModel());
             cmbIncluirPDC.setRenderer(new CmbStringRenderer());
             cmbIncluirPDC.setSelectedIndex(defIncluirPDC); // Sí por defecto
         }
@@ -254,11 +262,8 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
         TipoObjetoService tipoObjetoService = (TipoObjetoService) getService(MDSQLConstants.TIPO_OBJETO_SERVICE);
         OutputConsultaTiposObjeto outputConsultaTiposObjeto = tipoObjetoService.consultarTiposObjeto();
 
-        if (outputConsultaTiposObjeto.getResult() == 2) {
-            ServiceException serviceException = outputConsultaTiposObjeto.getServiceException();
-            Map<String, Object> params = MDSQLUIHelper.buildWarnings(serviceException.getErrors());
-            MDSQLUIHelper.showPopup(dialogSupportModeloPermiso.getFrameParent(), MDSQLConstants.CMD_WARN, params);
-        }
+        // Si hay avisos se muestran
+        MDSQLUIHelper.showWarnings(dialogSupportModeloPermiso, outputConsultaTiposObjeto.getServiceException());
 
         if (CollectionUtils.isNotEmpty(outputConsultaTiposObjeto.getTiposObjeto())) {
             TipoObjetoComboBoxModel tipoObjetoComboBoxModel = new TipoObjetoComboBoxModel(outputConsultaTiposObjeto.getTiposObjeto());
@@ -326,7 +331,7 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
 
         JCheckBox chkHabilitada = dialogSupportModeloPermiso.getChkHabilitada();
         if (chkHabilitada != null) {
-            chkHabilitada.setSelected(false);
+            chkHabilitada.setSelected(defHabilitada);
         }
         super.clearForm();
     }
@@ -370,24 +375,37 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
         }
         comboBox.setSelectedIndex(idx);
     }
-    
-    public void setValueChkHabilitada(String value)  {    
-    Boolean mcaHabilitado = MDSQLAppHelper.normalizeCheckValue(value);
-    dialogSupportModeloPermiso.getChkHabilitada().setSelected(mcaHabilitado);
+
+    public void setValueChkHabilitada(String value) {
+        Boolean mcaHabilitado = MDSQLAppHelper.normalizeCheckValue(value);
+        dialogSupportModeloPermiso.getChkHabilitada().setSelected(mcaHabilitado);
     }
-    
-    
-    public String getValueCmbPropietarioSinonimo(){
+
+    public String getValueCmbPropietarioSinonimo() {
         Propietario propietarioSinonimo = (Propietario) dialogSupportModeloPermiso.getCmbPropietarioSinonimo().getSelectedItem();
         return (propietarioSinonimo != null) ? propietarioSinonimo.getCodPropietario() : null;
     }
-    
-    public String getValueCmbReceptorPermisos(){
+
+    public String getValueCmbReceptorPermisos() {
         Grant grant = (Grant) dialogSupportModeloPermiso.getCmbReceptorPermisos().getSelectedItem();
         return (grant != null) ? grant.getCodGrant() : null;
-    }    
-    
-    public String getValueChkHabilitada()  {    
+    }
+
+    public String getValueChkHabilitada() {
         return MDSQLAppHelper.normalizeValueToCheck(dialogSupportModeloPermiso.getChkHabilitada().isSelected());
+    }
+
+    public void setValueSiNoComboBox(JComboBox comboBox, String value) {
+        switch (value) {
+            case "N":
+                comboBox.setSelectedIndex(COMBOBOX_SINO_NO);
+                break;
+            case "S":
+                comboBox.setSelectedIndex(COMBOBOX_SINO_SI);
+                break;
+            default:
+                comboBox.setSelectedIndex(COMBOBOX_SINVALOR);
+                break;
+        }
     }
 }

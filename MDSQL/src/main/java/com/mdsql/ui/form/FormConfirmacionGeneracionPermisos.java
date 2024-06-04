@@ -221,8 +221,8 @@ public class FormConfirmacionGeneracionPermisos extends DialogSupport {
         FormConfirmacionGeneracionPermisosListener formListener
                 = new FormConfirmacionGeneracionPermisosListener(this);
         btnAceptar.addActionListener(formListener);
-        btnCancelar.addActionListener(formListener); 
-        btnRuta.addActionListener(formListener); 
+        btnCancelar.addActionListener(formListener);
+        btnRuta.addActionListener(formListener);
         addOnLoadListener(formListener);
     }
 
@@ -238,14 +238,14 @@ public class FormConfirmacionGeneracionPermisos extends DialogSupport {
         lblRuta.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblRuta"));
         lblComentario.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblComentario"));
         btnAceptar.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.btnAceptar"));
-        btnCancelar.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.btnCancelar"));        
+        btnCancelar.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.btnCancelar"));
     }
 
     @Override
     protected void initModels() {
-    		BBDDComboBoxModel bbddModel = new BBDDComboBoxModel();
-		cmbBBDD.setModel(bbddModel);
-		cmbBBDD.setRenderer(new BBDDRenderer());
+        BBDDComboBoxModel bbddModel = new BBDDComboBoxModel();
+        cmbBBDD.setModel(bbddModel);
+        cmbBBDD.setRenderer(new BBDDRenderer());
     }
 
     @Override
@@ -297,6 +297,4 @@ public class FormConfirmacionGeneracionPermisos extends DialogSupport {
     public JComboBox<BBDD> getCmbBBDD() {
         return cmbBBDD;
     }
-
-
 }

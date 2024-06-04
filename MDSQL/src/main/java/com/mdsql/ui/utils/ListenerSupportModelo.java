@@ -45,6 +45,8 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
             evtBtnCancelar();
         } else if (obj.equals(dialogSupportModelo.getBtnModeloProyecto())) {
             evtBtnSearchModel();
+        } else if (obj.equals(dialogSupportModelo.getBtnLimpiar())) {
+            clearForm();
         }
     }
 
@@ -78,9 +80,7 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
             }
             establecerModelo(modelo);
         } catch (ServiceException e) {
-            Map<String, Object> errParams;
-            errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(dialogSupportModelo.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+            MDSQLUIHelper.showErrors(dialogSupportModelo, e);
         }
     }
 
@@ -109,12 +109,9 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
 
         OutputConsultaModelos outputConsultaModelos = modeloService.consultaModelos(codModelo, nombreModelo, codSubmodelo);
 
-        // Hay avisos
-        if (outputConsultaModelos.getResult() == 2) {
-            ServiceException serviceException = outputConsultaModelos.getServiceException();
-            Map<String, Object> params = MDSQLUIHelper.buildWarnings(serviceException.getErrors());
-            MDSQLUIHelper.showPopup(dialogSupportModelo.getFrameParent(), MDSQLConstants.CMD_WARN, params);
-        }
+        // Si Hay avisos, se muestran
+        MDSQLUIHelper.showWarnings(dialogSupportModelo, outputConsultaModelos.getServiceException());
+
         return outputConsultaModelos.getModelos();
     }
 
@@ -165,9 +162,7 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
                 establecerModelo(modelo);
             } catch (ServiceException e) {
                 dialogSupportModelo.setErrorOnload(Boolean.TRUE);
-                Map<String, Object> errParams;
-                errParams = MDSQLUIHelper.buildError(e);
-                MDSQLUIHelper.showPopup(dialogSupportModelo.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+                MDSQLUIHelper.showErrors(dialogSupportModelo, e);
             }
         }
     }
@@ -175,7 +170,7 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
     public void clearForm() {
         JComboBox cmbSubModelo = dialogSupportModelo.getCmbSubModelo();
         if (cmbSubModelo != null) {
-            int index  = cmbSubModelo.getModel() != null && cmbSubModelo.getModel().getSize()==1?0:-1;
+            int index = cmbSubModelo.getModel() != null && cmbSubModelo.getModel().getSize() == 1 ? 0 : -1;
             cmbSubModelo.setSelectedIndex(index);
         }
         dialogSupportModelo.getContentPane().repaint();

@@ -321,7 +321,7 @@ public class MDSQLConstants extends Constants {
 	}
 	
 	// Estados del Ttipo objeto
-	public enum TiposObjeto {
+	/*public enum TiposObjeto {
 		SINVALOR(0, " "), TABLA(1, "Tabla"), COLUMNA(2, "Columna"), COMENTARIO(3, "Comentario"),
 		VISTA(4, "Vista"), VISTAMATERIALIZADA(5, "Vista Materializada"), SECUENCIA(6, "Secuencia"), PK(7, "PK");
 
@@ -373,7 +373,7 @@ public class MDSQLConstants extends Constants {
 		}
 	}
 	// TODO - Crear estados type
-
+*/
 	/**
 	 * Menu de la aplicación
 	 */

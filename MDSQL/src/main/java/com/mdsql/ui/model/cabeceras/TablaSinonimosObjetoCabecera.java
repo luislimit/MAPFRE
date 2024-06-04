@@ -13,10 +13,12 @@ public class TablaSinonimosObjetoCabecera extends Cabecera {
 		columnIdentifiers.add("Receptor");
 		columnIdentifiers.add("Tipo Objeto");
                 columnIdentifiers.add("Nombre Objeto");
-		columnIdentifiers.add("Entorno");
-		columnIdentifiers.add("Propietario");
+		
+                columnIdentifiers.add("Entorno");
+                columnIdentifiers.add("Propietario");
 		columnIdentifiers.add("Incluir en PDC");
-		columnIdentifiers.add("Habilitada");
+		
+                columnIdentifiers.add("Habilitada");
 		columnIdentifiers.add("Petición");
 		columnIdentifiers.add("Función Nombre");
 
@@ -40,15 +42,17 @@ public class TablaSinonimosObjetoCabecera extends Cabecera {
 		columnClasses.add(String.class);
 		columnClasses.add(String.class);                    
 		
-		columnSizes.add(200);
-		columnSizes.add(100);		
+		columnSizes.add(110);
+		columnSizes.add(100);//Tipo Objeto	
+                columnSizes.add(200); //Nombre Objeto
+                
+		columnSizes.add(90);
+		columnSizes.add(100);
+		columnSizes.add(100);
+		
                 columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(200);
+		columnSizes.add(190); //Peticion
+		columnSizes.add(100); //Funcion Nombre
                 
 		columnSizes.add(100);
 		columnSizes.add(100);

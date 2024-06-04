@@ -40,8 +40,6 @@ public class FormConsultaPermisosPersonalizadosListener extends ListenerSupportM
 
         if (obj.equals(pantalla.getBtnBuscar())) {
             evtBtnBuscar();
-        } else if (obj.equals(pantalla.getBtnLimpiar())) {
-            evtBtnLimpiar();
         } else {
             super.actionPerformed(e);
         }
@@ -56,6 +54,8 @@ public class FormConsultaPermisosPersonalizadosListener extends ListenerSupportM
         super.clearForm();
         pantalla.getTxtColumna().setText("");
         pantalla.getTxtNombreObjeto().setText("");
+        pantalla.getTxtFechaDesde().setText("");
+        pantalla.getTxtFechaHasta().setText("");
         ((PermisosColumnaTableModel) pantalla.getTblPermisos().getModel()).clearData();
         ((SinonimosObjetoTableModel) pantalla.getTblSinonimos().getModel()).clearData();        
     }
@@ -126,9 +126,26 @@ public class FormConsultaPermisosPersonalizadosListener extends ListenerSupportM
         JTable tblPermisos = pantalla.getTblPermisos();
         //
         if (lsm.equals(tblPermisos.getSelectionModel())) {
-            tblSinonimos.clearSelection();
+            evtSeleccionTabla(tblPermisos, tblSinonimos);
         } else if (lsm.equals(tblSinonimos.getSelectionModel())) {
-            tblPermisos.clearSelection();
+            evtSeleccionTabla(tblSinonimos, tblPermisos);
         }
     }
+
+    private void evtSeleccionTabla(JTable selected, JTable unSelected) {
+        int row = selected.getSelectedRow();
+        if (row >= 0) {
+            // Desmarcamos la tabla
+            unSelected.clearSelection();
+        }
+    }
+    
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        setDefWithGrantOption(COMBOBOX_SINVALOR);
+        setDefIncluirPDC(COMBOBOX_SINVALOR);
+        setDefHabilitada(true);
+        clearForm();
+    }    
 }

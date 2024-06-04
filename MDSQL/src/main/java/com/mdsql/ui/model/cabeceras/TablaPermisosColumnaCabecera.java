@@ -11,12 +11,15 @@ public class TablaPermisosColumnaCabecera extends Cabecera {
         @Override
 	public void setupCabecera() {
 		columnIdentifiers.add("Receptor");
-		columnIdentifiers.add("Tabla");
+                columnIdentifiers.add("Nombre Objeto");
                 columnIdentifiers.add("Columna");
+                columnIdentifiers.add("Tipo Objeto");                
+                
 		columnIdentifiers.add("Permiso");
 		columnIdentifiers.add("Entorno");
 		columnIdentifiers.add("Grant Option");
-		columnIdentifiers.add("Incluir en PDC");
+
+                columnIdentifiers.add("Incluir en PDC");
 		columnIdentifiers.add("Habilitada");
 		columnIdentifiers.add("Petición");
 
@@ -26,6 +29,7 @@ public class TablaPermisosColumnaCabecera extends Cabecera {
                 columnIdentifiers.add("Fecha Modificación");                    
 		
 		columnClasses.add(String.class);
+		columnClasses.add(String.class);                
                 columnClasses.add(String.class);
 		columnClasses.add(String.class);
 		columnClasses.add(String.class);
@@ -34,21 +38,23 @@ public class TablaPermisosColumnaCabecera extends Cabecera {
 		columnClasses.add(String.class);
 		columnClasses.add(String.class);
 		columnClasses.add(String.class);
-		
 		columnClasses.add(String.class);
 		columnClasses.add(String.class);
 		columnClasses.add(String.class);
 		columnClasses.add(String.class);
 
-                columnSizes.add(150);
+                columnSizes.add(110); //Receptor
 		columnSizes.add(100);		
+		columnSizes.add(100);
                 columnSizes.add(100);
+
+                columnSizes.add(100); //Permiso
+		columnSizes.add(90); //Entorno
 		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(200);
+		
+                columnSizes.add(100); //Incluir en PDC
+		columnSizes.add(90); // Habilitada
+		columnSizes.add(200); //Petición
                 
 		columnSizes.add(100);
 		columnSizes.add(100);

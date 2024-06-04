@@ -52,14 +52,16 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-
         Object obj = e.getSource();
 
         if (obj.equals(pantalla.getBtnGuardar())) {
             evtBtnGuardar();
         } else if (obj.equals(pantalla.getBtnInforme())) {
             evtBtnInforme();
+        } else if (obj.equals(pantalla.getBtnLimpiar())) {
+            evtBtnLimpiar();            
+        } else {
+            super.actionPerformed(e);
         }
     }
 
@@ -71,7 +73,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
             }
             PermisosService permisosService = (PermisosService) getService(MDSQLConstants.PERMISOS_SERVICE);
 
-            if (opcion == 1) { // Permiso
+            if (opcion == COMBOBOX_PERMISOSINONIMO_PERMISO) { // Permiso
                 Permiso permiso = FormToPermiso();
                 String codProyecto = permiso.getCodigoProyecto();
                 String codUsrGrant = permiso.getCodUsrGrant();
@@ -86,7 +88,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
                 //
                 permisosService.guardarPermiso(codProyecto, codUsrGrant, valGrant, desEntorno, tipoObjeto, mcaGrantOption, mcaIncluirPDC, mcaHabilitado, codPeticion, codUsr);
                 fillTblPermisos();
-            } else if (opcion == 2) { //Sinonimo
+            } else if (opcion == COMBOBOX_PERMISOSINONIMO_SINONIMO) { //Sinonimo
                 Sinonimo sinonimo = formToSinonimo();
                 String codProyecto = sinonimo.getCodigoProyecto();
                 String codUsrGrant = sinonimo.getCodUsrGrant();
@@ -316,10 +318,10 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
         pantalla.getTxtUsuarioAlta().setText(permiso.getCodUsrAlta());
 
         dateInformeFormatter = new DateFormatter(MDSQLConstants.INPUT_DATE_FORMAT);
-        
+
         String fecActu = dateInformeFormatter.dateToString(permiso.getFecActu());
         pantalla.getTxtFechaModificacion().setText(fecActu);
-        
+
         String fecAlta = dateInformeFormatter.dateToString(permiso.getFecAlta());
         pantalla.getTxtFechaAlta().setText(fecAlta);
     }
@@ -366,4 +368,10 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
         pantalla.getTxtUsuarioAlta().setText("");
     }
 
+    private void evtBtnLimpiar() {
+        System.out.println("Evento Limpiar");
+        pantalla.getTblPermisos().clearSelection();
+        pantalla.getTblSinonimos().clearSelection();   
+        clearForm();
+    }
 }

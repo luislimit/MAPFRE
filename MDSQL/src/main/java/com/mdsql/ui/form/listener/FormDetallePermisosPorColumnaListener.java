@@ -16,6 +16,7 @@ import com.mdsql.bussiness.entities.OutputConsultaPermisosColumna;
 import com.mdsql.bussiness.entities.PermisoColumna;
 import com.mdsql.bussiness.service.ExcelGeneratorService;
 import com.mdsql.bussiness.service.PermisosColumnaService;
+import com.mdsql.ui.adapter.DoubleClickable;
 import com.mdsql.ui.form.FormDetallePermisosPorColumna;
 import com.mdsql.ui.form.FormMantenimientoPermisosPorColumna;
 import com.mdsql.ui.model.PermisosColumnaTableModel;
@@ -37,7 +38,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Luis-Enrique.Varona
  */
-public class FormDetallePermisosPorColumnaListener extends ListenerSupportModeloPermiso implements ActionListener, ListSelectionListener {
+public class FormDetallePermisosPorColumnaListener extends ListenerSupportModeloPermiso implements ActionListener, ListSelectionListener, DoubleClickable {
 
     protected FormDetallePermisosPorColumna pantalla;
 
@@ -54,8 +55,6 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
 
         if (obj.equals(pantalla.getBtnBuscar())) {
             evtBtnBuscar();
-        } else if (obj.equals(pantalla.getBtnLimpiar())) {
-            evtBtnLimpiar();
         } else if (obj.equals(pantalla.getBtnInforme())) {
             evtBtnInforme();
         } else if (obj.equals(pantalla.getBtnModificacion())) {
@@ -67,10 +66,6 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
 
     private void evtBtnBuscar() {
         fillTblPermisos();
-    }
-
-    private void evtBtnLimpiar() {
-        clearForm();
     }
 
     @Override
@@ -131,9 +126,11 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
     @Override
     public void onLoad() {
         super.onLoad();
-        pantalla.getBtnInforme().setEnabled(false);
-        pantalla.getBtnModificacion().setEnabled(false);
-        super.fillCmbPermiso("COLUMNA"); // 
+        setDefWithGrantOption(COMBOBOX_SINVALOR);
+        setDefIncluirPDC(COMBOBOX_SINVALOR);
+        setDefHabilitada(false);
+        fillCmbPermiso("COLUMNA"); // 
+        clearForm();
         fillTblPermisos();
     }
 
@@ -192,6 +189,11 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
             return;
         }
         pantalla.getBtnModificacion().setEnabled(true);
+    }
+
+    @Override
+    public void evtOnDoubleClick() {
+        evtBtnModificacion();
     }
 
 }

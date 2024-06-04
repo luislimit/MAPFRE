@@ -20,7 +20,6 @@ import com.mdval.exceptions.ServiceException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  *
@@ -102,7 +101,6 @@ public class FormMantenimientoPermisosPorColumnaListener extends ListenerSupport
         String desEntorno = (String) pantalla.getCmbEntorno().getSelectedItem();
         String tipoObjeto = TIPO_OBJETO;
         String mcaHabilitado = getValueChkHabilitada();
-        System.out.println( "mcaHabilitado = " + mcaHabilitado);
         String codPeticion = pantalla.getTxtPeticion().getText();
         Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
         String codUsr = session.getCodUsr();
@@ -142,8 +140,9 @@ public class FormMantenimientoPermisosPorColumnaListener extends ListenerSupport
         pantalla.getTxtColumna().setText(permiso.getNomColumna());
         pantalla.getTxtPeticion().setText(permiso.getCodPeticion());
         pantalla.getCmbPermiso().setSelectedItem(permiso.getValGrant());
-        pantalla.getCmbWithGrantOption().setSelectedItem(permiso.getMcaGrantOption());
-
+        setValueSiNoComboBox(pantalla.getCmbWithGrantOption(),permiso.getMcaGrantOption());
+        setValueSiNoComboBox(pantalla.getCmbIncluirPDC(),permiso.getMcaPdc());
+        
         pantalla.getTxtUsuario().setText(permiso.getCodUsrAlta());
         dateInformeFormatter = new DateFormatter(MDSQLConstants.INPUT_DATE_FORMAT);
         

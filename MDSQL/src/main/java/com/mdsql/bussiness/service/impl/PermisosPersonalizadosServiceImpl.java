@@ -12,7 +12,6 @@ import com.mdsql.bussiness.entities.SinonimoObjeto;
 import com.mdsql.bussiness.entities.TextoLinea;
 import com.mdsql.bussiness.service.BBDDService;
 import com.mdsql.bussiness.service.PermisosPersonalizadosService;
-import com.mdsql.utils.ConfigurationSingleton;
 import com.mdsql.utils.DateFormatter;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
@@ -194,7 +193,6 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
         }
 
         List<PermisoColumna> permisosColumna = new ArrayList<>();
-        System.out.println("Recuperando Permisos ");
         if (arrayPermisos != null) {
             Object[] rows = (Object[]) arrayPermisos.getArray();
             for (Object row : rows) {
@@ -219,8 +217,6 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
                 permisosColumna.add(permisoColumna);
             }
         }
-
-        System.out.println("Recuperando Sinonimos ");
         //
         List<SinonimoObjeto> sinonimosObjeto = new ArrayList<>();
 
@@ -436,7 +432,6 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
             String nombreBBDD = StringUtils.EMPTY;
 
             List<OutputRegistraEjecucion> ejecuciones = new ArrayList<>();
-            ConfigurationSingleton configuration = ConfigurationSingleton.getInstance();
             String txtClaveEncriptada = configuration.getConfig(MDSQLConstants.TOKEN).substring(17, 29);
 
             String separator = File.separator;

@@ -1,6 +1,8 @@
 package com.mdsql.ui.model;
 
 import com.mdsql.bussiness.entities.SinonimoObjeto;
+import com.mdsql.utils.DateFormatter;
+import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.DefaultTableModel;
 import com.mdval.ui.model.cabeceras.Cabecera;
 
@@ -44,6 +46,7 @@ public class SinonimosObjetoTableModel extends DefaultTableModel<SinonimoObjeto>
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         SinonimoObjeto row = data.get(rowIndex);
+        DateFormatter dateInformeFormatter;
 
         switch (columnIndex) {
             case 0:
@@ -51,7 +54,7 @@ public class SinonimosObjetoTableModel extends DefaultTableModel<SinonimoObjeto>
             case 1:
                 return row.getTipObjeto();
             case 2:
-                return row.getNomObjeto();                
+                return row.getNomObjeto();
             case 3:
                 return row.getDesEntorno();
             case 4:
@@ -64,6 +67,16 @@ public class SinonimosObjetoTableModel extends DefaultTableModel<SinonimoObjeto>
                 return row.getCodPeticion();
             case 8:
                 return row.getValReglaSyn();
+            case 9:
+                return row.getCodUsrAlta();
+            case 10:
+                dateInformeFormatter = new DateFormatter(MDSQLConstants.INPUT_DATE_FORMAT);
+                return dateInformeFormatter.dateToString(row.getFecAlta());
+            case 11:
+                return row.getCodUsr();
+            case 12:
+                dateInformeFormatter = new DateFormatter(MDSQLConstants.INPUT_DATE_FORMAT);
+                return dateInformeFormatter.dateToString(row.getFecActu());
             default:
                 break;
         }

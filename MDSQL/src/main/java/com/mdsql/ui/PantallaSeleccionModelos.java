@@ -13,11 +13,14 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.commons.lang3.StringUtils;
 
 import com.mdsql.bussiness.entities.Modelo;
+import com.mdsql.bussiness.entities.Session;
+import com.mdsql.ui.adapter.DoubleClickMouseAdapter;
 import com.mdsql.ui.listener.PantallaSeleccionModelosListener;
 import com.mdsql.ui.listener.tables.PantallaSeleccionModelosTableListener;
 import com.mdsql.ui.model.SeleccionModelosTableModel;
 import com.mdsql.ui.model.cabeceras.TablaModelosCabecera;
 import com.mdsql.ui.utils.MDSQLUIHelper;
+import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
 import com.mdval.ui.utils.DialogSupport;
@@ -299,6 +302,11 @@ public class PantallaSeleccionModelos extends DialogSupport {
 
         ListSelectionModel rowSM = tblModelos.getSelectionModel();
         rowSM.addListSelectionListener(listSelectionListener);
+        
+        // Tratamiendo doble click
+        DoubleClickMouseAdapter doubleClickMouseAdapter = new DoubleClickMouseAdapter();
+        doubleClickMouseAdapter.setListener(pantallaSeleccionModelosListener);
+        tblModelos.addMouseListener(doubleClickMouseAdapter);
     }
 
     @Override
@@ -310,15 +318,7 @@ public class PantallaSeleccionModelos extends DialogSupport {
 
     @Override
     protected void initialState() {
-        String codigoProyecto = (String) params.get("codigoProyecto");
-        if (StringUtils.isNotBlank(codigoProyecto)) {
-            txtCodModelo.setText(codigoProyecto);
-        } else {
-            txtCodModelo.setText("MDSQL_SMD");
-        }
-
         btnSeleccionar.setEnabled(Boolean.FALSE);
-
         // Los botones adicionales estarán deshabilitados por defecto
         btnNotas.setEnabled(Boolean.FALSE);
         btnPermisosGenerales.setEnabled(Boolean.FALSE);

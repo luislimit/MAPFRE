@@ -96,7 +96,7 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
 
     private void evtBtnAceptar() {
         try {
-            if (!MDSQLUIHelper.confirmAction(pantalla.getFrameParent(), "confirmacion.guardar")) {
+            if (!MDSQLUIHelper.confirmAction(pantalla.getFrameParent(), "confirmacion.mensaje")) {
                 return;
             }
             PermisosPersonalizadosService permisosPersonalizadosService;
@@ -169,6 +169,7 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
                 }
             }
             pantalla.getReturnParams().put(MDSQLConstants.P_OUT_EXIT_BUTTON, MDSQLConstants.BTN_ACEPTAR);
+            pantalla.dispose();
         } catch (IOException | ServiceException e) {
             session.setProceso(null);
             MDSQLUIHelper.showErrors(pantalla, e);
@@ -184,6 +185,14 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
         if (ruta == null || ruta.isEmpty()) {
             //Si no hay ruta, tomamos la de la sesión
             ruta = session.getSelectedRoute();
+            // Si no hay ruta en la sesión, tomamos RutaDefectoScripts
+            try {
+                if (ruta == null || ruta.isEmpty()) {
+                    ConfigurationSingleton configuration = ConfigurationSingleton.getInstance();
+                    ruta = configuration.getConfig("RutaDefectoScripts");
+                }
+            } catch (IOException e) {
+            }
         }
         if (ruta != null && !ruta.isEmpty()) {
             fc.setCurrentDirectory(new File(ruta));
@@ -240,7 +249,7 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
     private void renameFile(String ruta, String sufijoRechazo, String oldName) throws ServiceException {
         File oldFile = Paths.get(ruta.concat(oldName)).toFile();
         if (oldFile.exists()) {
-            String newName = sufijoRechazo + oldName;
+            String newName = oldName + "_" + sufijoRechazo ;
             File newFile = Paths.get(ruta.concat(newName)).toFile();
             if (!oldFile.renameTo(newFile)) {
                 throw new ServiceException(String.format("Error al renombrar el fichero \"%s\" como \"%s\"", oldName, newName));

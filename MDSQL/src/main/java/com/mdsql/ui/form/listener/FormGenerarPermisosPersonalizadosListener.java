@@ -7,26 +7,34 @@ package com.mdsql.ui.form.listener;
 
 import com.mdsql.bussiness.entities.Modelo;
 import com.mdsql.bussiness.entities.OutputConsultaPermisosPersonalizados;
+import com.mdsql.bussiness.entities.Proceso;
+import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.entities.SubProyecto;
 import com.mdsql.bussiness.service.PermisosPersonalizadosService;
+import com.mdsql.ui.PantallaResumenProcesado;
 import com.mdsql.ui.form.FormConfirmacionGeneracionPermisos;
 import com.mdsql.ui.form.FormGenerarPermisosPersonalizados;
 import com.mdsql.ui.model.PermisosColumnaTableModel;
 import com.mdsql.ui.model.SinonimosObjetoTableModel;
 import com.mdsql.ui.utils.ListenerSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
+import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Luis-Enrique.Varona
  */
-public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportModeloPermiso implements ActionListener {
+public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportModeloPermiso implements ActionListener, ListSelectionListener{
 
     private final FormGenerarPermisosPersonalizados pantalla;
 
@@ -41,8 +49,6 @@ public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportMo
 
         if (obj.equals(pantalla.getBtnBuscar())) {
             evtBtnBuscar();
-        } else if (obj.equals(pantalla.getBtnLimpiar())) {
-            clearForm();
         } else if (obj.equals(pantalla.getBtnGenerar())) {
             evtBtnGenerar();
         } else {
@@ -93,7 +99,18 @@ public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportMo
         params.put(MDSQLConstants.P_IN_SUB_MODELO, subModelo);
         params.put(MDSQLConstants.P_IN_TIP_OBJETO, tipObjeto);
         params.put(MDSQLConstants.P_IN_COD_PETICION, codPeticion);
-        MDSQLUIHelper.showForm(pantalla.getFrameParent(), FormConfirmacionGeneracionPermisos.class, params);
+
+        FormConfirmacionGeneracionPermisos formConfirmacionGeneracionPermisos;
+        formConfirmacionGeneracionPermisos= MDSQLUIHelper.showForm(pantalla.getFrameParent(), FormConfirmacionGeneracionPermisos.class, params);
+
+        String result = (String) formConfirmacionGeneracionPermisos.getReturnParams().get(MDSQLConstants.P_OUT_EXIT_BUTTON);
+        if (result != null && result.equals(MDSQLConstants.BTN_ACEPTAR)){
+            Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+	    Proceso proceso = session.getProceso();
+            params.put("proceso", proceso);
+	    params.put("entregar", Boolean.FALSE);
+            MDSQLUIHelper.showForm(pantalla.getFrameParent(),PantallaResumenProcesado.class, new HashMap<>());
+        }
     }
     
     
@@ -104,5 +121,33 @@ public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportMo
         pantalla.getBtnGenerar().setEnabled(false);
         ((PermisosColumnaTableModel) pantalla.getTblPermisos().getModel()).clearData();
         ((SinonimosObjetoTableModel) pantalla.getTblSinonimos().getModel()).clearData();
+        pantalla.getBtnGenerar().setEnabled(false);
+    }    
+    
+   @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting()) {
+            return;
+        }
+        ListSelectionModel lsm = ((ListSelectionModel) e.getSource());
+
+        JTable tblSinonimos = pantalla.getTblSinonimos();
+        JTable tblPermisos = pantalla.getTblPermisos();
+        //
+        if (lsm.equals(tblPermisos.getSelectionModel())) {
+            evtSeleccionTabla(tblPermisos, tblSinonimos);
+        } else if (lsm.equals(tblSinonimos.getSelectionModel())) {
+            evtSeleccionTabla(tblSinonimos, tblPermisos);
+        }
+    }
+
+    private void evtSeleccionTabla(JTable selected, JTable unSelected) {
+        int row = selected.getSelectedRow();
+        if (row >= 0) {
+            // Desmarcamos la tabla
+            unSelected.clearSelection();
+            //Habilitar botones
+            pantalla.getBtnGenerar().setEnabled(true);
+        }
     }    
 }

@@ -52,6 +52,6 @@ public class DateFormatter {
 	 * @throws ParseException 
 	 */
 	public Date stringToDate(String date) throws ParseException {
-		return dateFormat.parse(date);
+		return (date != null && !date.isEmpty())?dateFormat.parse(date):null;
 	}
 }

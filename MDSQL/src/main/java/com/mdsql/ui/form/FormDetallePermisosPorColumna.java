@@ -8,6 +8,7 @@ package com.mdsql.ui.form;
 import com.mdsql.bussiness.entities.Grant;
 import com.mdsql.bussiness.entities.Permiso;
 import com.mdsql.bussiness.entities.Sinonimo;
+import com.mdsql.ui.adapter.DoubleClickMouseAdapter;
 import com.mdsql.ui.form.listener.FormDetallePermisosPorColumnaListener;
 import com.mdsql.ui.model.PermisosColumnaTableModel;
 import com.mdsql.ui.model.cabeceras.TablaPermisosColumnaCabecera;
@@ -22,6 +23,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -157,6 +159,10 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollPanePermisos)
+                .addGap(8, 8, 8))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
@@ -175,13 +181,13 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
                                         .addComponent(txtModeloProyectoDescrip))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(cmbPermiso, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cmbPermiso, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(cmbIncluirPDC, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(txtTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(158, 158, 158)
+                                                    .addComponent(txtTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(330, 330, 330)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(lblColumna, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -190,37 +196,33 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(8, 8, 8)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtColumna, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                     .addComponent(cmbWithGrantOption, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(cmbReceptorPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(txtColumna, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cmbReceptorPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(layout.createSequentialGroup()
-                                                        .addGap(243, 243, 243)
-                                                        .addComponent(chkHabilitada, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                        .addGap(163, 163, 163)
+                                                        .addGap(235, 235, 235)
                                                         .addComponent(lblEntorno, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(cmbEntorno, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                        .addComponent(cmbEntorno, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(297, 297, 297)
+                                                        .addComponent(chkHabilitada, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(40, 40, 40)
-                                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                             .addComponent(lblTablaPermisos)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(317, 317, 317)
-                        .addComponent(btnAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(551, 551, 551)
+                        .addComponent(btnAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40)
                         .addComponent(btnModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
-                        .addComponent(btnInforme, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnInforme, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scrollPanePermisos, javax.swing.GroupLayout.DEFAULT_SIZE, 1093, Short.MAX_VALUE)
-                        .addGap(8, 8, 8)))
-                .addContainerGap())
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAlta, btnCancelar, btnInforme, btnModificacion});
@@ -270,7 +272,7 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLimpiar))
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addComponent(lblTablaPermisos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -334,13 +336,21 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
 
     @Override
     protected void initEvents() {
-        formListener = new FormDetallePermisosPorColumnaListener(this);
-        btnBuscar.addActionListener(formListener);
-        btnLimpiar.addActionListener(formListener);
-        btnAlta.addActionListener(formListener);    
-        btnModificacion.addActionListener(formListener);    
-        btnInforme.addActionListener(formListener);
-        tblPermisos.getSelectionModel().addListSelectionListener((FormDetallePermisosPorColumnaListener) formListener);
+        FormDetallePermisosPorColumnaListener localFormListener = new FormDetallePermisosPorColumnaListener(this);
+        btnBuscar.addActionListener(localFormListener);
+        btnLimpiar.addActionListener(localFormListener);
+        btnAlta.addActionListener(localFormListener);    
+        btnModificacion.addActionListener(localFormListener);    
+        btnInforme.addActionListener(localFormListener);
+        tblPermisos.getSelectionModel().addListSelectionListener(localFormListener);
+
+        // Tratamiendo doble click
+        DoubleClickMouseAdapter doubleClickMouseAdapter = new DoubleClickMouseAdapter();
+        doubleClickMouseAdapter.setListener(localFormListener);
+        tblPermisos.addMouseListener(doubleClickMouseAdapter);
+        addOnLoadListener(localFormListener);
+
+        formListener = localFormListener;
         addOnLoadListener(formListener);
     }
 
@@ -371,6 +381,8 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
         tblPermisos.setDefaultRenderer(String.class, new TableSelectionRenderer());
         tblPermisos.setCellSelectionEnabled(true);
         tblPermisos.setRowSelectionAllowed(true);        
+        tblPermisos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
     }
 
     @Override

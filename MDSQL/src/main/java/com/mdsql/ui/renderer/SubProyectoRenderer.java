@@ -18,6 +18,7 @@ public class SubProyectoRenderer extends BasicComboBoxRenderer {
 	private static final long serialVersionUID = 3517770689739103773L;
 
 	@SuppressWarnings("rawtypes")
+        @Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
 			boolean cellHasFocus) {
 		super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
