@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.mdval.exceptions.ServiceException;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -18,20 +16,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(toBuilder = true)
-public class OutputProcesa implements Serializable {
+@EqualsAndHashCode(callSuper=true)
+public class OutputProcesa extends OutputWarning implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3938170200951884495L;
-	
-	private BigDecimal idProceso;
-	private Date pFechaProceso;
-	private BigDecimal pCodigoEstadoProceso;
-	private String pDescripcionEstadoProceso;
-    
-    // Para los warnings
-    private ServiceException serviceException;
+    private static final long serialVersionUID = 3938170200951884495L;
+
+    private BigDecimal idProceso;
+    private Date fechaProceso;
+    private BigDecimal codigoEstadoProceso;
+    private String descripcionEstadoProceso;
 
 }

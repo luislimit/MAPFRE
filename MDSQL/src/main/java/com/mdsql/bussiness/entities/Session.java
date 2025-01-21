@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.nio.charset.Charset;
 
 import com.mdsql.utils.MDSQLConstants.Procesado;
+import com.mdval.ui.utils.FrameSupport;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,10 @@ public class Session implements Serializable {
 	@Getter
 	@Setter
 	private Proceso proceso;
+        
+	@Getter
+	@Setter
+	private Proceso ultimoProceso;        
 	
 	@Getter
 	@Setter
@@ -38,4 +43,13 @@ public class Session implements Serializable {
 	@Getter
 	@Setter
 	private String rutaScript;
+        
+	@Getter
+	@Setter
+	private ReentranteInfo reentranteInfo;
+        
+        @Getter 
+        @Setter 
+        private Integer delayMensaje;
+        
 }

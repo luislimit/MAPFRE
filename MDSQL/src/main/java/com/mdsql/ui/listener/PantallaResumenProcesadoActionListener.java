@@ -1,52 +1,37 @@
 package com.mdsql.ui.listener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import com.mdsql.bussiness.entities.OutputConsultaEntrega;
 import com.mdsql.bussiness.entities.OutputConsultaProcesado;
+import com.mdsql.bussiness.entities.OutputFicherosPeticion;
+import com.mdsql.bussiness.entities.OutputValor;
 import com.mdsql.bussiness.entities.Proceso;
-import com.mdsql.bussiness.entities.Script;
 import com.mdsql.bussiness.entities.ScriptEjecutado;
-import com.mdsql.bussiness.entities.ScriptType;
 import com.mdsql.bussiness.entities.Session;
-import com.mdsql.bussiness.entities.Type;
 import com.mdsql.bussiness.service.EntregaService;
 import com.mdsql.bussiness.service.ProcesoService;
 import com.mdsql.ui.PantallaAjustarLogEjecucion;
+import com.mdsql.ui.PantallaConsultaMovimientosProcesado;
 import com.mdsql.ui.PantallaDetalleScript;
 import com.mdsql.ui.PantallaResumenProcesado;
 import com.mdsql.ui.PantallaVerErroresScript;
 import com.mdsql.ui.model.ResumenProcesadoScriptsTableModel;
 import com.mdsql.ui.utils.ListenerSupport;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.ui.utils.collections.RemoveByTypeClosure;
-import com.mdsql.utils.ConfigurationSingleton;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
+import com.mdsql.utils.MDSQLConstants.EstadosProcesado;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.utils.OnLoadListener;
 import com.mdval.ui.utils.UIHelper;
-
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
-import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 
 /**
  * @author federico
@@ -55,477 +40,216 @@ import net.lingala.zip4j.exception.ZipException;
 @Slf4j
 public class PantallaResumenProcesadoActionListener extends ListenerSupport implements ActionListener, OnLoadListener {
 
-	private PantallaResumenProcesado pantallaResumenProcesado;
+    private final PantallaResumenProcesado pantalla;
 
-	/**
-	 * @param framePrincipal
-	 */
-	public PantallaResumenProcesadoActionListener(PantallaResumenProcesado pantallaResumenProcesado) {
-		this.pantallaResumenProcesado = pantallaResumenProcesado;
-	}
+    /**
+     * @param pantalla
+     */
+    public PantallaResumenProcesadoActionListener(PantallaResumenProcesado pantalla) {
+        this.pantalla = pantalla;
+    }
 
-	/**
-	 *
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton jButton = (JButton) e.getSource();
+    /**
+     *
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
 
-		if (MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_ENTREGAR.equals(jButton.getActionCommand())) {
-			evtEntregar();
-		}
+        if (obj.equals(pantalla.getBtnEntregar())) {
+            evtEntregar();
+        } else if (obj.equals(pantalla.getBtnMovimientos())) {
+            evtMovimientos();
+        } else if (obj.equals(pantalla.getBtnVerErrores())) {
+            evtVerErrores();
+        } else if (obj.equals(pantalla.getBtnDetalleScript())) {
+            evtDetalleScript();
+        } else if (obj.equals(pantalla.getBtnVerLog())) {
+            evtVerLog();
+        } else if (obj.equals(pantalla.getBtnCancelar())) {
+            pantalla.dispose();
+        }
+    }
 
-		if (MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_VER_ERRORES.equals(jButton.getActionCommand())) {
-			evtVerErrores();
-		}
+    private void evtVerLog() {
+        Map<String, Object> params = new HashMap<>();
 
-		if (MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_DETALLE_SCRIPT.equals(jButton.getActionCommand())) {
-			evtDetalleScript();
-		}
+        ScriptEjecutado seleccionado = pantalla.getSeleccionado();
 
-		if (MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_VER_LOG.equals(jButton.getActionCommand())) {
-			evtVerLog();
-		}
+        // Consultamos el proceso seleccionado por si fuera una consulta
+        Proceso proceso = pantalla.getProcesoSeleccionado();
 
-		if (MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_CANCELAR.equals(jButton.getActionCommand())) {
-			pantallaResumenProcesado.dispose();
-		}
-	}
+        params.put("script", seleccionado);
+        params.put("proceso", proceso);
+        params.put("consulta", Boolean.TRUE);
 
-	private void evtVerLog() {
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		Map<String, Object> params = new HashMap<>();
+        MDSQLUIHelper.showForm(pantalla.getFrameParent(), PantallaAjustarLogEjecucion.class, params);
+    }
 
-		ScriptEjecutado seleccionado = pantallaResumenProcesado.getSeleccionado();
-		
-		// Consultamos el proceso seleccionado por si fuera una consulta
-		Proceso proceso = pantallaResumenProcesado.getProcesoSeleccionado();
-		
-		// Si viene el proceso vacío, es que se trata de un procesado en curso
-		if (Objects.isNull(proceso)) {
-			proceso = session.getProceso();
-		}
+    private void evtDetalleScript() {
+        //Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+        Map<String, Object> params = new HashMap<>();
 
-		params.put("script", seleccionado);
-		params.put("proceso", proceso);
-		params.put("consulta", Boolean.TRUE);
+        ScriptEjecutado seleccionado = pantalla.getSeleccionado();
 
-		PantallaAjustarLogEjecucion pantallaAjustarLogEjecucion = (PantallaAjustarLogEjecucion) MDSQLUIHelper
-				.createDialog(pantallaResumenProcesado.getFrameParent(), MDSQLConstants.CMD_AJUSTAR_LOG_EJECUCION,
-						params);
-		MDSQLUIHelper.show(pantallaAjustarLogEjecucion);
-	}
+        // Consultamos el proceso seleccionado por si fuera una consulta
+        Proceso proceso = pantalla.getProcesoSeleccionado();
 
-	private void evtDetalleScript() {
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		Map<String, Object> params = new HashMap<>();
+        params.put("script", seleccionado.getNombreScript());
+        params.put("proceso", proceso.getIdProceso());
+        params.put("numeroOrden", seleccionado.getNumeroOrden());
 
-		ScriptEjecutado seleccionado = pantallaResumenProcesado.getSeleccionado();
-		
-		// Consultamos el proceso seleccionado por si fuera una consulta
-		Proceso proceso = pantallaResumenProcesado.getProcesoSeleccionado();
-		
-		// Si viene el proceso vacío, es que se trata de un procesado en curso
-		if (Objects.isNull(proceso)) {
-			proceso = session.getProceso();
-		}
+        MDSQLUIHelper.showForm(pantalla.getFrameParent(), PantallaDetalleScript.class, params);
+    }
 
-		params.put("script", seleccionado.getNombreScript());
-		params.put("proceso", proceso.getIdProceso());
-		params.put("numeroOrden", seleccionado.getNumeroOrden());
+    private void evtVerErrores() {
+        Map<String, Object> params = new HashMap<>();
 
-		PantallaDetalleScript pantallaDetalleScript = (PantallaDetalleScript) MDSQLUIHelper
-				.createDialog(pantallaResumenProcesado.getFrameParent(), MDSQLConstants.CMD_DETALLE_SCRIPT, params);
-		MDSQLUIHelper.show(pantallaDetalleScript);
-	}
+        ScriptEjecutado seleccionado = pantalla.getSeleccionado();
 
-	private void evtVerErrores() {
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		Map<String, Object> params = new HashMap<>();
+        // Consultamos el proceso seleccionado por si fuera una consulta
+        Proceso proceso = pantalla.getProcesoSeleccionado();
 
-		ScriptEjecutado seleccionado = pantallaResumenProcesado.getSeleccionado();
-		
-		// Consultamos el proceso seleccionado por si fuera una consulta
-		Proceso proceso = pantallaResumenProcesado.getProcesoSeleccionado();
-		
-		// Si viene el proceso vacío, es que se trata de un procesado en curso
-		if (Objects.isNull(proceso)) {
-			proceso = session.getProceso();
-		}
+        params.put("script", seleccionado);
+        params.put("proceso", proceso);
+        params.put("tipo", "scripts");
 
-		params.put("script", seleccionado);
-		params.put("proceso", proceso);
-		params.put("tipo", "scripts");
+        MDSQLUIHelper.showForm(pantalla.getFrameParent(), PantallaVerErroresScript.class, params);
+    }
 
-		PantallaVerErroresScript pantallaVerErroresScript = (PantallaVerErroresScript) MDSQLUIHelper
-				.createDialog(pantallaResumenProcesado.getFrameParent(), MDSQLConstants.CMD_VER_ERRORES_SCRIPT, params);
-		MDSQLUIHelper.show(pantallaVerErroresScript);
-	}
+    /**
+     *
+     */
+    private void evtEntregar() {
+        try {
+            Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
 
-	/**
-	 * 
-	 */
-	private void evtEntregar() {
-		try {
-			Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-			Proceso proceso = session.getProceso();
+            Proceso proceso = pantalla.getProcesoSeleccionado();
+            BigDecimal idProceso = proceso.getIdProceso();
+            //String codigoProyecto = proceso.getModelo().getCodigoProyecto();
 
-			Integer response = UIHelper.showConfirm("¿Desea entregar el procesado?", "Entregar");
+            Integer response = UIHelper.showConfirm("¿Desea entregar el procesado?", "Entregar");
 
-			if (response == JOptionPane.YES_OPTION) {
-				EntregaService entregaService = (EntregaService) getService(MDSQLConstants.ENTREGA_SERVICE);
+            if (response == JOptionPane.YES_OPTION) {
 
-				OutputConsultaEntrega outputConsultaEntrega = entregaService
-						.consultaRutaEntrega(proceso.getModelo().getCodigoProyecto(), proceso.getIdProceso());
+                ProcesoService procesoService = (ProcesoService) getService(MDSQLConstants.PROCESO_SERVICE);
+                // Recuperar los archivos del proceso
+                OutputFicherosPeticion outputFicheros = procesoService.consultaFicherosAccion(EstadosProcesado.ENTREGADO.getIndex(), idProceso);
+                MDSQLUIHelper.showWarnings(pantalla, outputFicheros.getWarnings());
 
-				// Comprobar que existe la ruta antes de llamar a entregarPeticion
-				MDSQLAppHelper.checkRuta(outputConsultaEntrega.getTxtRutaEntrega());
+                // Ejecutamos las acciones de los ficheros dispararando excepción si no se puede realizar la acción
+                procesoService.ejecutarFicherosAccion(outputFicheros, true);
 
-				// Comprobar que existe la ruta de Entregados antes de entregar la petición
-				ConfigurationSingleton configuration = ConfigurationSingleton.getInstance();
-				String rutaInicial = proceso.getRutaScript();
-				String rutaEntrega = configuration.getConfig("CarpetaEntregaFicheros");
-				String rutaEntregados = rutaInicial + File.separator + rutaEntrega;
-				MDSQLAppHelper.checkRuta(rutaEntregados);
+                // Realizar la entrega
+                String txtComentario = pantalla.getTxtComentarios().getText();
+                String codUsr = session.getCodUsr();
+                String versionErwin = pantalla.getTxtVersionErwin().getText();
+                // Confirmar la entrega del proceso
+                EntregaService entregaService = (EntregaService) getService(MDSQLConstants.ENTREGA_SERVICE);
+                OutputValor<String> outputEstado = entregaService.entregarPeticion(idProceso, codUsr, txtComentario, versionErwin);
+                MDSQLUIHelper.showWarnings(pantalla, outputEstado.getWarnings());
+                String estado = outputEstado.getValor();
 
-				// Realizar la entrega
-				String txtComentario = pantallaResumenProcesado.getTxtComentarios().getText();
-				String codUsr = session.getCodUsr();
-				String estado = entregaService.entregarPeticion(proceso.getIdProceso(), codUsr, txtComentario);
-				
-				// Crear los ficheros de entrega
-				crearArchivosEntrega(proceso, outputConsultaEntrega, rutaEntregados);
-				
-				proceso.setDescripcionEstadoProceso(estado);
-				pantallaResumenProcesado.getReturnParams().put("cmd", MDSQLConstants.CMD_ENTREGAR_SCRIPT);
-				pantallaResumenProcesado.getReturnParams().put("estado", estado);
+                // Crear los ficheros de entrega
+                proceso.setDescripcionEstadoProceso(estado);
+                pantalla.getReturnParams().put("cmd", MDSQLConstants.CMD_ENTREGAR_SCRIPT);
+                pantalla.getReturnParams().put("estado", estado);
 
-				pantallaResumenProcesado.dispose();
-			}
-		} catch (ServiceException | IOException e) {
-			//log.error("ERROR: ", e);
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaResumenProcesado.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
-	}
+                if ("Entregado".equals(proceso.getDescripcionEstadoProceso())) {
+                    session.setProceso(null);
+                }
 
-	/**
-	 * @param proceso
-	 * @param outputConsultaEntrega
-	 * @param rutaEntregados
-	 * @throws IOException
-	 */
-	private void crearArchivosEntrega(Proceso proceso, OutputConsultaEntrega outputConsultaEntrega,
-			String rutaEntregados) throws IOException {
-		// Esto es cuando se procesan scripts SQL
-		if (CollectionUtils.isNotEmpty(proceso.getScripts())) {
-			// createZipVigente(proceso, outputConsultaEntrega,
-			// outputConsultaEntrega.getTxtRutaEntrega());
-			createZipVigente(proceso, outputConsultaEntrega, rutaEntregados);
-			copyFilesVigente(outputConsultaEntrega.getTxtRutaEntrega(), proceso.getScripts());
-			copyFilesVigente(rutaEntregados, proceso.getScripts());
+                pantalla.dispose();
+            }
+        } catch (ServiceException /*| IOException*/ e) {
+            MDSQLUIHelper.showErrors(pantalla, e);
+        }
+    }
 
-			if (tieneScriptsHistoricos(proceso.getScripts())) {
-				// createZipHistorico(proceso, outputConsultaEntrega,
-				// outputConsultaEntrega.getTxtRutaEntrega());
-				createZipHistorico(proceso, outputConsultaEntrega, rutaEntregados);
-				copyFilesHistorico(outputConsultaEntrega.getTxtRutaEntrega(), proceso.getScripts());
-				copyFilesHistorico(rutaEntregados, proceso.getScripts());
-			}
-		}
+    @Override
+    public void onLoad() {
+        try {
+            ProcesoService procesoService = (ProcesoService) getService(MDSQLConstants.PROCESO_SERVICE);
 
-		// Esto es cuando se procesan scripts type
-		if (CollectionUtils.isNotEmpty(proceso.getTypes())) {
-			// createZipType(proceso, outputConsultaEntrega,
-			// outputConsultaEntrega.getTxtRutaEntrega());
-			String zipFilePath = createZipType(proceso, outputConsultaEntrega, rutaEntregados);
-			log.info("Creado zip: {}", zipFilePath);
-			// Copiar el fichero zip a la carpeta de outputConsultaEntrega.getTxtRutaEntrega()
-			copyFile(zipFilePath, outputConsultaEntrega.getTxtRutaEntrega() + File.separator + outputConsultaEntrega.getNombreFicheroType());
-			
-			copyFilesType(rutaEntregados, proceso.getTypes());
-			//copyFilesType(outputConsultaEntrega.getTxtRutaEntrega(), proceso.getTypes());
-			cleanupFolders(rutaEntregados);
-		}
-	}
+            Proceso proceso = (Proceso) pantalla.getParams().get("proceso");
+            if (Objects.isNull(proceso)) {
+                Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+                proceso = session.getProceso();
+            }
+            pantalla.setProcesoSeleccionado(proceso);
+            OutputConsultaProcesado output = procesoService.consultaProcesado(proceso.getIdProceso());
 
-	@Override
-	public void onLoad() {
-		try {
-			ProcesoService procesoService = (ProcesoService) getService(MDSQLConstants.PROCESO_SERVICE);
+            MDSQLUIHelper.showWarnings(pantalla, output.getServiceException());
 
-			Proceso proceso = (Proceso) pantallaResumenProcesado.getParams().get("proceso"); 
-			if (Objects.isNull(proceso)) {
-				Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-				proceso = session.getProceso();
-			}
-			
-			pantallaResumenProcesado.setProcesoSeleccionado(proceso);
-			OutputConsultaProcesado outputConsultaProcesado = procesoService.consultaProcesado(proceso.getIdProceso());
-			
-			// Hay avisos
-			if (outputConsultaProcesado.getResult() == 2) {
-				ServiceException serviceException = outputConsultaProcesado.getServiceException();
-				Map<String, Object> params = MDSQLUIHelper.buildWarnings(serviceException.getErrors());
-				MDSQLUIHelper.showPopup(pantallaResumenProcesado.getFrameParent(), MDSQLConstants.CMD_WARN, params);
-			}
+            if (!Objects.isNull(output)) {
+                populateProceso(output);
+                populateScripts(output.getListaScriptsEjecutados());
+            }
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla, e);
+        }
+    }
 
-			if (!Objects.isNull(outputConsultaProcesado)) {
-				populateProceso(outputConsultaProcesado);
-				populateScripts(outputConsultaProcesado.getListaScriptsEjecutados());
-			}
-		} catch (ServiceException e) {
-			//log.error("ERROR: ", e);
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaResumenProcesado.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
-	}
+    /**
+     * @param output
+     */
+    private void populateProceso(OutputConsultaProcesado output) {
+        MDSQLUIHelper.resetText(pantalla.getTxtModelo(),
+                output.getNombreModelo(), 20);
 
-	/**
-	 * @param outputConsultaProcesado
-	 */
-	private void populateProceso(OutputConsultaProcesado outputConsultaProcesado) {
-		MDSQLUIHelper.resetText(pantallaResumenProcesado.getTxtModelo(),
-				outputConsultaProcesado.getNombreModelo(), 20);
-		
-		MDSQLUIHelper.resetText(pantallaResumenProcesado.getTxtSubmodelo(),
-				outputConsultaProcesado.getDescripcionSubProyecto(), 20);
-		
-		pantallaResumenProcesado.getTxtBBDD().setText(outputConsultaProcesado.getNombreBBDD());
-		pantallaResumenProcesado.getTxtEsquema().setText(outputConsultaProcesado.getNombreEsquema());
-		pantallaResumenProcesado.getTxtBBDDHistorico().setText(outputConsultaProcesado.getNombreBBDDHistorico());
-		pantallaResumenProcesado.getTxtEsquemaHistorico().setText(outputConsultaProcesado.getNombreesquemaHistorico());
-		pantallaResumenProcesado.getTxtPeticion().setText(outputConsultaProcesado.getCodigoPeticion());
-		pantallaResumenProcesado.getTxtUsuario().setText(outputConsultaProcesado.getCodigoUsuario());
-		pantallaResumenProcesado.getTxtSolicitadaPor().setText(outputConsultaProcesado.getCodigoUsrPeticion());
-		pantallaResumenProcesado.getTxtFecha().setText(outputConsultaProcesado.getFechaProceso().toString());
-		pantallaResumenProcesado.getTxtEstado().setText(outputConsultaProcesado.getDescripcionEstadoProceso());
-		
-		MDSQLUIHelper.resetText(pantallaResumenProcesado.getTxtRuta(),
-				outputConsultaProcesado.getTxtRutaEntrada(), null);
-		
-		pantallaResumenProcesado.getTxtComentarios().setText(outputConsultaProcesado.getTxtComentario());
-	}
+        MDSQLUIHelper.resetText(pantalla.getTxtSubmodelo(),
+                output.getDescripcionSubProyecto(), 20);
 
-	/**
-	 * @param listaScriptsEjecutados
-	 */
-	private void populateScripts(List<ScriptEjecutado> listaScriptsEjecutados) {
-		// Obtiene el modelo y lo actualiza
-		ResumenProcesadoScriptsTableModel tableModel = (ResumenProcesadoScriptsTableModel) pantallaResumenProcesado
-				.getTblScripts().getModel();
-		tableModel.setData(listaScriptsEjecutados);
-	}
+        pantalla.getTxtBBDD().setText(output.getNombreBBDD());
+        pantalla.getTxtEsquema().setText(output.getNombreEsquema());
+        pantalla.getTxtBBDDHistorico().setText(output.getNombreBBDDHistorico());
+        pantalla.getTxtEsquemaHistorico().setText(output.getNombreesquemaHistorico());
+        pantalla.getTxtPeticion().setText(output.getCodigoPeticion());
+        pantalla.getTxtUsuario().setText(output.getCodigoUsuario());
+        pantalla.getTxtSolicitadaPor().setText(output.getCodigoUsrPeticion());
+        pantalla.getTxtFecha().setText(output.getFechaProceso().toString());
 
-	/**
-	 * @param proceso
-	 * @param outputConsultaEntrega
-	 */
-	private void createZipVigente(Proceso proceso, OutputConsultaEntrega outputConsultaEntrega, String rutaEntrega)
-			throws IOException {
-		createZip(proceso, rutaEntrega, outputConsultaEntrega.getNombreFicheroVigente(),
-				Arrays.asList(new String[] { "SQL", "PDC" }));
-	}
+        pantalla.getTxtEstado().setText(output.getDescripcionEstadoProceso());
+        EstadosProcesado estado = EstadosProcesado.getByCode(output.getCodigoEstadoProceso());
+        Color backgroundColor = estado.getColor();
+        if (backgroundColor != null) {
+            pantalla.getTxtEstado().setBackground(backgroundColor);
+            pantalla.getTxtEstado().setForeground(MDSQLUIHelper.getColorContraste(backgroundColor));
+        }
 
-	/**
-	 * @param proceso
-	 * @param outputConsultaEntrega
-	 */
-	private void createZipHistorico(Proceso proceso, OutputConsultaEntrega outputConsultaEntrega, String rutaEntrega)
-			throws IOException {
-		createZip(proceso, rutaEntrega, outputConsultaEntrega.getNombreFicheroHistorico(),
-				Arrays.asList(new String[] { "SQLH", "PDCH" }));
-	}
+        if (pantalla.getProcesoSeleccionado() != null
+                && pantalla.getProcesoSeleccionado().getIdProceso() != null) {
+            pantalla.getTxtIdProcesado().setText(pantalla.getProcesoSeleccionado().getIdProceso().toString());
+        }
 
-	/**
-	 * @param proceso
-	 * @param outputConsultaEntrega
-	 * @throws IOException
-	 */
-	private String createZipType(Proceso proceso, OutputConsultaEntrega outputConsultaEntrega, String rutaEntrega)
-			throws IOException {
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		String nombreFichero = outputConsultaEntrega.getNombreFicheroType();
+        MDSQLUIHelper.resetText(pantalla.getTxtRuta(),
+                output.getTxtRutaEntrada(), null);
 
-		String zipFileName = rutaEntrega + File.separator + nombreFichero;
-		log.info("Zip file name: {}", zipFileName);
+        pantalla.getTxtComentarios().setText(output.getTxtComentario());
 
-		try (ZipFile zipFile = new ZipFile(zipFileName)) {
-			for (Type type : proceso.getTypes()) {
-				String carpetaObjeto = type.getNombreObjeto();
+        pantalla.getTxtVersionErwin().setText(output.getVersionErwin());
+        pantalla.getTxtVersionado().setText(output.getVersionado());
+        pantalla.getTxtDescripcion().setText(output.getDescripcion());
+    }
 
-				// String drop = !Objects.isNull(type.getDROP()) ? type.getDROP() : "N";
-				if (StringUtils.isNotBlank(carpetaObjeto)) {
-					String ruta = session.getSelectedRoute() + File.separator + carpetaObjeto;
-					File file = new File(ruta);
-					log.info("Archivo a comprimir: {}", ruta);
+    /**
+     * @param listaScriptsEjecutados
+     */
+    private void populateScripts(List<ScriptEjecutado> listaScriptsEjecutados) {
+        // Obtiene el modelo y lo actualiza
+        ResumenProcesadoScriptsTableModel tableModel = (ResumenProcesadoScriptsTableModel) pantalla
+                .getTblScripts().getModel();
+        tableModel.setData(listaScriptsEjecutados);
+    }
 
-					if (file.isDirectory()) {
-						zipFile.addFolder(file);
-					} else {
-						for (ScriptType scriptType : type.getScriptType()) {
-							String rutaScript = session.getSelectedRoute() + File.separator
-									+ scriptType.getNombreScript();
-							File fileScript = new File(rutaScript);
-							zipFile.addFile(fileScript);
-						}
-					}
-				} else {
-					for (ScriptType scriptType : type.getScriptType()) {
-						String ruta = session.getSelectedRoute() + File.separator + scriptType.getNombreScript();
-						File file = new File(ruta);
-						log.info("Archivo a comprimir: {}", ruta);
+    private void evtMovimientos() {
+        Proceso proceso = pantalla.getProcesoSeleccionado();
 
-						zipFile.addFile(file);
-					}
-				}
-			}
-			
-			return zipFile.getFile().getPath();
-		} catch (Exception e) {
-			log.error("ERROR: ", e);
-			throw new IOException(e);
-		}
-	}
+        Map<String, Object> params = new HashMap<>();
+        params.put(MDSQLConstants.P_IN_PROCESO, proceso);
 
-	/**
-	 * @param proceso
-	 * @param rutaEntrega
-	 * @param nombreFichero
-	 * @param scriptTypes
-	 * @throws IOException
-	 */
-	private void createZip(Proceso proceso, String rutaEntrega, String nombreFichero, List<String> scriptTypes)
-			throws IOException {
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+        MDSQLUIHelper.showForm(pantalla.getFrameParent(), PantallaConsultaMovimientosProcesado.class, params);
+    }
 
-		String zipFileName = rutaEntrega + File.separator + nombreFichero;
-		log.info("Zip file name: {}", zipFileName);
-
-		try (ZipFile zipFile = new ZipFile(zipFileName)) {
-			if (CollectionUtils.isNotEmpty(proceso.getScripts())) {
-				addScriptsSQL(proceso, scriptTypes, session, zipFile);
-			}
-		} catch (Exception e) {
-			log.error("ERROR: ", e);
-			throw new IOException(e);
-		}
-	}
-
-	/**
-	 * @param proceso
-	 * @param scriptTypes
-	 * @param session
-	 * @param zipFile
-	 * @throws ZipException
-	 */
-	private void addScriptsSQL(Proceso proceso, List<String> scriptTypes, Session session, ZipFile zipFile)
-			throws ZipException {
-		for (Script script : proceso.getScripts()) {
-			if (scriptTypes.contains(script.getTipoScript())) {
-				zipFile.addFile(new File(session.getSelectedRoute() + File.separator + script.getNombreScript()));
-			}
-		}
-	}
-
-	/**
-	 * @param scripts
-	 * @ret)urn
-	 */
-	private boolean tieneScriptsHistoricos(List<Script> scripts) {
-		List<String> scriptTypes = Arrays.asList(new String[] { "SQLH", "PDCH" });
-
-		for (Script script : scripts) {
-			if (scriptTypes.contains(script.getTipoScript())) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * @param scripts
-	 */
-	private void copyFilesVigente(String rutaEntrega, List<Script> scripts) throws IOException {
-		copyFiles(rutaEntrega, scripts, Arrays.asList(new String[] { "SQL", "PDC" }));
-	}
-
-	/**
-	 * @param scripts
-	 */
-	private void copyFilesHistorico(String rutaEntrega, List<Script> scripts) throws IOException {
-		copyFiles(rutaEntrega, scripts, Arrays.asList(new String[] { "SQLH", "PDCH" }));
-	}
-
-	/**
-	 * @param rutaEntrega
-	 * @param types
-	 */
-	private void copyFilesType(String rutaEntrega, List<Type> types) throws IOException {
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		for (Type type : types) {
-			String carpetaObjeto = type.getNombreObjeto();
-
-			if (StringUtils.isNotBlank(carpetaObjeto) && !"S".equals(type.getDROP())) {
-				File file = new File(rutaEntrega + File.separator + carpetaObjeto);
-				if (!file.exists() && !"S".equals(type.getDROP())) {
-					file.mkdir();
-				}
-
-				for (ScriptType scriptType : type.getScriptType()) {
-					String rutaScript = session.getSelectedRoute() + File.separator + type.getNombreObjeto()
-							+ File.separator + scriptType.getNombreScript();
-					copyFile(rutaScript, rutaEntrega + File.separator + type.getNombreObjeto() + File.separator
-							+ scriptType.getNombreScript());
-				}
-			} else {
-				for (ScriptType scriptType : type.getScriptType()) {
-					String rutaScript = session.getSelectedRoute() + File.separator + scriptType.getNombreScript();
-					copyFile(rutaScript, rutaEntrega + File.separator + scriptType.getNombreScript());
-				}
-			}
-
-		}
-	}
-
-	/**
-	 * @param scripts
-	 */
-	private void copyFiles(String rutaEntrega, List<Script> scripts, List<String> scriptTypes) throws IOException {
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		for (Script script : scripts) {
-			if (scriptTypes.contains(script.getTipoScript())) {
-				String rutaScript = session.getSelectedRoute() + File.separator + script.getNombreScript();
-				copyFile(rutaScript, rutaEntrega + File.separator + script.getNombreScript());
-			}
-		}
-	}
-
-	/**
-	 * @param sourcePath
-	 * @param targetPath
-	 * @return
-	 */
-	private boolean copyFile(String sourcePath, String targetPath) {
-		boolean fileCopied = true;
-
-		try {
-			Files.copy(Paths.get(sourcePath), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			fileCopied = false;
-		}
-
-		return fileCopied;
-	}
-	
-	private void cleanupFolders(String rutaEntregados) {
-		File file = new File(rutaEntregados);
-		
-		if (file.isDirectory()) {
-			List<File> files = Arrays.asList(file.listFiles());
-			CollectionUtils.forAllDo(files, new RemoveByTypeClosure(new String[] {"drop", "drops"}, Boolean.TRUE));
-		}
-	}
 }

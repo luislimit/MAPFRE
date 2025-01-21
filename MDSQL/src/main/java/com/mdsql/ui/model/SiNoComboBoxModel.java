@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
-import com.mdsql.utils.LiteralesSingleton;
+import com.mdval.utils.LiteralesSingleton;
 import com.mdval.utils.LogWrapper;
 
 import lombok.extern.slf4j.Slf4j;

@@ -1,35 +1,25 @@
 package com.mdsql.bussiness.service;
 
+import com.mdsql.bussiness.entities.CodigoDescripcion;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputWarning;
+import com.mdsql.bussiness.entities.ProgramacionModelo;
+import com.mdsql.bussiness.entities.ValidacionProgramada;
+import com.mdval.exceptions.ServiceException;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.mdsql.bussiness.entities.DetValidacion;
-import com.mdsql.bussiness.entities.InformeValidacion;
-import com.mdsql.bussiness.entities.ValidaParticula;
-import com.mdsql.bussiness.entities.ValidaScriptRequest;
-import com.mdsql.bussiness.entities.ValidaScriptResponse;
-
 /**
- * @author hcarreno
+ * @author LVARONA
  */
 public interface ValidacionService {
 
-    void insertarGlosario(BigDecimal numeroValidacion, BigDecimal numeroElemento, String codigoUsuario);
+    OutputConsulta<ValidacionProgramada> validacionesProgramadas() throws ServiceException;
 
-    void insertarExcepcion(BigDecimal numeroValidacion, BigDecimal numeroElemento, String txtExcepcion, String codigoUsuario);
+    OutputConsulta<CodigoDescripcion> consultaAcciones() throws ServiceException;
 
-    List<ValidaParticula> validarElemento(BigDecimal codigoNorma, String codigoProyecto, String codigoSubProyecto, BigDecimal codigoElemento, String nombreElemento);
+    OutputConsulta<ProgramacionModelo> consultaProgramacion(BigDecimal codValidacion) throws ServiceException;
 
-    List<DetValidacion> consultaElementosCorrectosValidacion(BigDecimal numeroValidacion);
-
-    List<DetValidacion> consultaElementosConErroresValidacion(BigDecimal numeroValidacion);
-
-    List<DetValidacion> consultaElementosExcepcionesValidacion(BigDecimal numeroValidacion);
-
-    List<DetValidacion> consultaElementosNoGlosarioValidacion(BigDecimal numeroValidacion);
-
-    ValidaScriptResponse validaScript(ValidaScriptRequest validaScriptRequest);
-    
-    InformeValidacion generarInformeValidacion(BigDecimal numeroValidacion);
+    OutputWarning mntoProcProgramados(BigDecimal codValidacion, List<ProgramacionModelo> listaProgramacion) throws ServiceException;
 
 }

@@ -1,16 +1,8 @@
 package com.mdsql.ui.listener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Map;
-
-import javax.swing.JButton;
-
-import org.apache.commons.collections.CollectionUtils;
-
-import com.mdsql.bussiness.entities.InputMntoEntornoPrueba;
-import com.mdsql.bussiness.entities.OutputConsultarEntornosPrueba;
-import com.mdsql.bussiness.entities.OutputMntoEntornoPrueba;
+import com.mdsql.bussiness.entities.EntornoPrueba;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.service.EntornosPruebaService;
 import com.mdsql.ui.PantallaMantenimientoEntornosPrueba;
@@ -22,89 +14,94 @@ import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.utils.OnLoadListener;
 import com.mdval.utils.AppHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import org.apache.commons.collections.CollectionUtils;
 
 public class PantallaMantenimientoEntornosPruebaListener extends ListenerSupport implements ActionListener, OnLoadListener {
-	private PantallaMantenimientoEntornosPrueba pantallaMantenimientoEntornosPrueba;
-	
-	public PantallaMantenimientoEntornosPruebaListener(PantallaMantenimientoEntornosPrueba pantallaMantenimientoEntornosPrueba) {
-		super();
-		this.pantallaMantenimientoEntornosPrueba = pantallaMantenimientoEntornosPrueba;
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton jButton = (JButton) e.getSource();
-		
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_PRUEBA_GUARDAR.equals(jButton.getActionCommand())) {
-			eventBtnGuardar();
-		}
+    private final PantallaMantenimientoEntornosPrueba pantalla;
 
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_PRUEBA_CANCELAR.equals(jButton.getActionCommand())) {
-			pantallaMantenimientoEntornosPrueba.dispose();
-		}
-	}
-	
-	private void eventBtnGuardar() {
-		try {
-			EntornosPruebaService entornosPruebaService = (EntornosPruebaService) getService(MDSQLConstants.ENTORNOS_PRUEBA_SERVICE);
-			Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-			String codUsr = session.getCodUsr();
+    public PantallaMantenimientoEntornosPruebaListener(PantallaMantenimientoEntornosPrueba pantalla) {
+        super();
+        this.pantalla = pantalla;
+    }
 
-			InputMntoEntornoPrueba inputMntoEntornoPrueba = new InputMntoEntornoPrueba();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
 
-			String nombreEntorno = pantallaMantenimientoEntornosPrueba.getTxtNombreEntorno().getText();
-			String bbdd = pantallaMantenimientoEntornosPrueba.getTxtBBDD().getText();
-			String esquema = pantallaMantenimientoEntornosPrueba.getTxtEsquema().getText();
-			String descripcion = pantallaMantenimientoEntornosPrueba.getTxtDescripcion().getText();
-			String tablespace = pantallaMantenimientoEntornosPrueba.getTxtTablespace().getText();
-			String gradoParal = pantallaMantenimientoEntornosPrueba.getTxtGradoparal().getText();
-			String mcaHabilitado = AppHelper.normalizeValueToCheck(pantallaMantenimientoEntornosPrueba.getChkHabilitada().isSelected());
-			
-			inputMntoEntornoPrueba.setNombreEntorno(nombreEntorno);
-			inputMntoEntornoPrueba.setBbdd(bbdd);
-			inputMntoEntornoPrueba.setEsquema(esquema);
-			inputMntoEntornoPrueba.setDescripcion(descripcion);
-			inputMntoEntornoPrueba.setTablespace(tablespace);
-			inputMntoEntornoPrueba.setGradoParal(gradoParal);
-			inputMntoEntornoPrueba.setMcaHabilitado(mcaHabilitado);
+        if (obj.equals(pantalla.getBtnGuardar())) {
+            eventBtnGuardar();
+        } else if (obj.equals(pantalla.getBtnCancelar())) {
+            pantalla.dispose();
+        }
+    }
 
-			OutputMntoEntornoPrueba outputMntoEntornoPrueba = entornosPruebaService.guardarEntorno(inputMntoEntornoPrueba, codUsr);
-			
-			// Hay avisos
-			if (outputMntoEntornoPrueba.getResult() == 2) {
-				ServiceException serviceException = outputMntoEntornoPrueba.getServiceException();
-				Map<String, Object> params = MDSQLUIHelper.buildWarnings(serviceException.getErrors());
-				MDSQLUIHelper.showPopup(pantallaMantenimientoEntornosPrueba.getFrameParent(), MDSQLConstants.CMD_WARN, params);
-			}
-			
-			pantallaMantenimientoEntornosPrueba.getBtnGuardar().setEnabled(Boolean.FALSE);
-			populateEntornosPrueba();
-		} catch (ServiceException e) {
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaMantenimientoEntornosPrueba.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
-	}
+    private void eventBtnGuardar() {
+        try {
+            EntornosPruebaService entornosPruebaService = (EntornosPruebaService) getService(MDSQLConstants.ENTORNOS_PRUEBA_SERVICE);
+            Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+            String codUsr = session.getCodUsr();
 
-	@Override
-	public void onLoad() {
-		populateEntornosPrueba();
-	}
-	
-	private void populateEntornosPrueba() {
-		try {
-			EntornosPruebaService entornosPruebaService = (EntornosPruebaService) getService(MDSQLConstants.ENTORNOS_PRUEBA_SERVICE);
-			
-			OutputConsultarEntornosPrueba consultarEntornosPrueba = entornosPruebaService.consultarEntornos();
-			
-			if (CollectionUtils.isNotEmpty(consultarEntornosPrueba.getEntornos())) {
-				// Obtiene el modelo y lo actualiza
-				EntornosPruebaTableModel tableModel = (EntornosPruebaTableModel) pantallaMantenimientoEntornosPrueba.getTblMantenimientoEntornosPrueba()
-						.getModel();
-				tableModel.setData(consultarEntornosPrueba.getEntornos());
-			}
-		} catch (ServiceException e) {
-			Map<String, Object> params = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaMantenimientoEntornosPrueba.getFrameParent(), MDSQLConstants.CMD_ERROR, params);
-		}
-	}
+            EntornoPrueba entornoPrueba = new EntornoPrueba();
+
+            String nombreEntorno = pantalla.getTxtNombreEntorno().getText();
+            String bbdd = pantalla.getTxtBBDD().getText();
+            String esquema = pantalla.getTxtEsquema().getText();
+            String descripcion = pantalla.getTxtDescripcion().getText();
+            String tablespace = pantalla.getTxtTablespace().getText();
+            String gradoParal = pantalla.getTxtGradoparal().getText();
+            String mcaHabilitado = AppHelper.normalizeValueToCheck(pantalla.getChkHabilitada().isSelected());
+
+            entornoPrueba.setNombreEntorno(nombreEntorno);
+            entornoPrueba.setBbdd(bbdd);
+            entornoPrueba.setEsquema(esquema);
+            entornoPrueba.setDescripcion(descripcion);
+            entornoPrueba.setTablespace(tablespace);
+            entornoPrueba.setGradoParal(new BigDecimal(gradoParal));
+            entornoPrueba.setMcaHabilitado(mcaHabilitado);
+
+            OutputWarning output = entornosPruebaService.guardarEntorno(entornoPrueba, codUsr);
+
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
+            populateEntornosPrueba();
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        populateEntornosPrueba();
+    }
+
+    private void populateEntornosPrueba() {
+        clearForm();
+        try {
+            EntornosPruebaService entornosPruebaService = (EntornosPruebaService) getService(MDSQLConstants.ENTORNOS_PRUEBA_SERVICE);
+
+            OutputConsulta<EntornoPrueba> consultarEntornosPrueba = entornosPruebaService.consultarEntornos();
+
+            if (CollectionUtils.isNotEmpty(consultarEntornosPrueba.getLista())) {
+                // Obtiene el modelo y lo actualiza
+                EntornosPruebaTableModel tableModel = (EntornosPruebaTableModel) pantalla.getTblEntornos().getModel();
+                tableModel.clearData();
+                tableModel.setData(consultarEntornosPrueba.getLista());
+            }
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
+        }
+    }
+
+    private void clearForm() {
+        pantalla.getTxtNombreEntorno().setText("");
+        pantalla.getTxtBBDD().setText("");
+        pantalla.getTxtEsquema().setText("");
+        pantalla.getTxtDescripcion().setText("");
+        pantalla.getTxtTablespace().setText("");
+        pantalla.getTxtGradoparal().setText("");
+        pantalla.getChkHabilitada().setSelected(false);
+    }
 }

@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class DetObjeto implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2593685243467047327L;
-	
-	private BigDecimal numeroSentencia;
+     *
+     */
+    private static final long serialVersionUID = 2593685243467047327L;
+
+    private BigDecimal numeroSentencia;
     private String nombreObjetoPadre;
     private String tipoObjetoPadre;
     private String tipoAccionPadre;
@@ -30,7 +30,5 @@ public class DetObjeto implements Serializable {
     private String tipoDato;
     private BigDecimal numeroLongitud;
     private BigDecimal numeroDecimal;
-    private String bbdd;
-    private String script;
-
+    private String detalle;
 }

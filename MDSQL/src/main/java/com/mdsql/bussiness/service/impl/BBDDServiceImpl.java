@@ -1,5 +1,12 @@
 package com.mdsql.bussiness.service.impl;
 
+import com.mdsql.bussiness.entities.BBDD;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputWarning;
+import com.mdsql.bussiness.service.BBDDService;
+import com.mdsql.utils.MDSQLConstants;
+import com.mdval.exceptions.ServiceException;
+import com.mdval.utils.LogWrapper;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -7,20 +14,10 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.DataSource;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mdsql.bussiness.entities.BBDD;
-import com.mdsql.bussiness.service.BBDDService;
-import com.mdsql.utils.MDSQLConstants;
-import com.mdval.exceptions.ServiceException;
-import com.mdval.utils.LogWrapper;
-
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author hcarreno
@@ -33,30 +30,23 @@ public class BBDDServiceImpl extends ServiceSupport implements BBDDService {
     private DataSource dataSource;
 
     @Override
-    public List<BBDD> consultaBBDDModelo(String codigoProyecto, String codSubproyecto) throws ServiceException {
-        String runSP = createCall("p_con_bbdd_modelo", MDSQLConstants.CALL_05_ARGS);
+    public OutputConsulta<BBDD> consultaBBDDModelo(String codigoProyecto, String codSubproyecto) throws ServiceException {
+        String runSP = createCall("p_con_bbdd_modelo", 5);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             String typeBBDD = createCallType(MDSQLConstants.T_T_BBDD);
-            String typeError = createCallTypeError();
 
             logProcedure(runSP, codigoProyecto, codSubproyecto);
 
             callableStatement.setString(1, codigoProyecto);
             callableStatement.setString(2, codSubproyecto);
             callableStatement.registerOutParameter(3, Types.ARRAY, typeBBDD);
-            callableStatement.registerOutParameter(4, Types.INTEGER);
-            callableStatement.registerOutParameter(5, Types.ARRAY, typeError);
 
-            callableStatement.execute();
+            OutputWarning result = executeStatement(callableStatement);
 
-            Integer result = callableStatement.getInt(4);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(5));
-            }
+            OutputConsulta<BBDD> output = new OutputConsulta<>();
+            output.setOutputWarning(result);
 
             List<BBDD> bbdds = new ArrayList<>();
             Array arrayBBDDs = callableStatement.getArray(3);
@@ -77,7 +67,9 @@ public class BBDDServiceImpl extends ServiceSupport implements BBDDService {
                     bbdds.add(bbdd);
                 }
             }
-            return bbdds;
+            output.setLista(bbdds);
+
+            return output;
         } catch (SQLException e) {
             LogWrapper.error(log, "[BBDDService.consultaBBDDModelo] Error:  %s", e.getMessage());
             throw new ServiceException(e);
@@ -85,14 +77,10 @@ public class BBDDServiceImpl extends ServiceSupport implements BBDDService {
     }
 
     @Override
-    @SneakyThrows
-    public String consultaPasswordBBDD(String nombreBBDD, String nombreEsquema, String txtClaveEncriptada) {
-        String runSP = createCall("p_con_pass_bbdd", MDSQLConstants.CALL_06_ARGS);
+    public String consultaPasswordBBDD(String nombreBBDD, String nombreEsquema, String txtClaveEncriptada) throws ServiceException {
+        String runSP = createCall("p_con_pass_bbdd", 6);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
-
-            String typeError = createCallTypeError();
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             logProcedure(runSP, nombreBBDD, nombreEsquema, txtClaveEncriptada);
 
@@ -101,16 +89,7 @@ public class BBDDServiceImpl extends ServiceSupport implements BBDDService {
             callableStatement.setString(3, txtClaveEncriptada);
             callableStatement.registerOutParameter(4, Types.VARCHAR);
 
-            callableStatement.registerOutParameter(5, Types.INTEGER);
-            callableStatement.registerOutParameter(6, Types.ARRAY, typeError);
-
-            callableStatement.execute();
-
-            Integer result = callableStatement.getInt(5);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(6));
-            }
+            executeStatement(callableStatement);
 
             return callableStatement.getString(4);
 
@@ -120,4 +99,14 @@ public class BBDDServiceImpl extends ServiceSupport implements BBDDService {
         }
     }
 
+    @Override
+    public String consultaPasswordBBDD(String nombreBBDD, String nombreEsquema) throws ServiceException {
+        String txtClaveEncriptada = getClaveEncriptada();
+        return consultaPasswordBBDD(nombreBBDD, nombreEsquema, txtClaveEncriptada);
+    }
+
+    @Override
+    public String getClaveEncriptada() {
+        return configuration.getConfig(MDSQLConstants.TOKEN).substring(17, 29);
+    }
 }

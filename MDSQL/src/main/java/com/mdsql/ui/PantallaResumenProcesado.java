@@ -5,20 +5,6 @@
  */
 package com.mdsql.ui;
 
-import java.awt.Dimension;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-
 import com.mdsql.bussiness.entities.Proceso;
 import com.mdsql.bussiness.entities.ScriptEjecutado;
 import com.mdsql.ui.listener.PantallaResumenProcesadoActionListener;
@@ -26,13 +12,21 @@ import com.mdsql.ui.listener.tables.ResumenProcesadoScriptsTableListener;
 import com.mdsql.ui.model.ResumenProcesadoObjetosTableModel;
 import com.mdsql.ui.model.ResumenProcesadoOperacionesTableModel;
 import com.mdsql.ui.model.ResumenProcesadoScriptsTableModel;
+import com.mdsql.ui.model.cabeceras.TablaResumenProcesadoObjetosCabecera;
+import com.mdsql.ui.model.cabeceras.TablaResumenProcesadoOperacionesCabecera;
+import com.mdsql.ui.model.cabeceras.TablaResumenProcesadoScriptsCabecera;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
 import com.mdval.ui.utils.DialogSupport;
 import com.mdval.ui.utils.FrameSupport;
-import com.mdval.ui.utils.TableSupport;
-
+import java.util.Map;
+import java.util.Objects;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,407 +36,580 @@ import lombok.Setter;
  */
 public class PantallaResumenProcesado extends DialogSupport {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7845375531319490239L;
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton btnCancelar;
-    private JButton btnEntregar;
-    private JLabel jLabel1;
-    private JLabel jLabel10;
-    private JLabel jLabel11;
-    private JLabel jLabel12;
-    private JLabel jLabel13;
-    private JLabel jLabel14;
-    private JLabel jLabel15;
-    private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
-    private JLabel jLabel8;
-    private JLabel jLabel9;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JScrollPane jScrollPane3;
-    private JScrollPane jScrollPane4;
-    
-    @Getter
-    private JTextField txtBBDD;
-    
-    @Getter
-    private JTextField txtBBDDHistorico;
-    
-    @Getter
-    private JTextArea txtComentarios;
-    
-    @Getter
-    private JTextField txtEsquema;
-    
-    @Getter
-    private JTextField txtEsquemaHistorico;
-    
-    @Getter
-    private JTextField txtEstado;
-    
-    @Getter
-    private JTextField txtFecha;
-    
-    @Getter
-    private JTextField txtModelo;
-    
-    @Getter
-    private JTextField txtPeticion;
-    
-    @Getter
-    private JTextField txtRuta;
-    
-    @Getter
-    private JTextField txtSolicitadaPor;
-    
-    @Getter
-    private JTextField txtSubmodelo;
-    
-    @Getter
-    private JTextField txtUsuario;
-    
-    @Getter
-    private TableSupport tblObjetos;
-    
-    @Getter
-    private TableSupport tblOperaciones;
-    
-    @Getter
-    private TableSupport tblScripts;
-    
-    @Getter
-    private JButton btnDetalleScript;
-    
-    @Getter
-    private JButton btnVerErrores;
-    
-    @Getter
-    private JButton btnVerLog;
-    
     @Getter
     @Setter
     private ScriptEjecutado seleccionado;
-    
+
     @Getter
     @Setter
     private Proceso procesoSeleccionado;
-    // End of variables declaration//GEN-END:variables
-		
-	/**
-	 * @param params
-	 */
-	public PantallaResumenProcesado(FrameSupport parent, Boolean modal) {
-		super(parent, modal);
-	}
+    // End of variables declaration
 
-	/**
-	 * Creates new form
-	 */
-	public PantallaResumenProcesado(FrameSupport parent, Boolean modal, Map<String, Object> params) {
-		super(parent, modal, params);
-	}
+    public PantallaResumenProcesado(FrameSupport parent, Boolean modal) {
+        super(parent, modal);
+    }
 
-	@Override
-	protected void setupComponents() {
-		jLabel1 = new JLabel();
-        jLabel2 = new JLabel();
-        jLabel3 = new JLabel();
-        jLabel4 = new JLabel();
-        jLabel7 = new JLabel();
-        jLabel8 = new JLabel();
-        jLabel9 = new JLabel();
-        txtModelo = new JTextField();
-        txtPeticion = new JTextField();
-        txtSolicitadaPor = new JTextField();
-        txtFecha = new JTextField();
-        txtEsquemaHistorico = new JTextField();
-        jScrollPane2 = new JScrollPane();
-        tblScripts = new TableSupport();
-        btnVerLog = new JButton();
-        btnCancelar = new JButton();
-        txtSubmodelo = new JTextField();
-        jLabel13 = new JLabel();
-        txtUsuario = new JTextField();
-        txtBBDD = new JTextField();
-        jLabel14 = new JLabel();
-        btnVerErrores = new JButton();
-        btnDetalleScript = new JButton();
-        btnEntregar = new JButton();
-        txtEsquema = new JTextField();
-        jLabel5 = new JLabel();
-        txtBBDDHistorico = new JTextField();
-        txtEstado = new JTextField();
-        txtRuta = new JTextField();
-        jLabel6 = new JLabel();
-        jLabel10 = new JLabel();
-        jLabel15 = new JLabel();
-        jScrollPane1 = new JScrollPane();
-        txtComentarios = new JTextArea();
-        jLabel11 = new JLabel();
-        jScrollPane3 = new JScrollPane();
-        tblOperaciones = new TableSupport();
-        jScrollPane4 = new JScrollPane();
-        tblObjetos = new TableSupport();
-        jLabel12 = new JLabel();
-        
-        setBounds(1435, 673);
+    public PantallaResumenProcesado(FrameSupport parent, Boolean modal, Map<String, Object> params) {
+        super(parent, modal, params);
+    }
 
-        jScrollPane2.setViewportView(tblScripts);
-        
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        lblModeloProyecto = new javax.swing.JLabel();
+        txtModelo = new javax.swing.JTextField();
+        lblSolicitadaPor = new javax.swing.JLabel();
+        txtSolicitadaPor = new javax.swing.JTextField();
+        lblBBDDHistorico = new javax.swing.JLabel();
+        txtBBDDHistorico = new javax.swing.JTextField();
+        lblSubModelo = new javax.swing.JLabel();
+        txtSubmodelo = new javax.swing.JTextField();
+        lblEsquema = new javax.swing.JLabel();
+        txtEsquema = new javax.swing.JTextField();
+        lblEsquemaHistorico = new javax.swing.JLabel();
+        txtEsquemaHistorico = new javax.swing.JTextField();
+        lblPeticion = new javax.swing.JLabel();
+        txtPeticion = new javax.swing.JTextField();
+        lblBBDD = new javax.swing.JLabel();
+        txtBBDD = new javax.swing.JTextField();
+        lblEstado = new javax.swing.JLabel();
+        txtEstado = new javax.swing.JTextField();
+        lblUsuario = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JTextField();
+        lblFecha = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
+        lblIdProcesado = new javax.swing.JLabel();
+        txtIdProcesado = new javax.swing.JTextField();
+        lblRuta = new javax.swing.JLabel();
+        txtRuta = new javax.swing.JTextField();
+        lblVersionErwin = new javax.swing.JLabel();
+        txtVersionErwin = new javax.swing.JTextField();
+        lblVersionado = new javax.swing.JLabel();
+        txtVersionado = new javax.swing.JTextField();
+        lblDescripcion = new javax.swing.JLabel();
+        scpDescripcion = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
+        lblComentarios = new javax.swing.JLabel();
+        scpComentarios = new javax.swing.JScrollPane();
+        txtComentarios = new javax.swing.JTextArea();
+        scpScripts = new javax.swing.JScrollPane();
+        tblScripts = new javax.swing.JTable();
+        lblOperaciones = new javax.swing.JLabel();
+        scpOperaciones = new javax.swing.JScrollPane();
+        tblOperaciones = new javax.swing.JTable();
+        lblObjetos = new javax.swing.JLabel();
+        scpObjetos = new javax.swing.JScrollPane();
+        tblObjetos = new javax.swing.JTable();
+        btnMovimientos = new javax.swing.JButton();
+        btnVerLog = new javax.swing.JButton();
+        btnVerErrores = new javax.swing.JButton();
+        btnDetalleScript = new javax.swing.JButton();
+        btnEntregar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        lblModeloProyecto.setText("Modelo o proyecto");
+
+        lblSolicitadaPor.setText("Solicitada por");
+
+        lblBBDDHistorico.setText("BBDD histórico");
+
+        lblSubModelo.setText("Submodelo");
+
+        lblEsquema.setText("Esquema");
+
+        lblEsquemaHistorico.setText("Esquema histórico");
+
+        lblPeticion.setText("Petición");
+
+        lblBBDD.setText("BBDD");
+
+        lblEstado.setText("Estado");
+
+        lblUsuario.setText("Usuario");
+
+        lblFecha.setText("Fecha");
+
+        lblIdProcesado.setText("Id Procesado");
+
+        lblRuta.setText("Ruta");
+
+        lblVersionErwin.setText("Version Erwin");
+
+        lblVersionado.setText("Versionado");
+
+        lblDescripcion.setText("Descripción");
+        lblDescripcion.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblDescripcion.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        scpDescripcion.setViewportView(txtDescripcion);
+
+        lblComentarios.setText("Comentarios");
+        lblComentarios.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblComentarios.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
         txtComentarios.setColumns(20);
         txtComentarios.setRows(5);
-        jScrollPane1.setViewportView(txtComentarios);
+        scpComentarios.setViewportView(txtComentarios);
 
-        jScrollPane3.setViewportView(tblOperaciones);
+        tblScripts.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Orden", "Estado", "Fecha", "Operaciones", "Objetos", "Con Error", "Script"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
 
-        jScrollPane4.setViewportView(tblObjetos);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        scpScripts.setViewportView(tblScripts);
+        if (tblScripts.getColumnModel().getColumnCount() > 0) {
+            tblScripts.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblScripts.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tblScripts.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tblScripts.getColumnModel().getColumn(3).setPreferredWidth(75);
+            tblScripts.getColumnModel().getColumn(4).setPreferredWidth(50);
+            tblScripts.getColumnModel().getColumn(5).setPreferredWidth(50);
+            tblScripts.getColumnModel().getColumn(6).setPreferredWidth(500);
+        }
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        lblOperaciones.setText("Operaciones");
+
+        tblOperaciones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Tipo objeto", "Acción", "BBDD", "Script"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        scpOperaciones.setViewportView(tblOperaciones);
+        if (tblOperaciones.getColumnModel().getColumnCount() > 0) {
+            tblOperaciones.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tblOperaciones.getColumnModel().getColumn(1).setPreferredWidth(75);
+            tblOperaciones.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tblOperaciones.getColumnModel().getColumn(3).setPreferredWidth(75);
+        }
+
+        lblObjetos.setText("Objetos");
+
+        tblObjetos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Nombre objeto", "Tipo objeto", "Acción", "BBDD", "Script"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        scpObjetos.setViewportView(tblObjetos);
+        if (tblObjetos.getColumnModel().getColumnCount() > 0) {
+            tblObjetos.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblObjetos.getColumnModel().getColumn(1).setPreferredWidth(75);
+            tblObjetos.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tblObjetos.getColumnModel().getColumn(3).setPreferredWidth(25);
+            tblObjetos.getColumnModel().getColumn(4).setPreferredWidth(50);
+        }
+
+        btnMovimientos.setText("Movimientos");
+
+        btnVerLog.setText("Ver log");
+
+        btnVerErrores.setText("Ver errores");
+
+        btnDetalleScript.setText("Detalle script");
+
+        btnEntregar.setText("Entregar");
+
+        btnCancelar.setText("CANCELAR");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnVerLog, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnVerErrores, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDetalleScript, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEntregar, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 380, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane4, GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE))
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(325, 325, 325)
-                        .addComponent(jLabel12))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel15))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGap(540, 540, 540)
+                        .addComponent(btnMovimientos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVerLog, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVerErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDetalleScript, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEntregar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txtPeticion, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtSubmodelo, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtUsuario, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
-                                        .addGap(59, 59, 59)
-                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel14)
-                                            .addComponent(jLabel8)
-                                            .addComponent(jLabel5)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtModelo, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel4)))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(txtBBDD, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(txtSolicitadaPor, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLabel7)))
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtBBDDHistorico, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel10, GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel9, GroupLayout.Alignment.TRAILING)
-                                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(txtEsquema, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLabel6))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(txtFecha, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                                .addGap(108, 108, 108)))
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtEstado, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtEsquemaHistorico, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtRuta, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)))))
-                            .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 919, GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblModeloProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblSubModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblVersionErwin, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSubmodelo, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(scpScripts, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(531, 531, 531)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblEsquema, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblSolicitadaPor, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtSolicitadaPor, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addComponent(txtEsquema, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(103, 103, 103)))
+                                            .addGap(0, 0, 0)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addComponent(lblEsquemaHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(txtEsquemaHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addComponent(lblBBDDHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(txtBBDDHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(lblIdProcesado, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(txtIdProcesado, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(656, 656, 656)
+                                    .addComponent(lblVersionado, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtVersionado))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblOperaciones)
+                                        .addComponent(scpOperaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblObjetos)
+                                        .addComponent(scpObjetos)))
+                                .addComponent(scpComentarios)
+                                .addComponent(scpDescripcion)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtVersionErwin, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRuta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1168, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtModelo, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtSolicitadaPor, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtBBDDHistorico, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSubmodelo, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtBBDD, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEsquemaHistorico, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel8))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPeticion, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtEsquema, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14)
-                    .addComponent(txtEstado, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtUsuario, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel13))
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtFecha, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel10)
-                        .addComponent(txtRuta, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblModeloProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSolicitadaPor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblSolicitadaPor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBBDDHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblBBDDHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSubmodelo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEsquemaHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEsquemaHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEsquema, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEsquema, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtIdProcesado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIdProcesado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblVersionado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtVersionado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblSubModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblVersionErwin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtVersionErwin, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblDescripcion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scpDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addComponent(lblComentarios)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scpComentarios, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addComponent(scpScripts, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblOperaciones)
+                    .addComponent(lblObjetos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scpOperaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(scpObjetos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnEntregar)
                     .addComponent(btnDetalleScript)
                     .addComponent(btnVerErrores)
-                    .addComponent(btnVerLog))
+                    .addComponent(btnVerLog)
+                    .addComponent(btnMovimientos))
                 .addContainerGap())
         );
+
         pack();
-	}
+    }// </editor-fold>//GEN-END:initComponents
 
-	@Override
-	protected void initEvents() {
-		PantallaResumenProcesadoActionListener actionListener = new PantallaResumenProcesadoActionListener(this);
-		ResumenProcesadoScriptsTableListener resumenProcesadoScriptsTableListener = new ResumenProcesadoScriptsTableListener(this);
-		
-		btnEntregar.setActionCommand(MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_ENTREGAR);
-		btnCancelar.setActionCommand(MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_CANCELAR);
-		btnVerErrores.setActionCommand(MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_VER_ERRORES);
-		btnDetalleScript.setActionCommand(MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_DETALLE_SCRIPT);
-		btnVerLog.setActionCommand(MDSQLConstants.PANTALLA_RESUMEN_PROCESADO_VER_LOG);
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnDetalleScript;
+    private javax.swing.JButton btnEntregar;
+    private javax.swing.JButton btnMovimientos;
+    private javax.swing.JButton btnVerErrores;
+    private javax.swing.JButton btnVerLog;
+    private javax.swing.JLabel lblBBDD;
+    private javax.swing.JLabel lblBBDDHistorico;
+    private javax.swing.JLabel lblComentarios;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblEsquema;
+    private javax.swing.JLabel lblEsquemaHistorico;
+    private javax.swing.JLabel lblEstado;
+    private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblIdProcesado;
+    private javax.swing.JLabel lblModeloProyecto;
+    private javax.swing.JLabel lblObjetos;
+    private javax.swing.JLabel lblOperaciones;
+    private javax.swing.JLabel lblPeticion;
+    private javax.swing.JLabel lblRuta;
+    private javax.swing.JLabel lblSolicitadaPor;
+    private javax.swing.JLabel lblSubModelo;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JLabel lblVersionErwin;
+    private javax.swing.JLabel lblVersionado;
+    private javax.swing.JScrollPane scpComentarios;
+    private javax.swing.JScrollPane scpDescripcion;
+    private javax.swing.JScrollPane scpObjetos;
+    private javax.swing.JScrollPane scpOperaciones;
+    private javax.swing.JScrollPane scpScripts;
+    private javax.swing.JTable tblObjetos;
+    private javax.swing.JTable tblOperaciones;
+    private javax.swing.JTable tblScripts;
+    private javax.swing.JTextField txtBBDD;
+    private javax.swing.JTextField txtBBDDHistorico;
+    private javax.swing.JTextArea txtComentarios;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtEsquema;
+    private javax.swing.JTextField txtEsquemaHistorico;
+    private javax.swing.JTextField txtEstado;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtIdProcesado;
+    private javax.swing.JTextField txtModelo;
+    private javax.swing.JTextField txtPeticion;
+    private javax.swing.JTextField txtRuta;
+    private javax.swing.JTextField txtSolicitadaPor;
+    private javax.swing.JTextField txtSubmodelo;
+    private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextField txtVersionErwin;
+    private javax.swing.JTextField txtVersionado;
+    // End of variables declaration//GEN-END:variables
 
-		btnEntregar.addActionListener(actionListener);
-		btnCancelar.addActionListener(actionListener);
-		btnVerErrores.addActionListener(actionListener);
-		btnDetalleScript.addActionListener(actionListener);
-		btnVerLog.addActionListener(actionListener);
-		
-		ListSelectionModel scriptsRowSM = tblScripts.getSelectionModel();
-		scriptsRowSM.addListSelectionListener(resumenProcesadoScriptsTableListener);
-		
-		this.addOnLoadListener(actionListener);
-	}
+    @Override
+    protected void setupComponents() {
+        initComponents();
+    }
 
-	@Override
-	protected void initModels() {
-		Cabecera cabeceraScripts = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.RESUMEN_PROCESADO_SCRIPTS_TABLA_CABECERA);
-		tblScripts.initModel(
-				new ResumenProcesadoScriptsTableModel(cabeceraScripts));
-		
-		Cabecera cabeceraOperaciones = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.RESUMEN_PROCESADO_OPERACIONES_TABLA_CABECERA);
-		tblOperaciones.initModel(
-				new ResumenProcesadoOperacionesTableModel(cabeceraOperaciones));
-		
-		Cabecera cabeceraObjetos = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.RESUMEN_PROCESADO_OBJETOS_TABLA_CABECERA);
-		tblObjetos.initModel(
-				new ResumenProcesadoObjetosTableModel(cabeceraObjetos));
-	}
+    @Override
+    protected void initEvents() {
+        PantallaResumenProcesadoActionListener actionListener = new PantallaResumenProcesadoActionListener(this);
+        ResumenProcesadoScriptsTableListener resumenProcesadoScriptsTableListener = new ResumenProcesadoScriptsTableListener(this);
 
-	@Override
-	protected void initialState() {
-		Boolean entregar = (Boolean) params.get("entregar");
-		if (!Objects.isNull(entregar) && entregar.equals(Boolean.FALSE)) {
-			btnEntregar.setEnabled(Boolean.FALSE);
-			txtComentarios.setEditable(Boolean.FALSE);
-		}
-		
-		txtModelo.setEditable(Boolean.FALSE);
-        txtPeticion.setEditable(Boolean.FALSE);
+        btnMovimientos.addActionListener(actionListener);
+        btnVerLog.addActionListener(actionListener);
+        btnVerErrores.addActionListener(actionListener);
+        btnDetalleScript.addActionListener(actionListener);
+        btnEntregar.addActionListener(actionListener);
+        btnCancelar.addActionListener(actionListener);
+
+        ListSelectionModel scriptsRowSM = tblScripts.getSelectionModel();
+        scriptsRowSM.addListSelectionListener(resumenProcesadoScriptsTableListener);
+
+        this.addOnLoadListener(actionListener);
+    }
+
+    @Override
+    protected void initModels() {
+        Cabecera cabeceraScripts = new TablaResumenProcesadoScriptsCabecera();
+        MDSQLUIHelper.setTableModelRenderer(tblScripts, new ResumenProcesadoScriptsTableModel(cabeceraScripts), null);
+
+        Cabecera cabeceraOperaciones = new TablaResumenProcesadoOperacionesCabecera();
+        MDSQLUIHelper.setTableModelRenderer(tblOperaciones, new ResumenProcesadoOperacionesTableModel(cabeceraOperaciones), null);
+
+        Cabecera cabeceraObjetos = new TablaResumenProcesadoObjetosCabecera();
+        MDSQLUIHelper.setTableModelRenderer(tblObjetos, new ResumenProcesadoObjetosTableModel(cabeceraObjetos), null);
+    }
+
+    @Override
+    protected void initialState() {
+        Boolean entregar = (Boolean) params.get("entregar");
+        if (!Objects.isNull(entregar) && entregar.equals(Boolean.FALSE)) {
+            btnEntregar.setEnabled(Boolean.FALSE);
+            MDSQLUIHelper.setReadOnlyText(txtVersionErwin);
+            MDSQLUIHelper.setReadOnlyText(txtComentarios);
+        }
+        MDSQLUIHelper.setReadOnlyText(txtVersionado);
+        MDSQLUIHelper.setReadOnlyText(txtDescripcion);
+
+        txtModelo.setEditable(Boolean.FALSE);
         txtSolicitadaPor.setEditable(Boolean.FALSE);
-        txtFecha.setEditable(Boolean.FALSE);
-        txtEsquemaHistorico.setEditable(Boolean.FALSE);
-        txtSubmodelo.setEditable(Boolean.FALSE);
-        txtUsuario.setEditable(Boolean.FALSE);
-        txtBBDD.setEditable(Boolean.FALSE);
-        txtEsquema.setEditable(Boolean.FALSE);
         txtBBDDHistorico.setEditable(Boolean.FALSE);
+
+        txtSubmodelo.setEditable(Boolean.FALSE);
+        txtEsquema.setEditable(Boolean.FALSE);
+        txtEsquemaHistorico.setEditable(Boolean.FALSE);
+
+        txtPeticion.setEditable(Boolean.FALSE);
+        txtBBDD.setEditable(Boolean.FALSE);
         txtEstado.setEditable(Boolean.FALSE);
+
+        txtUsuario.setEditable(Boolean.FALSE);
+        txtFecha.setEditable(Boolean.FALSE);
+        txtIdProcesado.setEditable(Boolean.FALSE);
+
         txtRuta.setEditable(Boolean.FALSE);
-        
+        MDSQLUIHelper.setReadOnlyText(txtDescripcion);
+
         btnVerErrores.setEnabled(Boolean.FALSE);
         btnDetalleScript.setEnabled(Boolean.FALSE);
         btnVerLog.setEnabled(Boolean.FALSE);
-	}
+    }
 
-	@Override
-	protected void setupLiterals() {
-		setTitle(literales.getLiteral("PantallaResumenProcesado.titulo"));
-		
-		jLabel1.setText(literales.getLiteral("PantallaResumenProcesado.label1"));
-        jLabel2.setText(literales.getLiteral("PantallaResumenProcesado.label2"));
-        jLabel3.setText(literales.getLiteral("PantallaResumenProcesado.label3"));
-        jLabel4.setText(literales.getLiteral("PantallaResumenProcesado.label4"));
-        jLabel5.setText(literales.getLiteral("PantallaResumenProcesado.label5"));
-        jLabel6.setText(literales.getLiteral("PantallaResumenProcesado.label6"));
-        jLabel7.setText(literales.getLiteral("PantallaResumenProcesado.label7"));
-        jLabel8.setText(literales.getLiteral("PantallaResumenProcesado.label8"));
-        jLabel9.setText(literales.getLiteral("PantallaResumenProcesado.label9"));
-        btnVerLog.setText(literales.getLiteral("PantallaResumenProcesado.verLog"));
-        btnCancelar.setText(literales.getLiteral("PantallaResumenProcesado.cancelar"));
-        jLabel10.setText(literales.getLiteral("PantallaResumenProcesado.label10"));
-        jLabel11.setText(literales.getLiteral("PantallaResumenProcesado.label11"));
-        jLabel12.setText(literales.getLiteral("PantallaResumenProcesado.label12"));
-        jLabel13.setText(literales.getLiteral("PantallaResumenProcesado.label13"));
-        jLabel14.setText(literales.getLiteral("PantallaResumenProcesado.label14"));
-        jLabel15.setText(literales.getLiteral("PantallaResumenProcesado.label15"));
-        btnVerErrores.setText(literales.getLiteral("PantallaResumenProcesado.verErrores"));
-        btnDetalleScript.setText(literales.getLiteral("PantallaResumenProcesado.detalleScript"));
-        btnEntregar.setText(literales.getLiteral("PantallaResumenProcesado.entrega"));
-        
-        jLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
-        
+    @Override
+    protected void setupLiterals() {
+        setTitulo();
+
+        setTexto(lblModeloProyecto, "lblModeloProyecto");
+        setTexto(lblSolicitadaPor, "lblSolicitadaPor");
+        setTexto(lblBBDDHistorico, "lblBBDDHistorico");
+
+        setTexto(lblSubModelo, "lblSubModelo");
+        setTexto(lblEsquema, "lblEsquema");
+        setTexto(lblEsquemaHistorico, "lblEsquemaHistorico");
+
+        setTexto(lblPeticion, "lblPeticion");
+        setTexto(lblBBDD, "lblBBDD");
+        setTexto(lblEstado, "lblEstado");
+
+        setTexto(lblUsuario, "lblUsuario");
+        setTexto(lblFecha, "lblFecha");
+        setTexto(lblIdProcesado, "lblIdProcesado");
+
+        setTexto(lblRuta, "lblRuta");
+
+        setTexto(lblVersionErwin, "lblVersionErwin");
+        setTexto(lblVersionado, "lblVersionado");
+
+        setTexto(lblDescripcion, "lblDescripcion");
+        setTexto(lblComentarios, "lblComentarios");
+
+        setTexto(lblOperaciones, "lblOperaciones");
+        setTexto(lblObjetos, "lblObjetos");
+
+        setTexto(btnMovimientos, "btnMovimientos");
+        setTexto(btnVerLog, "btnVerLog");
+        setTexto(btnVerErrores, "btnVerErrores");
+        setTexto(btnDetalleScript, "btnDetalleScript");
+        setTexto(btnEntregar, "btnEntregar");
+        setTexto(btnCancelar, "btnCancelar");
+
+        lblModeloProyecto.setHorizontalAlignment(SwingConstants.RIGHT);
         txtModelo.setHorizontalAlignment(JTextField.LEFT);
         txtPeticion.setHorizontalAlignment(JTextField.LEFT);
         txtSolicitadaPor.setHorizontalAlignment(JTextField.LEFT);
@@ -454,6 +621,111 @@ public class PantallaResumenProcesado extends DialogSupport {
         txtEsquema.setHorizontalAlignment(JTextField.LEFT);
         txtBBDDHistorico.setHorizontalAlignment(JTextField.LEFT);
         txtEstado.setHorizontalAlignment(JTextField.LEFT);
-        txtRuta.setHorizontalAlignment(JTextField.LEFT);
-	}
+        txtIdProcesado.setHorizontalAlignment(JTextField.LEFT);
+    }
+
+    public JButton getBtnCancelar() {
+        return btnCancelar;
+    }
+
+    public JButton getBtnDetalleScript() {
+        return btnDetalleScript;
+    }
+
+    public JButton getBtnEntregar() {
+        return btnEntregar;
+    }
+
+    public JButton getBtnMovimientos() {
+        return btnMovimientos;
+    }
+
+    public JButton getBtnVerErrores() {
+        return btnVerErrores;
+    }
+
+    public JButton getBtnVerLog() {
+        return btnVerLog;
+    }
+
+    public JTable getTblObjetos() {
+        return tblObjetos;
+    }
+
+    public JTable getTblOperaciones() {
+        return tblOperaciones;
+    }
+
+    public JTable getTblScripts() {
+        return tblScripts;
+    }
+
+    public JTextField getTxtBBDD() {
+        return txtBBDD;
+    }
+
+    public JTextField getTxtBBDDHistorico() {
+        return txtBBDDHistorico;
+    }
+
+    public JTextArea getTxtComentarios() {
+        return txtComentarios;
+    }
+
+    public JTextArea getTxtDescripcion() {
+        return txtDescripcion;
+    }
+
+    public JTextField getTxtEsquema() {
+        return txtEsquema;
+    }
+
+    public JTextField getTxtEsquemaHistorico() {
+        return txtEsquemaHistorico;
+    }
+
+    public JTextField getTxtEstado() {
+        return txtEstado;
+    }
+
+    public JTextField getTxtFecha() {
+        return txtFecha;
+    }
+
+    public JTextField getTxtIdProcesado() {
+        return txtIdProcesado;
+    }
+
+    public JTextField getTxtModelo() {
+        return txtModelo;
+    }
+
+    public JTextField getTxtPeticion() {
+        return txtPeticion;
+    }
+
+    public JTextField getTxtRuta() {
+        return txtRuta;
+    }
+
+    public JTextField getTxtSolicitadaPor() {
+        return txtSolicitadaPor;
+    }
+
+    public JTextField getTxtSubmodelo() {
+        return txtSubmodelo;
+    }
+
+    public JTextField getTxtUsuario() {
+        return txtUsuario;
+    }
+
+    public JTextField getTxtVersionErwin() {
+        return txtVersionErwin;
+    }
+
+    public JTextField getTxtVersionado() {
+        return txtVersionado;
+    }
+
 }

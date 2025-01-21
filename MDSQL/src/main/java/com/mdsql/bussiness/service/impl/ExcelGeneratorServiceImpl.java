@@ -1,34 +1,34 @@
 package com.mdsql.bussiness.service.impl;
 
+import com.mdsql.bussiness.entities.Historico;
+import com.mdsql.bussiness.entities.InformeCambios;
+import com.mdsql.bussiness.entities.Permiso;
+import com.mdsql.bussiness.entities.Sinonimo;
+import com.mdsql.bussiness.service.ExcelGeneratorService;
+import com.mdsql.utils.MDSQLConstants;
+import com.mdval.exceptions.ServiceException;
+import com.mdval.utils.DateFormatter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
-import com.mdsql.bussiness.entities.Historico;
-import com.mdsql.bussiness.entities.Permiso;
-import com.mdsql.bussiness.entities.Sinonimo;
-import com.mdsql.utils.DateFormatter;
+import javax.swing.JTable;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.stereotype.Service;
-
-import com.mdsql.bussiness.entities.InformeCambios;
-import com.mdsql.bussiness.service.ExcelGeneratorService;
-import com.mdsql.utils.MDSQLConstants;
-import java.io.IOException;
-import javax.swing.JTable;
-
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
 /**
  * @author hcarreno
@@ -44,7 +44,7 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
     private static final String FORMATO_ARCHIVO_PERMISOS = "%s_%s_%s.xls";
 
     private static final String FORMATO_ARCHIVO_SINONIMOS = "%s_%s_%s.xls";
-    
+
     private static final String FORMATO_ARCHIVO_SINONIMOS_XLSX = "%s_%s_%s.xlsx";
 
     private final DateFormatter dateInformeFormatter;
@@ -56,8 +56,98 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
         path = configuration.getConfig("RutaInformes");
     }
 
+    //Convertir los atributos de un objeto a un array
+    private static Object[] objectToArray(Object objeto, boolean nombres) {
+        try {
+            // Obtener el objeto Class que representa la clase actual
+            Class<?> clazz = objeto.getClass();
+
+            // Obtener todos los campos declarados en la clase
+            Field[] fields = clazz.getDeclaredFields();
+
+            // Crear un array de Object para almacenar los valores de los atributos
+            Object[] atributosArray = new Object[fields.length];
+
+            // Recorrer los campos y obtener sus valores
+            for (int i = 0; i < fields.length; i++) {
+                // Hacer accesible el campo (si es privado)
+                fields[i].setAccessible(true);
+                // Obtener el valor del campo para la instancia actual (this)
+                atributosArray[i] = nombres ? fields[i].getName() : fields[i].get(objeto);
+            }
+
+            return atributosArray;
+        } catch (IllegalAccessException e) {
+        }
+        return null;
+    }
+
+    /**
+     * El titulo indica
+     *
+     * @param plantilla
+     * @param ficheroSalida
+     * @param filas
+     * @throws ServiceException
+     */
+    @Override
+    public void exportListToExcel(String plantilla, File ficheroSalida, List<Object> filas) throws ServiceException {
+        if (filas == null || filas.isEmpty()) {
+            throw new ServiceException("ExcelGeneratorServiceImpl.exportListToExcel :: Lista Vacía no se puede generar el fichero");
+        }
+        File file = new File(plantilla);
+        if (!file.exists()) {
+            throw new ServiceException("No existe el fichero de plantilla: " + plantilla);
+        }
+        try (FileInputStream fis = new FileInputStream(file); Workbook workbook = new XSSFWorkbook(fis)) {
+            Sheet sheet = workbook.getSheet("Hoja1");
+            int row = sheet.getLastRowNum(); //normalmente la fila 0 son los titulos
+            Object[] titulos = objectToArray(filas.get(row++), true);
+            // Datos
+            for (Object obj : filas) {
+                Row sheetRow = sheet.createRow(row++);
+                int col = 0;
+                Object[] arrObj = objectToArray(obj, false);
+                for (int idx = 0; idx < Math.min(arrObj.length, titulos.length); idx++) {
+                    //Excluir la columna serialVersionUID
+                    if (!titulos[idx].equals("serialVersionUID")) {
+                        Cell cell = sheetRow.createCell(col++);
+                        Object value = arrObj[idx];
+                        if (value instanceof String) {
+                            cell.setCellValue((String) value);
+                        } else if (value instanceof Integer) {
+                            cell.setCellValue((Integer) value);
+                        } else if (value instanceof Double) {
+                            cell.setCellValue((Double) value);
+                        } else if (value instanceof Float) {
+                            cell.setCellValue((Float) value);
+                        } else if (value != null) {
+                            cell.setCellValue(value.toString());
+                        }
+                    }
+                }
+            }
+
+            // Escribir el libro de trabajo en un archivo
+            try (FileOutputStream fos = new FileOutputStream(ficheroSalida)) {
+                workbook.write(fos);
+            }
+            System.out.println("Fichero '" + ficheroSalida.getAbsolutePath() + "' creado correctamente.");
+        } catch (IOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+
+    }
+
     //Dado un JTable genera un documento Excel con la informacion
-    public static void exportTableToExcel(JTable table, String fileName) throws IOException {
+    /**
+     *
+     * @param table
+     * @param fileName
+     * @throws IOException
+     */
+    @Override
+    public void exportTableToExcel(String fileName, JTable table) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Datos");
         // Encabezados
@@ -101,8 +191,6 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
         System.out.println("Fichero '" + fileName + "' creado correctamente.");
     }
 
-
-
     @Override
     @SneakyThrows
     public void generarExcelSinonimos(JTable table, String sufijo, String codigoProyecto) {
@@ -111,10 +199,9 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
         String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS_XLSX, codigoProyecto, sufijo, sDate);
         fileName = path + File.separator + fileName;
         log.info("Archivo: {}", fileName);
-        exportTableToExcel(table, fileName);
+        exportTableToExcel(fileName, table);
     }
 
-  
     @Override
     @SneakyThrows
     public void generarExcelPermisos(JTable table, String sufijo, String codigoProyecto) {
@@ -123,114 +210,105 @@ public class ExcelGeneratorServiceImpl extends ServiceSupport implements ExcelGe
         String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS_XLSX, codigoProyecto, sufijo, sDate);
         fileName = path + File.separator + fileName;
         log.info("Archivo: {}", fileName);
-        exportTableToExcel(table, fileName);
+        exportTableToExcel(fileName, table);
     }
 
-	@Override
-	@SneakyThrows
-	public void generarExcelHistoricoCambios(List<InformeCambios> listaCambios, String path, String codigoProyecto,
-			String fechaDesde, String fechaHasta) {
-		
-		String fileName = String.format(FORMATO_ARCHIVO_HISTORICO_CAMBIOS, codigoProyecto, fechaDesde, fechaHasta);
-		log.info("Archivo: {}", fileName);
+    @Override
+    @SneakyThrows
+    public void generarExcelHistoricoCambios(List<InformeCambios> listaCambios, String path, String codigoProyecto,
+            String fechaDesde, String fechaHasta) {
 
-		try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_HISTORICO_CAMBIOS_TEMPLATE_LOCATION);
-				FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName);
-				Workbook workbook = new HSSFWorkbook(inputStream)) {
-		
-			Sheet sheet = workbook.getSheet("Hoja1");
+        String fileName = String.format(FORMATO_ARCHIVO_HISTORICO_CAMBIOS, codigoProyecto, fechaDesde, fechaHasta);
+        log.info("Archivo: {}", fileName);
 
-			setupCabeceraInformeHistoricoCambios(sheet);
+        try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_HISTORICO_CAMBIOS_TEMPLATE_LOCATION); FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName); Workbook workbook = new HSSFWorkbook(inputStream)) {
 
-			int rowNum = 1; // row to start writting
-			for (InformeCambios informe : listaCambios) {
-				createRowInformeHistoricoCambios(sheet, informe, rowNum);
-				rowNum += 1;
-			}
-	
-			workbook.write(outputStream);
-		}
-	}
+            Sheet sheet = workbook.getSheet("Hoja1");
 
-	@Override
-	@SneakyThrows
-	public void generarExcelHistorico(List<Historico> lista, String path, String sufijo, String codigoProyecto, Date date) {
-		String sDate = dateInformeFormatter.dateToString(date);
+            setupCabeceraInformeHistoricoCambios(sheet);
 
-		String fileName = String.format(FORMATO_ARCHIVO_HISTORICO, codigoProyecto, sufijo, sDate);
-		log.info("Archivo: {}", fileName);
+            int rowNum = 1; // row to start writting
+            for (InformeCambios informe : listaCambios) {
+                createRowInformeHistoricoCambios(sheet, informe, rowNum);
+                rowNum += 1;
+            }
 
-		try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_HISTORICO_TEMPLATE_LOCATION);
-			 FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName);
-			 Workbook workbook = new HSSFWorkbook(inputStream)) {
+            workbook.write(outputStream);
+        }
+    }
 
-			Sheet sheet = workbook.getSheet("Hoja1");
+    @Override
+    @SneakyThrows
+    public void generarExcelHistorico(List<Historico> lista, String path, String sufijo, String codigoProyecto, Date date) {
+        String sDate = dateInformeFormatter.dateToString(date);
 
-			setupCabeceraInformeHistorico(sheet);
+        String fileName = String.format(FORMATO_ARCHIVO_HISTORICO, codigoProyecto, sufijo, sDate);
+        log.info("Archivo: {}", fileName);
 
-			int rowNum = 1; // row to start writting
-			for (Historico historico : lista) {
-				createRowInformeHistorico(sheet, historico, rowNum);
-				rowNum += 1;
-			}
+        try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_HISTORICO_TEMPLATE_LOCATION); FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName); Workbook workbook = new HSSFWorkbook(inputStream)) {
 
-			workbook.write(outputStream);
-		}
-	}
+            Sheet sheet = workbook.getSheet("Hoja1");
 
-	@Override
-	@SneakyThrows
-	public void generarExcelSinonimos(List<Sinonimo> sinonimosGenerales, String path, String sufijo,  String codigoProyecto, Date date) {
-		String sDate = dateInformeFormatter.dateToString(date);
+            setupCabeceraInformeHistorico(sheet);
 
-		String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS, codigoProyecto, sufijo, sDate);
-		log.info("Archivo: {}", fileName);
+            int rowNum = 1; // row to start writting
+            for (Historico historico : lista) {
+                createRowInformeHistorico(sheet, historico, rowNum);
+                rowNum += 1;
+            }
 
-		try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_SINONIMOS_TEMPLATE_LOCATION);
-			 FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName);
-			 Workbook workbook = new HSSFWorkbook(inputStream)) {
+            workbook.write(outputStream);
+        }
+    }
 
-			Sheet sheet = workbook.getSheet("Hoja1");
+    @Override
+    @SneakyThrows
+    public void generarExcelSinonimos(List<Sinonimo> sinonimosGenerales, String path, String sufijo, String codigoProyecto, Date date) {
+        String sDate = dateInformeFormatter.dateToString(date);
 
-			setupCabeceraSinonimos(sheet);
+        String fileName = String.format(FORMATO_ARCHIVO_SINONIMOS, codigoProyecto, sufijo, sDate);
+        log.info("Archivo: {}", fileName);
 
-			int rowNum = 1; // row to start writting
-			for (Sinonimo sinonimo : sinonimosGenerales) {
-				createRowSinonimo(sheet, sinonimo, rowNum);
-				rowNum += 1;
-			}
+        try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_SINONIMOS_TEMPLATE_LOCATION); FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName); Workbook workbook = new HSSFWorkbook(inputStream)) {
 
-			workbook.write(outputStream);
-		}
-	}
+            Sheet sheet = workbook.getSheet("Hoja1");
 
-	@Override
-	@SneakyThrows
-	public void generarExcelPermisos(List<Permiso> permisosGenerales, String path, String sufijo, String codigoProyecto, Date date) {
-		String sDate = dateInformeFormatter.dateToString(date);
+            setupCabeceraSinonimos(sheet);
 
-		String fileName = String.format(FORMATO_ARCHIVO_PERMISOS, codigoProyecto, sufijo, sDate);
-		log.info("Archivo: {}", fileName);
+            int rowNum = 1; // row to start writting
+            for (Sinonimo sinonimo : sinonimosGenerales) {
+                createRowSinonimo(sheet, sinonimo, rowNum);
+                rowNum += 1;
+            }
 
-		try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_PERMISOS_TEMPLATE_LOCATION);
-			 FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName);
-			 Workbook workbook = new HSSFWorkbook(inputStream)) {
+            workbook.write(outputStream);
+        }
+    }
 
-			Sheet sheet = workbook.getSheet("Hoja1");
+    @Override
+    @SneakyThrows
+    public void generarExcelPermisos(List<Permiso> permisosGenerales, String path, String sufijo, String codigoProyecto, Date date) {
+        String sDate = dateInformeFormatter.dateToString(date);
 
-			setupCabeceraPermisos(sheet);
+        String fileName = String.format(FORMATO_ARCHIVO_PERMISOS, codigoProyecto, sufijo, sDate);
+        log.info("Archivo: {}", fileName);
 
-			int rowNum = 1; // row to start writting
-			for (Permiso permiso : permisosGenerales) {
-				createRowPermiso(sheet, permiso, rowNum);
-				rowNum += 1;
-			}
+        try (InputStream inputStream = getClass().getResourceAsStream(MDSQLConstants.LISTADO_PERMISOS_TEMPLATE_LOCATION); FileOutputStream outputStream = new FileOutputStream(path + File.separator + fileName); Workbook workbook = new HSSFWorkbook(inputStream)) {
 
-			workbook.write(outputStream);
-		}
-	}
+            Sheet sheet = workbook.getSheet("Hoja1");
 
-    
+            setupCabeceraPermisos(sheet);
+
+            int rowNum = 1; // row to start writting
+            for (Permiso permiso : permisosGenerales) {
+                createRowPermiso(sheet, permiso, rowNum);
+                rowNum += 1;
+            }
+
+            workbook.write(outputStream);
+        }
+    }
+
     private void setupCabeceraSinonimos(Sheet sheet) {
         Row row = sheet.getRow(0);
 

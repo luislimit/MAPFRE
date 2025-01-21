@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 public class OutputConsultaProcesado implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8077635735910629830L;
-	private String nombreModelo;
+     *
+     */
+    private static final long serialVersionUID = -8077635735910629830L;
+    private String nombreModelo;
     private String codigoUsrPeticion;
     private String nombreBBDDHistorico;
     private String descripcionSubProyecto;
@@ -38,7 +38,11 @@ public class OutputConsultaProcesado implements Serializable {
     private String mcaInicial;
     private String txtRutaEntrada;
     private List<ScriptEjecutado> listaScriptsEjecutados;
-    
+    //
+    private String versionErwin;
+    private String versionado;
+    private String descripcion;
+    //
     private Integer result;
     private ServiceException serviceException;
 }

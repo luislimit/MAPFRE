@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import org.apache.commons.lang3.StringUtils;
 
 import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.bussiness.entities.OutputConsultaModelos;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.service.ModeloService;
 import com.mdsql.ui.PantallaSeleccionModelos;
@@ -18,7 +18,7 @@ import com.mdsql.ui.adapter.DoubleClickable;
 import com.mdsql.ui.model.SeleccionModelosTableModel;
 import com.mdsql.ui.utils.ListenerSupport;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.ConfigurationSingleton;
+import com.mdval.utils.ConfigurationSingleton;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
@@ -76,13 +76,12 @@ public class PantallaSeleccionModelosListener extends ListenerSupport implements
             String nombreModelo = pantallaSeleccionModelos.getTxtNombreModelo().getText();
             String codSubmodelo = pantallaSeleccionModelos.getTxtCodSubmodelo().getText();
 
-            List<Modelo> modelos = buscar(codModelo, nombreModelo, codSubmodelo);
+            List<Modelo> modelos = buscar(codModelo, nombreModelo, codSubmodelo, true);
             populateModel(modelos);
 
             pantallaSeleccionModelos.forceRepaint();
         } catch (ServiceException e) {
-            Map<String, Object> params = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantallaSeleccionModelos.getFrameParent(), MDSQLConstants.CMD_ERROR, params);
+            MDSQLUIHelper.showErrors(pantallaSeleccionModelos, e);
         }
     }
 
@@ -100,20 +99,16 @@ public class PantallaSeleccionModelosListener extends ListenerSupport implements
      * @return
      * @throws ServiceException
      */
-    private List<Modelo> buscar(String codModelo, String nombreModelo, String codSubmodelo) throws ServiceException {
+    private List<Modelo> buscar(String codModelo, String nombreModelo, String codSubmodelo, boolean showWarnings) throws ServiceException {
         ModeloService modeloService = (ModeloService) getService(MDSQLConstants.MODELO_SERVICE);
 
-        OutputConsultaModelos outputConsultaModelos = modeloService.consultaModelos(codModelo, nombreModelo, codSubmodelo);
+        OutputConsulta<Modelo> output = modeloService.consultaModelos(codModelo, nombreModelo, codSubmodelo);
 
-        // Hay avisos
-        if (outputConsultaModelos.getResult() == 2) {
-            /*ServiceException serviceException = outputConsultaModelos.getServiceException();
-            Map<String, Object> params = MDSQLUIHelper.buildWarnings(serviceException.getErrors());
-            MDSQLUIHelper.showPopup(pantallaSeleccionModelos.getFrameParent(), MDSQLConstants.CMD_WARN, params);*/
-            MDSQLUIHelper.showWarnings(pantallaSeleccionModelos, outputConsultaModelos.getServiceException());
+        if (showWarnings){
+            MDSQLUIHelper.showWarnings(pantallaSeleccionModelos, output.getWarnings());
         }
 
-        return outputConsultaModelos.getModelos();
+        return output.getLista();
     }
 
     /**
@@ -156,10 +151,10 @@ public class PantallaSeleccionModelosListener extends ListenerSupport implements
                 String nombreModelo = ""; //pantallaSeleccionModelos.getTxtNombreModelo().getText();
                 String codSubmodelo = ""; //pantallaSeleccionModelos.getTxtCodSubmodelo().getText();
 
-                List<Modelo> modelos = buscar(codModelo, nombreModelo, codSubmodelo);
+                List<Modelo> modelos = buscar(codModelo, nombreModelo, codSubmodelo, false);
                 populateModel(modelos);
             }
-        } catch (IOException | ServiceException e) {
+        } catch (ServiceException|IOException e) {
             pantallaSeleccionModelos.setErrorOnload(Boolean.TRUE);
             MDSQLUIHelper.showErrors(pantallaSeleccionModelos, e);
         }

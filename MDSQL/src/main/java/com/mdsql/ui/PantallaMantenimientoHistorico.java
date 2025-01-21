@@ -12,6 +12,7 @@ import com.mdsql.bussiness.entities.Modelo;
 import com.mdsql.ui.listener.PantallaMantenimientoHistoricoListener;
 import com.mdsql.ui.listener.tables.HistoricoTableListener;
 import com.mdsql.ui.model.HistoricoTableModel;
+import com.mdsql.ui.model.cabeceras.TablaHistoricoCabecera;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
@@ -190,7 +191,7 @@ pack();
 	
 	 @Override
 	 protected void initModels() {
-		 Cabecera cabeceraHistorico = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.MNTO_HISTORICO_TABLA_CABECERA);
+		 Cabecera cabeceraHistorico = new TablaHistoricoCabecera();
 		 tblMantenimientoHistorico.initModel(
 				 new HistoricoTableModel(cabeceraHistorico));
 	 }

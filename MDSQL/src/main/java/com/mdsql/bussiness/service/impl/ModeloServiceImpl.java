@@ -1,5 +1,10 @@
 package com.mdsql.bussiness.service.impl;
 
+import com.mdsql.bussiness.entities.*;
+import com.mdsql.bussiness.service.ModeloService;
+import com.mdsql.utils.MDSQLConstants;
+import com.mdval.exceptions.ServiceException;
+import com.mdval.utils.LogWrapper;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -8,20 +13,10 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import javax.sql.DataSource;
-
-import com.mdsql.bussiness.entities.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mdsql.bussiness.service.ModeloService;
-import com.mdsql.utils.MDSQLConstants;
-import com.mdval.exceptions.ServiceException;
-import com.mdval.utils.LogWrapper;
-
-import lombok.extern.slf4j.Slf4j;
-
 
 /**
  * @author hcarreno
@@ -30,233 +25,188 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ModeloServiceImpl extends ServiceSupport implements ModeloService {
 
-	@Autowired
-	private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-	@Override
-	public OutputConsultaModelos consultaModelos(String codigoProyecto, String nombreModelo,
-			String codigoSubProyecto) throws ServiceException {
-		String runSP = createCall("p_con_modelos", MDSQLConstants.CALL_06_ARGS);
+    @Override
+    public OutputConsulta<Modelo> consultaModelos(String codigoProyecto, String nombreModelo,
+            String codigoSubProyecto) throws ServiceException {
+        String runSP = createCall("p_con_modelos", 6);
 
-		try (Connection conn = dataSource.getConnection();
-			 CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-			String typeModelo = createCallType(MDSQLConstants.T_T_MODELO);
-			String typeError = createCallTypeError();
+            String typeModelo = createCallType(MDSQLConstants.T_T_MODELO);
 
-			logProcedure(runSP, codigoProyecto, nombreModelo, codigoSubProyecto);
+            logProcedure(runSP, codigoProyecto, nombreModelo, codigoSubProyecto);
 
-			callableStatement.setString(1, codigoProyecto);
-			callableStatement.setString(2, nombreModelo);
-			callableStatement.setString(3, codigoSubProyecto);
-			callableStatement.registerOutParameter(4, Types.ARRAY, typeModelo);
-			callableStatement.registerOutParameter(5, Types.INTEGER);
-			callableStatement.registerOutParameter(6, Types.ARRAY, typeError);
+            callableStatement.setString(1, codigoProyecto);
+            callableStatement.setString(2, nombreModelo);
+            callableStatement.setString(3, codigoSubProyecto);
+            callableStatement.registerOutParameter(4, Types.ARRAY, typeModelo);
 
-			callableStatement.execute();
+            OutputWarning result = executeStatement(callableStatement);
 
-			Integer result = callableStatement.getInt(5);
+            OutputConsulta<Modelo> outputConsultaModelos = new OutputConsulta<>();
+            outputConsultaModelos.setOutputWarning(result);
 
-			if (result == 0) {
-				throw buildException(callableStatement.getArray(6));
-			}
+            List<Modelo> modelos = new ArrayList<>();
+            Array arrayModelos = callableStatement.getArray(4);
 
-			OutputConsultaModelos outputConsultaModelos = new OutputConsultaModelos();
-			outputConsultaModelos.setResult(result);
-			
-			// Hay avisos
-			if (result == 2) {
-				outputConsultaModelos.setServiceException(buildException(callableStatement.getArray(6)));
-			}
-			
-			List<Modelo> modelos = new ArrayList<>();
-			Array arrayModelos = callableStatement.getArray(4);
-			
-			if (arrayModelos != null) {
-				Object[] rows = (Object[]) arrayModelos.getArray();
-				for (Object row : rows) {
-					Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
+            if (arrayModelos != null) {
+                Object[] rows = (Object[]) arrayModelos.getArray();
+                for (Object row : rows) {
+                    Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
 
-					Modelo modelo = Modelo.builder()
-							.codigoProyecto((String) cols[0])
-							.nombreModelo((String) cols[1])
-							.nombreEsquema((String) cols[2])
-							.nombreBbdd((String) cols[3])
-							.nombreCarpetaAdj((String) cols[4])
-							.codigoCapaUsrown((String) cols[5])
-							.mcaVariables((String) cols[6])
-							.mcaGrantAll((String) cols[7])
-							.mcaGrantPublic((String) cols[8])
-							.mcaInh((String) cols[9])
-							.observaciones((String) cols[10])
-							.entregaPDC((String) cols[11])
-							.mcaHis((String) cols[12])
-							.build();
-					
-					// Lista de subproyectos
-					fillSubproyectos(modelo, cols);
-					
-					modelos.add(modelo);
-				}
-				
-				outputConsultaModelos.setModelos(modelos);
-			}
+                    Modelo modelo = Modelo.builder()
+                            .codigoProyecto((String) cols[0])
+                            .nombreModelo((String) cols[1])
+                            .nombreEsquema((String) cols[2])
+                            .nombreBbdd((String) cols[3])
+                            .nombreCarpetaAdj((String) cols[4])
+                            .codigoCapaUsrown((String) cols[5])
+                            .mcaVariables((String) cols[6])
+                            .mcaGrantAll((String) cols[7])
+                            .mcaGrantPublic((String) cols[8])
+                            .mcaInh((String) cols[9])
+                            .observaciones((String) cols[10])
+                            .entregaPDC((String) cols[11])
+                            .mcaHis((String) cols[12])
+                            .build();
 
-			return outputConsultaModelos;
-		} catch (SQLException e) {
-			LogWrapper.error(log, "[ModeloService.consultaModelos] Error: %s", e.getMessage());
-			throw new ServiceException(e);
-		}
-	}
+                    // Lista de subproyectos
+                    fillSubproyectos(modelo, cols);
 
-	@Override
-	public OutputVariablesModelo consultaVariables(Modelo modelo) throws ServiceException {
-		String runSP = createCall("p_con_vbles_modelo", MDSQLConstants.CALL_04_ARGS);
+                    modelos.add(modelo);
+                }
 
-		try (Connection conn = dataSource.getConnection();
-			 CallableStatement callableStatement = conn.prepareCall(runSP)) {
+                outputConsultaModelos.setLista(modelos);
+            }
 
-			String typeVariable = createCallType(MDSQLConstants.T_T_VARIABLE);
-			String typeError = createCallTypeError();
+            return outputConsultaModelos;
+        } catch (SQLException e) {
+            LogWrapper.error(log, "[ModeloService.consultaModelos] Error: %s", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
 
-			String codigoProyecto = modelo.getCodigoProyecto();
-			logProcedure(runSP, codigoProyecto);
+    @Override
+    public OutputConsulta<Variable> consultaVariables(Modelo modelo) throws ServiceException {
+        String runSP = createCall("p_con_vbles_modelo", 4);
 
-			callableStatement.setString(1, codigoProyecto);
-			callableStatement.registerOutParameter(2, Types.ARRAY, typeVariable);
-			callableStatement.registerOutParameter(3, Types.INTEGER);
-			callableStatement.registerOutParameter(4, Types.ARRAY, typeError);
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-			callableStatement.execute();
+            String typeVariable = createCallType(MDSQLConstants.T_T_VARIABLE);
 
-			Integer result = callableStatement.getInt(3);
+            String codigoProyecto = modelo.getCodigoProyecto();
+            logProcedure(runSP, codigoProyecto);
 
-			if (result == 0) {
-				throw buildException(callableStatement.getArray(4));
-			}
-			
-			OutputVariablesModelo outputVariablesModelo = new OutputVariablesModelo();
-			outputVariablesModelo.setResult(result);
-			
-			// Hay avisos
-			if (result == 2) {
-				outputVariablesModelo.setServiceException(buildException(callableStatement.getArray(4)));
-			}
+            callableStatement.setString(1, codigoProyecto);
+            callableStatement.registerOutParameter(2, Types.ARRAY, typeVariable);
 
-			List<Variable> variables = new ArrayList<>();
-			Array arrayVariables = callableStatement.getArray(2);
+            OutputWarning result = executeStatement(callableStatement);
 
-			if (arrayVariables != null) {
-				Object[] rows = (Object[]) arrayVariables.getArray();
-				for (Object row : rows) {
-					Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
+            OutputConsulta<Variable> output = new OutputConsulta<>();
+            output.setOutputWarning(result);
 
-					Variable variable = Variable.builder()
-							.codigoProyecto((String) cols[0])
-							.codigoVariable((String) cols[1])
-							.entorno((String) cols[2])
-							.bbdd((String) cols[3])
-							.tipo((String) cols[4])
-							.valor((String) cols[5])
-							.valorSustituir((String) cols[6])
-							.peticion((String) cols[7])
-							.usoInterno((String) cols[8])
-							.habilitada((String) cols[9])
-							.comentario((String) cols[10])
-							.usrModificacion((String) cols[11])
-							.fechaModificacion((java.util.Date) cols[12])
-							.usrAlta((String) cols[13])
-							.fechaAlta((java.util.Date) cols[14])
-							.build();
+            List<Variable> variables = new ArrayList<>();
+            Array arrayVariables = callableStatement.getArray(2);
 
-					variables.add(variable);
-				}
-				
-				outputVariablesModelo.setVariables(variables);
-			}
-			
-			return outputVariablesModelo;
-		} catch (SQLException e) {
-			LogWrapper.error(log, "[ModeloService.consultaVariables] Error:  %s", e.getMessage());
-			throw new ServiceException(e);
-		}
-	}
+            if (arrayVariables != null) {
+                Object[] rows = (Object[]) arrayVariables.getArray();
+                for (Object row : rows) {
+                    Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
 
-	@Override
-	public OutputActualizarVariablesModelo actualizarVariableModelo(String codigoProyecto, String codigoVariable, String entorno, String bbdd, String tipoVariable, String valorVariable, String valorSustituir, String codigoPeticion, String mcaInterno, String mcaHabilitado, String comentario, String codUsr) throws ServiceException {
-		String runSP = createCall("p_mnto_vbles_modelo", MDSQLConstants.CALL_14_ARGS);
+                    Variable variable = Variable.builder()
+                            .codigoProyecto((String) cols[0])
+                            .codigoVariable((String) cols[1])
+                            .entorno((String) cols[2])
+                            .bbdd((String) cols[3])
+                            .tipo((String) cols[4])
+                            .valor((String) cols[5])
+                            .valorSustituir((String) cols[6])
+                            .peticion((String) cols[7])
+                            .usoInterno((String) cols[8])
+                            .habilitada((String) cols[9])
+                            .comentario((String) cols[10])
+                            .usrModificacion((String) cols[11])
+                            .fechaModificacion((java.util.Date) cols[12])
+                            .usrAlta((String) cols[13])
+                            .fechaAlta((java.util.Date) cols[14])
+                            .mcaExcepcion((String) cols[15])
+                            .build();
 
-		try (Connection conn = dataSource.getConnection();
-			 CallableStatement callableStatement = conn.prepareCall(runSP)) {
+                    variables.add(variable);
+                }
+                output.setLista(variables);
+            }
 
-			String typeError = createCallTypeError();
+            return output;
+        } catch (SQLException e) {
+            LogWrapper.error(log, "[ModeloService.consultaVariables] Error:  %s", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
 
-			logProcedure(runSP, codigoProyecto, codigoVariable, entorno, bbdd, tipoVariable, valorVariable, valorSustituir, codigoPeticion, mcaInterno, mcaHabilitado, comentario, codUsr);
+    @Override
+    public OutputWarning actualizarVariableModelo(String codigoProyecto, String codigoVariable, String entorno, String bbdd,
+            String tipoVariable, String valorVariable, String valorSustituir, String codigoPeticion,
+            String mcaInterno, String mcaHabilitado, String mcaExcepcion, String comentario, String codUsr
+    ) throws ServiceException {
 
-			callableStatement.setString(1, codigoProyecto);
-			callableStatement.setString(2, codigoVariable);
-			callableStatement.setString(3, entorno);
-			callableStatement.setString(4, bbdd);
-			callableStatement.setString(5, tipoVariable);
-			callableStatement.setString(6, valorVariable);
-			callableStatement.setString(7, valorSustituir);
-			callableStatement.setString(8, codigoPeticion);
-			callableStatement.setString(9, mcaInterno);
-			callableStatement.setString(10, mcaHabilitado);
-			callableStatement.setString(11, comentario);
-			callableStatement.setString(12, codUsr);
+        String runSP = createCall("p_mnto_vbles_modelo", 15);
 
-			callableStatement.registerOutParameter(13, Types.INTEGER);
-			callableStatement.registerOutParameter(14, Types.ARRAY, typeError);
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-			callableStatement.execute();
+            logProcedure(runSP, codigoProyecto, codigoVariable, entorno, bbdd, tipoVariable, valorVariable,
+                    valorSustituir, codigoPeticion, mcaInterno, mcaHabilitado, mcaExcepcion, comentario, codUsr);
 
-			Integer result = callableStatement.getInt(13);
+            callableStatement.setString(1, codigoProyecto);
+            callableStatement.setString(2, codigoVariable);
+            callableStatement.setString(3, entorno);
+            callableStatement.setString(4, bbdd);
+            callableStatement.setString(5, tipoVariable);
+            callableStatement.setString(6, valorVariable);
+            callableStatement.setString(7, valorSustituir);
+            callableStatement.setString(8, codigoPeticion);
+            callableStatement.setString(9, mcaInterno);
+            callableStatement.setString(10, mcaHabilitado);
+            callableStatement.setString(11, mcaExcepcion);
+            callableStatement.setString(12, comentario);
+            callableStatement.setString(13, codUsr);
 
-			if (result == 0) {
-				throw buildException(callableStatement.getArray(14));
-			}
-			
-			OutputActualizarVariablesModelo outputActualizarVariablesModelo = new OutputActualizarVariablesModelo();
-			outputActualizarVariablesModelo.setResult(result);
-			
-			// Hay avisos
-			if (result == 2) {
-				outputActualizarVariablesModelo.setServiceException(buildException(callableStatement.getArray(14)));
-			}
+            return executeStatement(callableStatement);
 
-			return outputActualizarVariablesModelo;
-		} catch (SQLException e) {
-			LogWrapper.error(log, "[ModeloService.actualizarVariableModelo] Error:  %s", e.getMessage());
-			throw new ServiceException(e);
-		}
-	}
+        } catch (SQLException e) {
+            LogWrapper.error(log, "[ModeloService.actualizarVariableModelo] Error:  %s", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
 
-	/**
-	 * @param modelo
-	 * @param arraySubProyectos
-	 * @throws SQLException
-	 */
-	private void fillSubproyectos(Modelo modelo, Object[] cols) throws SQLException {
-		try {
-			Array arraySubProyectos = (Array) cols[13];
-			if (!Objects.isNull(arraySubProyectos)) {
-				List<SubProyecto> subProyectos = new ArrayList<>();
-				Object[] subs = (Object[]) arraySubProyectos.getArray();
-				for (Object sub : subs) {
-					Object[] sub_cols = ((oracle.jdbc.OracleStruct) sub).getAttributes();
-	
-					SubProyecto subProyecto = SubProyecto.builder()
-							.codigoSubProyecto((String) sub_cols[0])
-							.descripcionSubProyecto((String) sub_cols[1])
-							.build();
-					subProyectos.add(subProyecto);
-				}
-				
-				modelo.setSubproyectos(subProyectos);
-			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			LogWrapper.error(log, "[ModeloService.fillSubproyectos] Error: %s", e.getMessage());
-		}
-	}
+    /**
+     * @param modelo
+     * @param arraySubProyectos
+     * @throws SQLException
+     */
+    private void fillSubproyectos(Modelo modelo, Object[] cols) throws SQLException {
+        try {
+            Array arraySubProyectos = (Array) cols[13];
+            if (!Objects.isNull(arraySubProyectos)) {
+                List<SubProyecto> subProyectos = new ArrayList<>();
+                Object[] subs = (Object[]) arraySubProyectos.getArray();
+                for (Object sub : subs) {
+                    Object[] sub_cols = ((oracle.jdbc.OracleStruct) sub).getAttributes();
+
+                    SubProyecto subProyecto = SubProyecto.builder()
+                            .codigoSubProyecto((String) sub_cols[0])
+                            .descripcionSubProyecto((String) sub_cols[1])
+                            .build();
+                    subProyectos.add(subProyecto);
+                }
+
+                modelo.setSubproyectos(subProyectos);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LogWrapper.error(log, "[ModeloService.fillSubproyectos] Error: %s", e.getMessage());
+        }
+    }
 }

@@ -3,7 +3,6 @@ package com.mdsql.bussiness.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +15,10 @@ import lombok.NoArgsConstructor;
 public class HistoricoProceso implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -3330091903761565934L;
-	private String codigoPeticion;
+     *
+     */
+    private static final long serialVersionUID = -3330091903761565934L;
+    private String codigoPeticion;
     private String descripcionEstadoProceso;
     private Date fechaProceso;
     private String codigoSubProyecto;

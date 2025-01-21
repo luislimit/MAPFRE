@@ -1,6 +1,6 @@
 package com.mdsql.bussiness.service.impl;
 
-import com.mdsql.bussiness.entities.OutputConsultaPermisosColumna;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.PermisoColumna;
 import com.mdsql.bussiness.service.PermisosColumnaService;
 import com.mdsql.utils.MDSQLConstants;
@@ -29,23 +29,23 @@ public class PermisosColumnaServiceImpl extends ServiceSupport implements Permis
     private DataSource dataSource;
 
     @Override
-    public OutputConsultaPermisosColumna consultaPermisos(
+    public OutputConsulta<PermisoColumna> consultaPermisos(
             String p_cod_proyecto,
             String p_nom_objeto,
             String p_nom_columna,
             String p_des_entorno,
             String p_val_grant, // Permiso
-            String p_cod_usr_grant, // Receptor permisos 
+            String p_cod_usr_grant, // Receptor permisos
             String p_mca_grant_option,
             String p_mca_pdc, // Incluir en PDC
             String p_mca_habilitado
     ) throws ServiceException {
-        
+
         String runSP = createCall("p_con_per_columna", MDSQLConstants.CALL_12_ARGS);
 
         try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-            String typePermisoCol = createCallType("T_T_PERMISO_COL");
+            String typePermisoCol = createCallType(MDSQLConstants.T_T_PERMISO_COL);
             String typeError = createCallTypeError();
 
             logProcedure(runSP, p_cod_proyecto,
@@ -72,11 +72,11 @@ public class PermisosColumnaServiceImpl extends ServiceSupport implements Permis
             callableStatement.registerOutParameter(12, Types.ARRAY, typeError);
 
             callableStatement.execute();
-  
+
             Array arrayTipo = callableStatement.getArray(10);
             Integer result = callableStatement.getInt(11);
             Array errores = callableStatement.getArray(12);
-            
+
             return trataRespuesta(arrayTipo, result, errores);
 
         } catch (SQLException e) {
@@ -86,7 +86,7 @@ public class PermisosColumnaServiceImpl extends ServiceSupport implements Permis
     }
 
     @Override
-    public OutputConsultaPermisosColumna guardarPermiso(
+    public OutputConsulta<PermisoColumna> guardarPermiso(
             PermisoColumna permisoColumna,
             String p_mca_alta
     ) throws ServiceException {
@@ -105,8 +105,8 @@ public class PermisosColumnaServiceImpl extends ServiceSupport implements Permis
             String p_mca_habilitado = permisoColumna.getMcaHabilitado();
             String p_cod_peticion = permisoColumna.getCodPeticion();
             String p_cod_usr = permisoColumna.getCodUsr();
-            
-            String typePermisoCol = createCallType("T_T_PERMISO_COL");
+
+            String typePermisoCol = createCallType(MDSQLConstants.T_T_PERMISO_COL);
             String typeError = createCallTypeError();
 
             logProcedure(runSP, p_cod_proyecto,
@@ -139,11 +139,11 @@ public class PermisosColumnaServiceImpl extends ServiceSupport implements Permis
             callableStatement.registerOutParameter(15, Types.ARRAY, typeError);
 
             callableStatement.execute();
-  
+
             Array arrayTipo = callableStatement.getArray(13);
             Integer result = callableStatement.getInt(14);
             Array errores = callableStatement.getArray(15);
-            
+
             return trataRespuesta(arrayTipo, result, errores);
 
         } catch (SQLException e) {
@@ -152,44 +152,44 @@ public class PermisosColumnaServiceImpl extends ServiceSupport implements Permis
         }
     }
 
-    private OutputConsultaPermisosColumna trataRespuesta(Array arrayTipo, Integer result, Array errores) throws ServiceException,SQLException {
-            if (result == 0) {
-                throw buildException(errores);
-            }
-            // Recuperar los datos de Permisos
-            List<PermisoColumna> permisosColumna = new ArrayList<>();
+    private OutputConsulta<PermisoColumna> trataRespuesta(Array arrayTipo, Integer result, Array errores) throws ServiceException, SQLException {
+        if (result == 0) {
+            throw buildException(errores);
+        }
+        // Recuperar los datos de Permisos
+        List<PermisoColumna> permisosColumna = new ArrayList<>();
 
-            if (arrayTipo != null) {
-                Object[] rows = (Object[]) arrayTipo.getArray();
-                for (Object row : rows) {
-                    Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
-                    PermisoColumna permisoColumna = PermisoColumna.builder()
-                            .codigoProyecto((String) cols[0])
-                            .codUsrGrant((String) cols[1])
-                            .nomObjeto((String) cols[2])
-                            .nomColumna((String) cols[3])
-                            .valGrant((String) cols[4])
-                            .desEntorno((String) cols[5])
-                            .tipObjeto((String) cols[6])
-                            .mcaGrantOption((String) cols[7])
-                            .mcaPdc((String) cols[8])
-                            .mcaHabilitado((String) cols[9])
-                            .codPeticion((String) cols[10])
-                            .codUsr((String) cols[11])
-                            .fecActu((java.util.Date) cols[12])
-                            .codUsrAlta((String) cols[13])
-                            .fecAlta((java.util.Date) cols[14])
-                            .build();
-                    permisosColumna.add(permisoColumna);
-                }
+        if (arrayTipo != null) {
+            Object[] rows = (Object[]) arrayTipo.getArray();
+            for (Object row : rows) {
+                Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
+                PermisoColumna permisoColumna = PermisoColumna.builder()
+                        .codigoProyecto((String) cols[0])
+                        .codUsrGrant((String) cols[1])
+                        .nomObjeto((String) cols[2])
+                        .nomColumna((String) cols[3])
+                        .valGrant((String) cols[4])
+                        .desEntorno((String) cols[5])
+                        .tipObjeto((String) cols[6])
+                        .mcaGrantOption((String) cols[7])
+                        .mcaPdc((String) cols[8])
+                        .mcaHabilitado((String) cols[9])
+                        .codPeticion((String) cols[10])
+                        .codUsr((String) cols[11])
+                        .fecActu((java.util.Date) cols[12])
+                        .codUsrAlta((String) cols[13])
+                        .fecAlta((java.util.Date) cols[14])
+                        .build();
+                permisosColumna.add(permisoColumna);
             }
-            OutputConsultaPermisosColumna output = new OutputConsultaPermisosColumna();
-            output.setPermisosColumna(permisosColumna);
-            output.setResult(result);
-            // Hay avisos
-            if (result == 2) {
-                output.setServiceException(buildException(errores));
-            }
-            return output;
+        }
+        OutputConsulta<PermisoColumna> output = new OutputConsulta();
+        output.setLista(permisosColumna);
+        output.setResult(result);
+        // Hay avisos
+        if (result == 2) {
+            output.setWarnings(buildException(errores));
+        }
+        return output;
     }
 }

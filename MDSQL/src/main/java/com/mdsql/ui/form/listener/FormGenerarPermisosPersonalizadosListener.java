@@ -34,7 +34,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Luis-Enrique.Varona
  */
-public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportModeloPermiso implements ActionListener, ListSelectionListener{
+public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportModeloPermiso implements ActionListener, ListSelectionListener {
 
     private final FormGenerarPermisosPersonalizados pantalla;
 
@@ -60,30 +60,33 @@ public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportMo
         try {
             PermisosPersonalizadosService permisosPersonalizadosService = (PermisosPersonalizadosService) getService(MDSQLConstants.PERMISOS_PERSONALIZADOS_SERVICE);
             String p_cod_proyecto = pantalla.getTxtModeloProyecto().getText();
-            String p_cod_sub_proy = getValueCmbSubModelo(); 
+
+            Object obj = pantalla.getCmbSubModelo().getSelectedItem();
+            String p_cod_sub_proy = obj == null ? null : obj.toString();
+
             String p_nom_objeto = pantalla.getTxtNombreObjeto().getText();
             String p_tip_objeto = (String) pantalla.getCmbTipoObjeto().getSelectedItem();
             String p_cod_peticion = pantalla.getTxtPeticion().getText();
 
-            OutputConsultaPermisosPersonalizados output; 
+            OutputConsultaPermisosPersonalizados output;
             output = permisosPersonalizadosService.consultaPermisoSinonimo(p_cod_proyecto, p_cod_sub_proy, p_nom_objeto, p_tip_objeto, p_cod_peticion);
-            
+
             PermisosColumnaTableModel permisosTableModel = (PermisosColumnaTableModel) pantalla.getTblPermisos().getModel();
             permisosTableModel.clearData();
-            permisosTableModel.setData(output.getPermisosColumna());    
-            
+            permisosTableModel.setData(output.getPermisosColumna());
+
             SinonimosObjetoTableModel sinonimosTableModel = (SinonimosObjetoTableModel) pantalla.getTblSinonimos().getModel();
             sinonimosTableModel.clearData();
-            sinonimosTableModel.setData(output.getSinonimosObjeto()); 
-            
+            sinonimosTableModel.setData(output.getSinonimosObjeto());
+
             boolean tablesWithData = !(output.getPermisosColumna().isEmpty() && output.getSinonimosObjeto().isEmpty());
             pantalla.getBtnGenerar().setEnabled(tablesWithData);
-            
-            MDSQLUIHelper.showWarnings(pantalla, output.getServiceException());
+
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
 
         } catch (ServiceException e) {
             MDSQLUIHelper.showErrors(pantalla, e);
-        }        
+        }
     }
 
     private void evtBtnGenerar() {
@@ -101,19 +104,18 @@ public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportMo
         params.put(MDSQLConstants.P_IN_COD_PETICION, codPeticion);
 
         FormConfirmacionGeneracionPermisos formConfirmacionGeneracionPermisos;
-        formConfirmacionGeneracionPermisos= MDSQLUIHelper.showForm(pantalla.getFrameParent(), FormConfirmacionGeneracionPermisos.class, params);
+        formConfirmacionGeneracionPermisos = MDSQLUIHelper.showForm(pantalla.getFrameParent(), FormConfirmacionGeneracionPermisos.class, params);
 
         String result = (String) formConfirmacionGeneracionPermisos.getReturnParams().get(MDSQLConstants.P_OUT_EXIT_BUTTON);
-        if (result != null && result.equals(MDSQLConstants.BTN_ACEPTAR)){
+        if (result != null && result.equals(MDSQLConstants.BTN_ACEPTAR)) {
             Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-	    Proceso proceso = session.getProceso();
+            Proceso proceso = session.getProceso();
             params.put("proceso", proceso);
-	    params.put("entregar", Boolean.FALSE);
-            MDSQLUIHelper.showForm(pantalla.getFrameParent(),PantallaResumenProcesado.class, new HashMap<>());
+            params.put("entregar", Boolean.TRUE);
+            MDSQLUIHelper.showForm(pantalla.getFrameParent(), PantallaResumenProcesado.class, params);
         }
     }
-    
-    
+
     @Override
     public void clearForm() {
         super.clearForm();
@@ -122,9 +124,9 @@ public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportMo
         ((PermisosColumnaTableModel) pantalla.getTblPermisos().getModel()).clearData();
         ((SinonimosObjetoTableModel) pantalla.getTblSinonimos().getModel()).clearData();
         pantalla.getBtnGenerar().setEnabled(false);
-    }    
-    
-   @Override
+    }
+
+    @Override
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
             return;
@@ -149,5 +151,5 @@ public class FormGenerarPermisosPersonalizadosListener extends ListenerSupportMo
             //Habilitar botones
             pantalla.getBtnGenerar().setEnabled(true);
         }
-    }    
+    }
 }

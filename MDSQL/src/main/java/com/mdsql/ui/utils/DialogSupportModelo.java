@@ -30,6 +30,8 @@ public abstract class DialogSupportModelo extends DialogSupport {
     @Setter
     protected SubProyecto subModelo;
 
+    @Getter
+    @Setter
     protected ListenerSupportModelo formListener;
 
     /**
@@ -70,8 +72,8 @@ public abstract class DialogSupportModelo extends DialogSupport {
     public JComboBox<SubProyecto> getCmbSubModelo() {
         return null;
     }
-    
+
     public JButton getBtnLimpiar() {
         return null;
-    }    
+    }
 }

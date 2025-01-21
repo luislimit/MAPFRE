@@ -1,18 +1,21 @@
 package com.mdsql.bussiness.service;
 
-import java.math.BigDecimal;
+import com.mdsql.bussiness.entities.OutputValidaUsuario;
+import com.mdval.exceptions.ServiceException;
 
 /**
  * @author hcarreno
  */
 public interface UtilsService {
 
+   
     /**
-     * @param idProceso
-     * @param txtComentario
+     *
      * @param codigoUsuario
+     * @param numVersion
      * @return
+     * @throws com.mdval.exceptions.ServiceException
      */
-    void rechazarProcesado(BigDecimal idProceso, String txtComentario, String codigoUsuario);
+    OutputValidaUsuario validaUsuario(String codigoUsuario, String numVersion) throws ServiceException;
 
 }

@@ -16,6 +16,7 @@ public class NivelAvisosTableCellRenderer extends DefaultTableCellRenderer {
 
 	private static final long serialVersionUID = 1L;
 
+        @Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int col) {
 
@@ -26,7 +27,7 @@ public class NivelAvisosTableCellRenderer extends DefaultTableCellRenderer {
 			Integer orden = aviso.getNivelImportancia().getCodigoNivelAviso().intValue();
 			setColorCelda(c, orden, col, isSelected);
 		}
-
+                
 		return c;
 	}
 

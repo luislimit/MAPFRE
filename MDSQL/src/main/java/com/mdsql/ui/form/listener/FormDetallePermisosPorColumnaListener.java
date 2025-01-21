@@ -12,7 +12,7 @@ package com.mdsql.ui.form.listener;
 
 import com.mdsql.bussiness.entities.Grant;
 import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.bussiness.entities.OutputConsultaPermisosColumna;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.PermisoColumna;
 import com.mdsql.bussiness.service.ExcelGeneratorService;
 import com.mdsql.bussiness.service.PermisosColumnaService;
@@ -22,10 +22,10 @@ import com.mdsql.ui.form.FormMantenimientoPermisosPorColumna;
 import com.mdsql.ui.model.PermisosColumnaTableModel;
 import com.mdsql.ui.utils.ListenerSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.ConfigurationSingleton;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
+import com.mdval.utils.ConfigurationSingleton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -89,8 +89,7 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
             excelGeneratorService.generarExcelPermisos(pantalla.getTblPermisos(), sufijoPermisos, proyecto);
 
         } catch (IOException e) {
-            Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantalla.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
         }
     }
 
@@ -129,7 +128,7 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
         setDefWithGrantOption(COMBOBOX_SINVALOR);
         setDefIncluirPDC(COMBOBOX_SINVALOR);
         setDefHabilitada(false);
-        fillCmbPermiso("COLUMNA"); // 
+        fillCmbPermiso("COLUMNA"); //
         clearForm();
         fillTblPermisos();
     }
@@ -141,11 +140,11 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
             String p_nom_objeto = pantalla.getTxtTabla().getText();
             String p_des_entorno = (String) pantalla.getCmbEntorno().getSelectedItem();
 
-            String p_nom_columna = pantalla.getTxtColumna().getText(); // 
+            String p_nom_columna = pantalla.getTxtColumna().getText(); //
             System.out.println("(String) pantalla.getCmbPermiso().getSelectedItem()=" + (String) pantalla.getCmbPermiso().getSelectedItem());
             String p_val_grant = (String) pantalla.getCmbPermiso().getSelectedItem(); // Permiso
 
-            // Receptor permisos 
+            // Receptor permisos
             Grant grant = ((Grant) pantalla.getCmbReceptorPermisos().getSelectedItem());
             String p_cod_usr_grant = null;
             if (grant != null) {
@@ -156,7 +155,7 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
             String p_mca_grant_option = (String) pantalla.getCmbWithGrantOption().getSelectedItem();
             String p_mca_habilitado = MDSQLAppHelper.normalizeValueToCheck(pantalla.getChkHabilitada().isSelected());
 
-            OutputConsultaPermisosColumna output
+            OutputConsulta<PermisoColumna> output
                     = permisosColumnaService.consultaPermisos(p_cod_proyecto,
                             p_nom_objeto,
                             p_nom_columna,
@@ -169,12 +168,12 @@ public class FormDetallePermisosPorColumnaListener extends ListenerSupportModelo
 
             PermisosColumnaTableModel permisosTableModel = (PermisosColumnaTableModel) pantalla.getTblPermisos().getModel();
             permisosTableModel.clearData();
-            permisosTableModel.setData(output.getPermisosColumna());
+            permisosTableModel.setData(output.getLista());
 
-            MDSQLUIHelper.showWarnings(pantalla, output.getServiceException());
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
 
             // Si hay datos en una de las dos tablas, habilitamos el botón de informe
-            boolean hayDatosParaInforme = (output.getPermisosColumna() != null && !output.getPermisosColumna().isEmpty());
+            boolean hayDatosParaInforme = (output.getLista() != null && !output.getLista().isEmpty());
             pantalla.getBtnInforme().setEnabled(hayDatosParaInforme);
             //No hay elemento seleccionado, no se puede modificar
             pantalla.getBtnModificacion().setEnabled(false);

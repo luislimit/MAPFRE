@@ -11,114 +11,111 @@ import javax.swing.JButton;
 import org.apache.commons.lang3.StringUtils;
 
 import com.mdsql.bussiness.entities.Entorno;
-import com.mdsql.bussiness.entities.OutputConsultarEntornos;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.service.EntornoService;
 import com.mdsql.ui.PantallaMantenimientoEntornos;
 import com.mdsql.ui.model.EntornoTableModel;
 import com.mdsql.ui.utils.ListenerSupport;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.ConfigurationSingleton;
+import com.mdval.utils.ConfigurationSingleton;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.utils.AppHelper;
 
 public class PantallaMantenimientoEntornosListener extends ListenerSupport implements ActionListener {
-	private PantallaMantenimientoEntornos pantallaMantenimientoEntornos;
 
-	public PantallaMantenimientoEntornosListener(PantallaMantenimientoEntornos pantallaMantenimientoEntornos) {
-		super();
-		this.pantallaMantenimientoEntornos = pantallaMantenimientoEntornos;
-	}
+    private final PantallaMantenimientoEntornos pantalla;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton jButton = (JButton) e.getSource();
-		
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_BUSCAR.equals(jButton.getActionCommand())) {
-			eventBtnBuscar();
-		}
+    public PantallaMantenimientoEntornosListener(PantallaMantenimientoEntornos pantalla) {
+        super();
+        this.pantalla = pantalla;
+    }
 
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_GRABAR.equals(jButton.getActionCommand())) {
-			eventBtnGrabar();
-		}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton jButton = (JButton) e.getSource();
 
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_CANCELAR.equals(jButton.getActionCommand())) {
-			pantallaMantenimientoEntornos.dispose();
-		}
-	}
-	
-	private void eventBtnBuscar() {
-		try {
-			actualizarEntornos();
-		} catch (ServiceException | IOException e) {
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaMantenimientoEntornos.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
-	}
+        if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_BUSCAR.equals(jButton.getActionCommand())) {
+            eventBtnBuscar();
+        }
 
-	private void eventBtnGrabar() {
-		try {
-			EntornoService entornoService = (EntornoService) getService(MDSQLConstants.ENTORNO_SERVICE);
-			Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-			String codUsr = session.getCodUsr();
+        if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_GRABAR.equals(jButton.getActionCommand())) {
+            eventBtnGrabar();
+        }
 
-			String claveEncriptacion = ConfigurationSingleton.getInstance().getConfig("TOKEN");
+        if (MDSQLConstants.PANTALLA_MANTENIMIENTO_ENTORNOS_CANCELAR.equals(jButton.getActionCommand())) {
+            pantalla.dispose();
+        }
+    }
 
-			String nomBBDD = pantallaMantenimientoEntornos.getTxtBBDD().getText();
-			String nomEsquema = pantallaMantenimientoEntornos.getTxtEsquema().getText();
-			String password = pantallaMantenimientoEntornos.getTxtPassword().getText();
-			String mcaHabilitado = AppHelper.normalizeValueToCheck(pantallaMantenimientoEntornos.getChkHabilitada().isSelected());
-			String comentario = pantallaMantenimientoEntornos.getTxtComentario().getText();
+    private void eventBtnBuscar() {
+        try {
+            actualizarEntornos();
+        } catch (ServiceException | IOException e) {
+            MDSQLUIHelper.showErrors(pantalla, e);
+        }
+    }
 
-			entornoService.guardarEntorno(nomBBDD, nomEsquema, claveEncriptacion, password, mcaHabilitado, comentario, codUsr);
+    private void eventBtnGrabar() {
+        try {
+            EntornoService entornoService = (EntornoService) getService(MDSQLConstants.ENTORNO_SERVICE);
+            Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+            String codUsr = session.getCodUsr();
 
-			clearForm();
-			actualizarEntornos();
-		} catch (ServiceException | IOException e) {
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaMantenimientoEntornos.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
+            String claveEncriptacion = ConfigurationSingleton.getInstance().getConfig("TOKEN");
 
-	}
+            String nomBBDD = pantalla.getTxtBBDD().getText();
+            String nomEsquema = pantalla.getTxtEsquema().getText();
+            String password = pantalla.getTxtPassword().getText();
+            String mcaHabilitado = AppHelper.normalizeValueToCheck(pantalla.getChkHabilitada().isSelected());
+            String comentario = pantalla.getTxtComentario().getText();
 
-	private void clearForm() {
-		pantallaMantenimientoEntornos.getTxtBBDD().setText(StringUtils.EMPTY);
-		pantallaMantenimientoEntornos.getTxtEsquema().setText(StringUtils.EMPTY);
-		pantallaMantenimientoEntornos.getTxtPassword().setText(StringUtils.EMPTY);
-		pantallaMantenimientoEntornos.getChkHabilitada().setSelected(Boolean.FALSE);
-		pantallaMantenimientoEntornos.getTxtComentario().setText(StringUtils.EMPTY);
+            OutputWarning output = entornoService.guardarEntorno(nomBBDD, nomEsquema, claveEncriptacion, password, mcaHabilitado, comentario, codUsr);
 
-		pantallaMantenimientoEntornos.getBtnGrabar().setEnabled(Boolean.TRUE);
-	}
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
+            
+            clearForm();
+            actualizarEntornos();
+        } catch (ServiceException | IOException e) {
+            MDSQLUIHelper.showErrors(pantalla, e);
+        }
+    }
 
-	private void actualizarEntornos() throws ServiceException, IOException {
-		EntornoService entornoService = (EntornoService) getService(MDSQLConstants.ENTORNO_SERVICE);
-		String claveEncriptacion = ConfigurationSingleton.getInstance().getConfig("TOKEN");
+    private void clearForm() {
+        pantalla.getTxtBBDD().setText(StringUtils.EMPTY);
+        pantalla.getTxtEsquema().setText(StringUtils.EMPTY);
+        pantalla.getTxtPassword().setText(StringUtils.EMPTY);
+        pantalla.getChkHabilitada().setSelected(Boolean.FALSE);
+        pantalla.getTxtComentario().setText(StringUtils.EMPTY);
 
-		String nomBBDD = pantallaMantenimientoEntornos.getTxtBBDD().getText();
-		String nomEsquema = pantallaMantenimientoEntornos.getTxtEsquema().getText();
-		String mcaHabilitado = AppHelper.normalizeValueToCheck(pantallaMantenimientoEntornos.getChkHabilitada().isSelected());
+        pantalla.getBtnGrabar().setEnabled(Boolean.TRUE);
+    }
 
-		OutputConsultarEntornos outputConsultarEntornos  = entornoService.consultarEntornos(nomBBDD, nomEsquema, claveEncriptacion, mcaHabilitado);
-		
-		// Hay avisos
-		if (outputConsultarEntornos.getResult() == 2) {
-			ServiceException serviceException = outputConsultarEntornos.getServiceException();
-			Map<String, Object> params = MDSQLUIHelper.buildWarnings(serviceException.getErrors());
-			MDSQLUIHelper.showPopup(pantallaMantenimientoEntornos.getFrameParent(), MDSQLConstants.CMD_WARN, params);
-		}
+    private void actualizarEntornos() throws ServiceException, IOException {
+        EntornoService entornoService = (EntornoService) getService(MDSQLConstants.ENTORNO_SERVICE);
+        String claveEncriptacion = ConfigurationSingleton.getInstance().getConfig("TOKEN");
 
-		fillEntornos(outputConsultarEntornos.getEntornos());
-	}
+        String nomBBDD = pantalla.getTxtBBDD().getText();
+        String nomEsquema = pantalla.getTxtEsquema().getText();
+        String mcaHabilitado = AppHelper.normalizeValueToCheck(pantalla.getChkHabilitada().isSelected());
 
-	private void fillEntornos(List<Entorno> list) throws ServiceException {
-		// Obtiene el modelo y lo actualiza
-		EntornoTableModel tableModel = (EntornoTableModel) pantallaMantenimientoEntornos
-				.getTblMantenimientoEntornos().getModel();
-		tableModel.clearData();
+        OutputConsulta<Entorno> output = entornoService.consultarEntornos(nomBBDD, nomEsquema, claveEncriptacion, mcaHabilitado);
 
-		tableModel.setData(list);
-	}
+        // Hay avisos
+        MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
+
+        fillEntornos(output.getLista());
+    }
+
+    private void fillEntornos(List<Entorno> list) throws ServiceException {
+        // Obtiene el modelo y lo actualiza
+        EntornoTableModel tableModel = (EntornoTableModel) pantalla
+                .getTblMantenimientoEntornos().getModel();
+        tableModel.clearData();
+
+        tableModel.setData(list);
+    }
 }

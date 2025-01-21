@@ -1,5 +1,6 @@
 package com.mdval.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,21 +20,17 @@ public class LiteralesSingleton {
     private static LiteralesSingleton instance;
 
     private Properties properties;
+    private long ultimaModificacion = -1;
 
     private LiteralesSingleton() throws IOException {
-        properties = new Properties();
-
-        //the base folder is ./, the root of the main.properties file  
-        String literalesPath = "./literales.properties";
-
-        try (FileInputStream fistream = new FileInputStream(literalesPath)) {
-            properties.load(new InputStreamReader(fistream, StandardCharsets.ISO_8859_1));
-        }
+        loadLiterales();
     }
 
     public static LiteralesSingleton getInstance() throws IOException {
         if (instance == null) {
             instance = new LiteralesSingleton();
+        } else  {
+            instance.loadLiterales();
         }
         return instance;
     }
@@ -75,4 +72,23 @@ public class LiteralesSingleton {
         }
         return valor;
     }
+    
+    
+    private void loadLiterales() throws IOException {
+        //the base folder is ./, the root of the main.properties file  
+        String literalesPath = "./literales.properties";
+        File file = new File(literalesPath);
+
+        if (ultimaModificacion == file.lastModified()) {
+            return;
+        }
+
+        properties = new Properties();
+        try (FileInputStream fistream = new FileInputStream(literalesPath)) {
+            properties.load(new InputStreamReader(fistream, StandardCharsets.ISO_8859_1));
+        }
+
+        ultimaModificacion = file.lastModified();
+    }
+
 }

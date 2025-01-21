@@ -5,29 +5,31 @@
  */
 package com.mdsql.ui.menu;
 
-import java.awt.event.ActionListener;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
-import com.mdsql.ui.listener.MenuListener;
 import com.mdsql.ui.listener.MenuMantenimientoActionListener;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.utils.FrameSupport;
-import com.mdval.ui.utils.MenuSupport;
+import com.mdval.utils.LiteralesSingleton;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author federico
  */
-public class MainMenuBar extends MenuSupport {
+@Slf4j
+public class MainMenuBar extends JMenuBar {
 
     /**
      *
      */
     private static final long serialVersionUID = -519829056044806094L;
+    protected LiteralesSingleton literales;
 
-    private FrameSupport frameParent;
+    private final FrameSupport frameParent;
 
     private JMenu mnuPermisos;
     private JMenu mnuVariables;
@@ -38,6 +40,7 @@ public class MainMenuBar extends MenuSupport {
     private JMenuItem mnuItemNotasModelos;
     private JMenu mnuConsultas;
     private JMenuItem mnuConsultaHistoricoCambios;
+    private JMenuItem mnuConsultaHistoricoCambiosModelo;
     private JMenuItem mnuConsultaPeticiones;
     private JMenu mnuScriptInicial;
     private JMenuItem mnuMantenimientoHistorico;
@@ -52,15 +55,33 @@ public class MainMenuBar extends MenuSupport {
     private JMenuItem mnuEjecucionScriptInicial;
 //    private JMenuItem mnuConfiguracionEntornosPrueba;
 
+    private JMenu mnuAvisosValidaciones;
+    private JMenuItem mnuAvisosPorObjeto;
+    private JMenuItem mnuValidacionesProgramadas;
+
+    private JMenu mnuDiagramas;
+    private JMenuItem mnuMantenimientoDiagramas;
+    private JMenuItem mnuConsultaDiagramas;
+
     public MainMenuBar(FrameSupport frameParent) {
-        super();
         this.frameParent = frameParent;
+        initialize();
+    }
+
+    private void initialize() {
+        try {
+            initComponents();
+            initLiterals();
+            initEvents();
+        } catch (IOException e) {
+            log.warn("ERROR:", e);
+        }
     }
 
     /**
      *
      */
-    @Override
+    //@Override
     protected void initComponents() {
         mnuPermisos = new JMenu();
 
@@ -103,6 +124,10 @@ public class MainMenuBar extends MenuSupport {
         mnuConsultaHistoricoCambios.setActionCommand(MDSQLConstants.MNU_CONSULTA_HISTORICO_CAMBIOS); // NOI18N
         mnuConsultas.add(mnuConsultaHistoricoCambios);
 
+        mnuConsultaHistoricoCambiosModelo = new JMenuItem();
+        mnuConsultaHistoricoCambiosModelo.setActionCommand(MDSQLConstants.MNU_CONSULTA_HISTORICO_CAMBIOS_MODELO); // NOI18N
+        mnuConsultas.add(mnuConsultaHistoricoCambiosModelo);
+
         mnuConsultaPeticiones = new JMenuItem();
         mnuConsultaPeticiones.setActionCommand(MDSQLConstants.MNU_CONSULTA_PETICIONES); // NOI18N
         mnuConsultas.add(mnuConsultaPeticiones);
@@ -122,18 +147,48 @@ public class MainMenuBar extends MenuSupport {
         mnuMantenimientoHistorico = new JMenuItem();
         mnuMantenimientoHistorico.setActionCommand(MDSQLConstants.MNU_MANTENIMIENTO_HISTORICO); // NOI18N
 
+        // Menu avisos y validaciones
+        mnuAvisosValidaciones = new JMenu();
+        mnuAvisosValidaciones.setActionCommand(MDSQLConstants.MNU_AVISOS_VALIDACIONES); // NOI18N
+
+        mnuAvisosPorObjeto = new JMenuItem();
+        mnuAvisosPorObjeto.setActionCommand(MDSQLConstants.MNU_AVISOS_OBJETO);
+        mnuAvisosValidaciones.add(mnuAvisosPorObjeto);
+
+        mnuValidacionesProgramadas = new JMenuItem();
+        mnuValidacionesProgramadas.setActionCommand(MDSQLConstants.MNU_VALIDACIONES_PROGRAMADAS); // NOI18N
+        mnuAvisosValidaciones.add(mnuValidacionesProgramadas);
+
+        // Menu Diagramas
+        mnuDiagramas = new JMenu();
+        mnuDiagramas.setActionCommand(MDSQLConstants.MNU_DIAGRAMAS); // NOI18N
+
+        mnuMantenimientoDiagramas = new JMenuItem();
+        mnuMantenimientoDiagramas.setActionCommand(MDSQLConstants.MNU_MANTENIMIENTO_DIAGRAMAS); // NOI18N
+        mnuDiagramas.add(mnuMantenimientoDiagramas);
+
+        mnuConsultaDiagramas = new JMenuItem();
+        mnuConsultaDiagramas.setActionCommand(MDSQLConstants.MNU_CONSULTA_DIAGRAMAS); // NOI18N
+        mnuDiagramas.add(mnuConsultaDiagramas);
+
+        //Añadir los menús al principal
         add(mnuPermisos);
         add(mnuEntornos);
         add(mnuVariables);
         add(mnuNotasModelos);
         add(mnuConsultas);
         add(mnuScriptInicial);
+
+        add(mnuAvisosValidaciones);
+        add(mnuDiagramas);
+
         add(mnuMantenimientoHistorico);
     }
 
     /**
      *
      */
+    //@Override
     protected void setupLiterals() {
         mnuPermisos.setText(literales.getLiteral("menu.permisos"));
         mnuPermisosGenerales.setText(literales.getLiteral("menu.permisos.generales"));
@@ -149,20 +204,31 @@ public class MainMenuBar extends MenuSupport {
         mnuItemNotasModelos.setText(literales.getLiteral("menu.notasModelos"));
         mnuConsultas.setText(literales.getLiteral("menu.consultas"));
         mnuConsultaHistoricoCambios.setText(literales.getLiteral("menu.consultas.consultaHistorico"));
+        mnuConsultaHistoricoCambiosModelo.setText(literales.getLiteral("menu.consultas.consultaHistorico.modelo"));
         mnuConsultaPeticiones.setText(literales.getLiteral("menu.consultas.consultaPeticiones"));
         mnuScriptInicial.setText(literales.getLiteral("menu.scriptInicial"));
         mnuMantenimientoEntornosPruebas.setText(literales.getLiteral("menu.scriptInicial.mantenimientoEntornos"));
         mnuEjecucionScriptInicial.setText(literales.getLiteral("menu.scriptInicial.ejecucionScript"));
 //        mnuConfiguracionEntornosPrueba.setText(literales.getLiteral("menu.scriptInicial.configuracionEntornos"));
+
         mnuMantenimientoHistorico.setText(literales.getLiteral("menu.mantenimientoHistorico"));
+
+//
+        mnuAvisosValidaciones.setText(literales.getLiteral("menu.avisosValidaciones"));
+        mnuAvisosPorObjeto.setText(literales.getLiteral("menu.avisosPorObjeto"));
+        mnuValidacionesProgramadas.setText(literales.getLiteral("menu.validacionesProgramadas"));
+        //
+        mnuDiagramas.setText(literales.getLiteral("menu.diagramas"));
+        mnuMantenimientoDiagramas.setText(literales.getLiteral("menu.mantenimientoDiagramas"));
+        mnuConsultaDiagramas.setText(literales.getLiteral("menu.consultaDiagramas"));
     }
 
     /**
      *
      */
-    @Override
+    // @Override
     protected void initEvents() {
-        ActionListener menuActionListener = new MenuListener(frameParent);
+        //      ActionListener menuActionListener = new MenuListener(frameParent);
         ActionListener menuMantenimientoActionListener = new MenuMantenimientoActionListener(frameParent);
 
         mnuPermisosGenerales.addActionListener(menuMantenimientoActionListener);
@@ -174,13 +240,26 @@ public class MainMenuBar extends MenuSupport {
         mnuItemEntornos.addActionListener(menuMantenimientoActionListener);
         mnuItemVariables.addActionListener(menuMantenimientoActionListener);
         mnuItemNotasModelos.addActionListener(menuMantenimientoActionListener);
-        mnuConsultaHistoricoCambios.addActionListener(menuActionListener);
-        mnuConsultaPeticiones.addActionListener(menuActionListener);
+        mnuConsultaHistoricoCambios.addActionListener(menuMantenimientoActionListener);
+        mnuConsultaHistoricoCambiosModelo.addActionListener(menuMantenimientoActionListener);
+        mnuConsultaPeticiones.addActionListener(menuMantenimientoActionListener);
 
         mnuMantenimientoEntornosPruebas.addActionListener(menuMantenimientoActionListener);
         mnuEjecucionScriptInicial.addActionListener(menuMantenimientoActionListener);
 //        mnuConfiguracionEntornosPrueba.addActionListener(menuActionListener);
 
         mnuMantenimientoHistorico.addActionListener(menuMantenimientoActionListener);
+
+        mnuAvisosPorObjeto.addActionListener(menuMantenimientoActionListener);
+        mnuValidacionesProgramadas.addActionListener(menuMantenimientoActionListener);
+        //
+        mnuMantenimientoDiagramas.addActionListener(menuMantenimientoActionListener);
+        mnuConsultaDiagramas.addActionListener(menuMantenimientoActionListener);
+    }
+
+    private void initLiterals() throws IOException {
+        literales = LiteralesSingleton.getInstance();
+
+        setupLiterals();
     }
 }

@@ -10,7 +10,21 @@ public class TablaPermisosObjetoCabecera extends Cabecera {
 	
         @Override
 	public void setupCabecera() {
-		columnIdentifiers.add("Receptor");
+                addColumn("colReceptor", 150, String.class);
+		addColumn("colTipoObjeto", 100, String.class);
+                addColumn("colNombreObjeto", 100, String.class);
+		addColumn("colPermiso", 100, String.class);
+		addColumn("colEntorno", 100, String.class);
+		addColumn("colGrantOption", 100, String.class);
+		addColumn("colIncluirPDC", 100, String.class);
+		addColumn("colHabilitada", 100, String.class);
+		addColumn("colPeticion", 200, String.class);
+                addColumn("colUsuarioAlta", 100, String.class);
+                addColumn("colFechaAlta", 100, String.class);
+                addColumn("colUsuarioModificacion", 120, String.class);
+                addColumn("colFechaModificacion", 120, String.class);  
+                
+		/*columnIdentifiers.add("Receptor");
 		columnIdentifiers.add("Tipo Objeto");
                 columnIdentifiers.add("Nombre Objeto");
 		columnIdentifiers.add("Permiso");
@@ -53,7 +67,7 @@ public class TablaPermisosObjetoCabecera extends Cabecera {
 		columnSizes.add(100);
 		columnSizes.add(100);
 		columnSizes.add(120);
-		columnSizes.add(120);                     
+		columnSizes.add(120);    */                 
 	}
 }
 

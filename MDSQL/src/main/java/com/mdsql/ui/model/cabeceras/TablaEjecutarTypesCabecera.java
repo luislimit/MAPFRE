@@ -9,9 +9,20 @@ import com.mdval.ui.model.cabeceras.Cabecera;
  *
  */
 public class TablaEjecutarTypesCabecera extends Cabecera {
-	
-	public void setupCabecera() {
-		columnIdentifiers.add("Orden");
+
+    @Override
+    public void setupCabecera() {
+
+        addColumn("colOrden", 75, Integer.class);
+        addColumn("colEstado", 100, String.class);
+        addColumn("colFecha", 100, Date.class);
+        addColumn("colDrop", 50, String.class);
+        addColumn("colTYS", 50, String.class);
+        addColumn("colTYB", 50, String.class);
+        addColumn("colPDC", 50, String.class);
+        addColumn("colObjetoType", 700, String.class);
+
+        /*columnIdentifiers.add("Orden");
 		columnIdentifiers.add("Estado");
 		columnIdentifiers.add("Fecha");
 		columnIdentifiers.add("Drop");
@@ -36,6 +47,6 @@ public class TablaEjecutarTypesCabecera extends Cabecera {
 		columnSizes.add(50);
 		columnSizes.add(50);
 		columnSizes.add(50);
-		columnSizes.add(700);
-	}
+		columnSizes.add(700);*/
+    }
 }

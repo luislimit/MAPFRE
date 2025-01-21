@@ -7,6 +7,7 @@ package com.mdsql.ui.form.listener;
 
 import com.mdsql.bussiness.entities.Grant;
 import com.mdsql.bussiness.entities.Modelo;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.bussiness.entities.Permiso;
 import com.mdsql.bussiness.entities.Propietario;
 import com.mdsql.bussiness.entities.Session;
@@ -18,19 +19,18 @@ import com.mdsql.ui.model.PermisosTableModel;
 import com.mdsql.ui.model.SinonimosTableModel;
 import com.mdsql.ui.utils.ListenerSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.ConfigurationSingleton;
-import com.mdsql.utils.DateFormatter;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.model.DefaultTableModel;
+import com.mdval.utils.ConfigurationSingleton;
+import com.mdval.utils.DateFormatter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -59,7 +59,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
         } else if (obj.equals(pantalla.getBtnInforme())) {
             evtBtnInforme();
         } else if (obj.equals(pantalla.getBtnLimpiar())) {
-            evtBtnLimpiar();            
+            evtBtnLimpiar();
         } else {
             super.actionPerformed(e);
         }
@@ -72,6 +72,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
                 return;
             }
             PermisosService permisosService = (PermisosService) getService(MDSQLConstants.PERMISOS_SERVICE);
+            OutputWarning output = null;
 
             if (opcion == COMBOBOX_PERMISOSINONIMO_PERMISO) { // Permiso
                 Permiso permiso = FormToPermiso();
@@ -86,7 +87,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
                 String codPeticion = permiso.getCodPeticion();
                 String codUsr = permiso.getCodUsr();
                 //
-                permisosService.guardarPermiso(codProyecto, codUsrGrant, valGrant, desEntorno, tipoObjeto, mcaGrantOption, mcaIncluirPDC, mcaHabilitado, codPeticion, codUsr);
+                output = permisosService.guardarPermiso(codProyecto, codUsrGrant, valGrant, desEntorno, tipoObjeto, mcaGrantOption, mcaIncluirPDC, mcaHabilitado, codPeticion, codUsr);
                 fillTblPermisos();
             } else if (opcion == COMBOBOX_PERMISOSINONIMO_SINONIMO) { //Sinonimo
                 Sinonimo sinonimo = formToSinonimo();
@@ -101,13 +102,15 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
                 String codPeticion = sinonimo.getCodPeticion();
                 String codUsr = sinonimo.getCodUsr();
                 //
-                permisosService.guardarSinonimo(codProyecto, codUsrGrant, codOwnerSyn, desEntorno, tipoObjeto, funcionNombre, mcaIncluirPDC, mcaHabilitado, codPeticion, codUsr);
+                output = permisosService.guardarSinonimo(codProyecto, codUsrGrant, codOwnerSyn, desEntorno, tipoObjeto, funcionNombre, mcaIncluirPDC, mcaHabilitado, codPeticion, codUsr);
                 fillTblSinonimos();
             }
+            if (output != null && output.getWarnings() != null) {
+                MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
+            }
             clearForm();
-        } catch (IOException | ServiceException | ParseException e) {
-            Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantalla.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+        } catch (ServiceException | ParseException e) {
+            MDSQLUIHelper.showErrors(pantalla, e);
         }
     }
 
@@ -124,8 +127,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
             String sufijoSinonimos = configuration.getConfig("SufijoExcelSinonimosGenerales");
             excelGeneratorService.generarExcelSinonimos(pantalla.getTblSinonimos(), sufijoSinonimos, proyecto);
         } catch (IOException e) {
-            Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantalla.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
         }
     }
 
@@ -140,8 +142,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
                 tableModel.setData(sinonimos);
             }
         } catch (ServiceException e) {
-            Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantalla.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
         }
     }
 
@@ -157,8 +158,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
                 tableModel.setData(permisos);
             }
         } catch (ServiceException e) {
-            Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantalla.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
         }
     }
 
@@ -311,6 +311,9 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
         pantalla.getCmbPermiso().setSelectedItem(permiso.getValGrant());
         pantalla.getCmbWithGrantOption().setSelectedItem(permiso.getMcaGrantOption());
 
+        //pantalla.getCmbIncluirPDC().setSelectedItem(permiso.getMcaPdc().equals("N")?"NO":"SI");
+        pantalla.getCmbIncluirPDC().setSelectedItem(permiso.getMcaPdc());
+
         setValueChkHabilitada(permiso.getMcaHabilitado());
         setValueCmbReceptorPermisos(permiso.getCodUsrGrant());
 
@@ -371,7 +374,7 @@ public class FormPermisosGeneralesPorModeloPorTipoObjetoListener extends Listene
     private void evtBtnLimpiar() {
         System.out.println("Evento Limpiar");
         pantalla.getTblPermisos().clearSelection();
-        pantalla.getTblSinonimos().clearSelection();   
+        pantalla.getTblSinonimos().clearSelection();
         clearForm();
     }
 }

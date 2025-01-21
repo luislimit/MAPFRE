@@ -12,7 +12,6 @@ import com.mdsql.ui.adapter.DoubleClickMouseAdapter;
 import com.mdsql.ui.form.listener.FormDetallePermisosPorColumnaListener;
 import com.mdsql.ui.model.PermisosColumnaTableModel;
 import com.mdsql.ui.model.cabeceras.TablaPermisosColumnaCabecera;
-import com.mdsql.ui.renderer.TableSelectionRenderer;
 import com.mdsql.ui.utils.DialogSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdval.ui.model.cabeceras.Cabecera;
@@ -23,7 +22,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,9 +31,9 @@ import lombok.Setter;
  */
 public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
 
-  /**
-     * Creates new form FormDetallePermisosPorColumna 
-     * 2.1.2.3	Pantalla Detalle Permisos por Columna.
+    /**
+     * Creates new form FormDetallePermisosPorColumna 2.1.2.3	Pantalla Detalle
+     * Permisos por Columna.
      *
      * @param parent
      * @param modal
@@ -48,7 +46,6 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
         super(parent, modal, params);
     }
 
- 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -143,7 +140,6 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
                 "Receptor", "Tabla", "Columna", "Permiso", "Entorno", "Grant Option", "Incluir en PDC", "Habilitada", "Petición", "Usuario Alta", "Fecha Alta", "Usuario Modificación", "Fecha Modificación"
             }
         ));
-        tblPermisos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         scrollPanePermisos.setViewportView(tblPermisos);
 
         btnAlta.setText("Alta");
@@ -339,8 +335,8 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
         FormDetallePermisosPorColumnaListener localFormListener = new FormDetallePermisosPorColumnaListener(this);
         btnBuscar.addActionListener(localFormListener);
         btnLimpiar.addActionListener(localFormListener);
-        btnAlta.addActionListener(localFormListener);    
-        btnModificacion.addActionListener(localFormListener);    
+        btnAlta.addActionListener(localFormListener);
+        btnModificacion.addActionListener(localFormListener);
         btnInforme.addActionListener(localFormListener);
         tblPermisos.getSelectionModel().addListSelectionListener(localFormListener);
 
@@ -356,37 +352,33 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
 
     @Override
     protected void setupLiterals() {
-        setTitle(literales.getLiteral("FormDetallePermisosPorColumna.title"));
-        lblModeloProyecto.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblModeloProyecto"));
-        lblTabla.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblTabla"));
-        lblColumna.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblColumna"));
-        lblEntorno.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblEntorno"));
-        lblPermiso.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblPermiso"));
-        lblReceptorPermisos.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblReceptorPermisos"));
-        chkHabilitada.setText(literales.getLiteral("FormDetallePermisosPorColumna.chkHabilitada"));
-        lblIncluirPDC.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblIncluirPDC"));
-        lblWithGrantOption.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblWithGrantOption"));
-        lblTablaPermisos.setText(literales.getLiteral("FormDetallePermisosPorColumna.lblTablaPermisos"));
-        btnBuscar.setText(literales.getLiteral("FormDetallePermisosPorColumna.btnBuscar"));
-        btnAlta.setText(literales.getLiteral("FormDetallePermisosPorColumna.btnAlta"));
-        btnInforme.setText(literales.getLiteral("FormDetallePermisosPorColumna.btnInforme"));
-        btnModificacion.setText(literales.getLiteral("FormDetallePermisosPorColumna.btnModificacion"));
-        btnCancelar.setText(literales.getLiteral("FormDetallePermisosPorColumna.btnCancelar"));
+        setTitulo();
+        setTexto(lblModeloProyecto, "lblModeloProyecto");
+        setTexto(lblTabla, "lblTabla");
+        setTexto(lblColumna, "lblColumna");
+        setTexto(lblEntorno, "lblEntorno");
+        setTexto(lblPermiso, "lblPermiso");
+        setTexto(lblReceptorPermisos, "lblReceptorPermisos");
+        setTexto(chkHabilitada, "chkHabilitada");
+        setTexto(lblIncluirPDC, "lblIncluirPDC");
+        setTexto(lblWithGrantOption, "lblWithGrantOption");
+        setTexto(lblTablaPermisos, "lblPermisos");
+        setTexto(btnBuscar, "btnBuscar");
+        setTexto(btnAlta, "btnAlta");
+        setTexto(btnInforme, "btnInforme");
+        setTexto(btnModificacion, "btnModificacion");
+        setTexto(btnCancelar, "btnCancelar");
     }
 
     @Override
     protected void initModels() {
         Cabecera cabeceraColumnas = new TablaPermisosColumnaCabecera();
-        MDSQLUIHelper.setTableModel(tblPermisos, new PermisosColumnaTableModel(cabeceraColumnas));
-        tblPermisos.setDefaultRenderer(String.class, new TableSelectionRenderer());
-        tblPermisos.setCellSelectionEnabled(true);
-        tblPermisos.setRowSelectionAllowed(true);        
-        tblPermisos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+        MDSQLUIHelper.setTableModelRenderer(tblPermisos, new PermisosColumnaTableModel(cabeceraColumnas), null);
     }
 
     @Override
-    protected void initialState() {}
+    protected void initialState() {
+    }
 
     public JButton getBtnAlta() {
         return btnAlta;
@@ -446,7 +438,7 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
     @Override
     public JTextField getTxtModeloProyectoDescrip() {
         return txtModeloProyectoDescrip;
-    }  
+    }
 
     @Override
     public JCheckBox getChkHabilitada() {
@@ -464,6 +456,5 @@ public class FormDetallePermisosPorColumna extends DialogSupportModeloPermiso {
     public JButton getBtnLimpiar() {
         return btnLimpiar;
     }
-   
-}
 
+}

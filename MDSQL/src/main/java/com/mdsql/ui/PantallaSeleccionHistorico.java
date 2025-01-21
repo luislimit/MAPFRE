@@ -15,7 +15,7 @@ import javax.swing.table.TableColumn;
 import com.mdsql.ui.listener.PantallaSeleccionHistoricoListener;
 import com.mdsql.ui.listener.tables.SeleccionHistoricoTableItemListener;
 import com.mdsql.ui.model.SeleccionHistoricoTableModel;
-import com.mdsql.ui.utils.MDSQLUIHelper;
+import com.mdsql.ui.model.cabeceras.TablaSeleccionHistoricoCabecera;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
 import com.mdval.ui.model.cabeceras.CheckBoxHeader;
@@ -123,7 +123,7 @@ public class PantallaSeleccionHistorico extends DialogSupport {
 
 	@Override
 	protected void initModels() {
-		Cabecera cabecera = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.SELECCION_HISTORICO_TABLA_CABECERA);
+		Cabecera cabecera = new TablaSeleccionHistoricoCabecera();
 		SeleccionHistoricoTableModel model = new SeleccionHistoricoTableModel(cabecera);
 		tblHistorico.initModel(model);
 		tblHistorico.setColumnWidths(cabecera);

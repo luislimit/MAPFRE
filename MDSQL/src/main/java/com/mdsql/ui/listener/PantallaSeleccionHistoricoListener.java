@@ -1,17 +1,7 @@
 package com.mdsql.ui.listener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
-import org.apache.commons.collections.CollectionUtils;
-
-import com.mdsql.bussiness.entities.OutputSeleccionarHistorico;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.bussiness.entities.SeleccionHistorico;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.entities.TextoLinea;
@@ -28,145 +18,134 @@ import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.utils.OnLoadListener;
 import com.mdval.ui.utils.observer.Observable;
 import com.mdval.ui.utils.observer.Observer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import org.apache.commons.collections.CollectionUtils;
 
 public class PantallaSeleccionHistoricoListener extends ListenerSupport
-		implements ActionListener, OnLoadListener, Observer {
+        implements ActionListener, OnLoadListener, Observer {
 
-	private PantallaSeleccionHistorico pantallaSeleccionHistorico;
+    private final PantallaSeleccionHistorico pantalla;
 
-	public PantallaSeleccionHistoricoListener(PantallaSeleccionHistorico pantallaSeleccionHistorico) {
-		super();
-		this.pantallaSeleccionHistorico = pantallaSeleccionHistorico;
-	}
+    public PantallaSeleccionHistoricoListener(PantallaSeleccionHistorico pantalla) {
+        super();
+        this.pantalla = pantalla;
+    }
 
-	public void addObservador(Observer o) {
-		this.addObserver(o);
-	}
+    public void addObservador(Observer o) {
+        this.addObserver(o);
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton jButton = (JButton) e.getSource();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton jButton = (JButton) e.getSource();
 
-		if (MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_ADD.equals(jButton.getActionCommand())) {
-			addToHistorico();
-		}
+        if (MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_ADD.equals(jButton.getActionCommand())) {
+            addToHistorico();
+        }
 
-		if (MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_GENERAR.equals(jButton.getActionCommand())) {
-			generarHistorico();
-		}
+        if (MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_GENERAR.equals(jButton.getActionCommand())) {
+            generarHistorico();
+        }
 
-		if (MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_CANCELAR.equals(jButton.getActionCommand())) {
-			cancelar();
-		}
-	}
+        if (MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_CANCELAR.equals(jButton.getActionCommand())) {
+            cancelar();
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void onLoad() {
-		try {
-			ProcesoService procesoService = (ProcesoService) getService(MDSQLConstants.PROCESO_SERVICE);
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onLoad() {
+        try {
+            ProcesoService procesoService = (ProcesoService) getService(MDSQLConstants.PROCESO_SERVICE);
 
-			String codigoProyecto = (String) pantallaSeleccionHistorico.getParams().get("codigoProyecto");
-			List<TextoLinea> lineas = (List<TextoLinea>) pantallaSeleccionHistorico.getParams().get("script");
-			OutputSeleccionarHistorico outputSeleccionarHistorico = procesoService.seleccionarHistorico(codigoProyecto, lineas);
-			
-			MDSQLUIHelper.showWarningsIfExists(outputSeleccionarHistorico.getWarnings(), pantallaSeleccionHistorico.getFrameParent());
-			
-			List<SeleccionHistorico> seleccion = outputSeleccionarHistorico.getSeleccion();
+            String codigoProyecto = (String) pantalla.getParams().get("codigoProyecto");
+            List<TextoLinea> lineas = (List<TextoLinea>) pantalla.getParams().get("script");
 
-			populateModelSeleccion(seleccion);
+            OutputConsulta<SeleccionHistorico> output = procesoService.seleccionarHistorico(codigoProyecto, lineas);
 
-			SeleccionHistoricoTableModel model = (SeleccionHistoricoTableModel) pantallaSeleccionHistorico
-					.getTblHistorico().getModel();
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
 
-			if (model.checkAllConfigured()) {
-				pantallaSeleccionHistorico.getBtnAddHistorico().setEnabled(Boolean.FALSE);
-			}
-		} catch (ServiceException e) {
-			pantallaSeleccionHistorico.setErrorOnload(Boolean.TRUE);
-			Map<String, Object> params = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaSeleccionHistorico.getFrameParent(), MDSQLConstants.CMD_ERROR, params);
-		}
-	}
+            populateModelSeleccion(output.getLista());
 
-	/**
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	private void addToHistorico() {
-		try {
-			ProcesoService procesoService = (ProcesoService) getService(MDSQLConstants.PROCESO_SERVICE);
+            SeleccionHistoricoTableModel model = (SeleccionHistoricoTableModel) pantalla
+                    .getTblHistorico().getModel();
 
-			Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-			String codigoUsuario = session.getCodUsr();
-			String codigoProyecto = (String) pantallaSeleccionHistorico.getParams().get("codigoProyecto");
-			String codigoPeticion = (String) pantallaSeleccionHistorico.getParams().get("codigoPeticion");
+            if (model.checkAllConfigured()) {
+                pantalla.getBtnAddHistorico().setEnabled(Boolean.FALSE);
+            }
+        } catch (ServiceException e) {
+            pantalla.setErrorOnload(Boolean.TRUE);
+            MDSQLUIHelper.showErrors(pantalla, e);
+        }
+    }
 
-			List<SeleccionHistorico> listaObjetos = ((SeleccionHistoricoTableModel) pantallaSeleccionHistorico
-					.getTblHistorico().getModel()).getData();
+    /**
+     *
+     */
+    @SuppressWarnings("unchecked")
+    private void addToHistorico() {
+        try {
+            ProcesoService procesoService = (ProcesoService) getService(MDSQLConstants.PROCESO_SERVICE);
 
-			// Filtramos sólo los que tienen marcado el check de histórico
-			List<SeleccionHistorico> listaSeleccionados = (List<SeleccionHistorico>) CollectionUtils
-					.select(listaObjetos, new SeleccionHistoricoPredicate());
+            Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+            String codigoUsuario = session.getCodUsr();
+            String codigoProyecto = (String) pantalla.getParams().get("codigoProyecto");
+            String codigoPeticion = (String) pantalla.getParams().get("codigoPeticion");
 
-			ServiceException serviceException = procesoService.altaHistorico(listaSeleccionados, codigoProyecto, codigoPeticion, codigoUsuario);
-			if (!Objects.isNull(serviceException)) {
-				if (serviceException.getType().equals(2)) {
-					CollectionUtils.forAllDo(listaObjetos, new SeleccionHistoricoUpdateClosure(listaSeleccionados));
-					pantallaSeleccionHistorico.getTblHistorico().repaint();
-					
-					Map<String, Object> params = MDSQLUIHelper.buildError(serviceException);
-					MDSQLUIHelper.showPopup(pantallaSeleccionHistorico.getFrameParent(), MDSQLConstants.CMD_WARN, params);
-				}
-				else {
-					throw serviceException;
-				}
-			}
-			else { // No ha dado ni error ni aviso, se marcan los seleccionados como configurados en histórico
-				CollectionUtils.forAllDo(listaObjetos, new SeleccionHistoricoUpdateClosure(listaSeleccionados));
-				pantallaSeleccionHistorico.getTblHistorico().repaint();
-			}
-		} catch (Exception e) {
-			Map<String, Object> params = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaSeleccionHistorico.getFrameParent(), MDSQLConstants.CMD_ERROR, params);
-		}
-	}
+            List<SeleccionHistorico> listaObjetos = ((SeleccionHistoricoTableModel) pantalla
+                    .getTblHistorico().getModel()).getData();
 
-	private void generarHistorico() {
-		int dialogResult = MDSQLUIHelper.showConfirm("¿Desea continuar con el procesado?", "Atención");
+            // Filtramos sólo los que tienen marcado el check de histórico
+            List<SeleccionHistorico> listaSeleccionados = (List<SeleccionHistorico>) CollectionUtils
+                    .select(listaObjetos, new SeleccionHistoricoPredicate());
 
-		Boolean result = (dialogResult == JOptionPane.YES_OPTION) ? Boolean.TRUE : Boolean.FALSE;
-		pantallaSeleccionHistorico.getReturnParams().put("procesado", result);
+            OutputWarning output = procesoService.altaHistorico(listaSeleccionados, codigoProyecto, codigoPeticion, codigoUsuario);
 
-		List<SeleccionHistorico> listaObjetos = ((SeleccionHistoricoTableModel) pantallaSeleccionHistorico.getTblHistorico()
-				.getModel()).getData();
-		
-//		List<SeleccionHistorico> listaSeleccionados = (List<SeleccionHistorico>) CollectionUtils
-//				.select(listaObjetos, new SeleccionHistoricoPredicate());
-		pantallaSeleccionHistorico.getReturnParams().put("objetosHistorico", listaObjetos);
+            CollectionUtils.forAllDo(listaObjetos, new SeleccionHistoricoUpdateClosure(listaSeleccionados));
+            pantalla.getTblHistorico().repaint();
 
-		updateObservers(MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_GENERAR);
-		pantallaSeleccionHistorico.dispose();
-	}
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
 
-	private void cancelar() {
-		pantallaSeleccionHistorico.getReturnParams().put("procesado", Boolean.FALSE);
-		pantallaSeleccionHistorico.dispose();
-	}
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
+        }
+    }
 
-	/**
-	 * @param avisos
-	 */
-	private void populateModelSeleccion(List<SeleccionHistorico> seleccion) {
-		// Obtiene el modelo y lo actualiza
-		SeleccionHistoricoTableModel tableModel = (SeleccionHistoricoTableModel) pantallaSeleccionHistorico
-				.getTblHistorico().getModel();
-		tableModel.setData(seleccion);
-	}
+    private void generarHistorico() {
+        int dialogResult = MDSQLUIHelper.showConfirm("¿Desea continuar con el procesado?", "Atención");
 
-	@Override
-	public void update(Observable o, Object cmd) {
-		// TODO Auto-generated method stub
+        Boolean result = (dialogResult == JOptionPane.YES_OPTION) ? Boolean.TRUE : Boolean.FALSE;
+        pantalla.getReturnParams().put("procesado", result);
 
-	}
+        List<SeleccionHistorico> listaObjetos = ((SeleccionHistoricoTableModel) pantalla.getTblHistorico()
+                .getModel()).getData();
+
+        pantalla.getReturnParams().put("objetosHistorico", listaObjetos);
+
+        updateObservers(MDSQLConstants.PANTALLA_SELECCION_HISTORICA_BTN_GENERAR);
+        pantalla.dispose();
+    }
+
+    private void cancelar() {
+        pantalla.getReturnParams().put("procesado", Boolean.FALSE);
+        pantalla.dispose();
+    }
+
+    /**
+     * @param avisos
+     */
+    private void populateModelSeleccion(List<SeleccionHistorico> seleccion) {
+        // Obtiene el modelo y lo actualiza
+        SeleccionHistoricoTableModel tableModel = (SeleccionHistoricoTableModel) pantalla
+                .getTblHistorico().getModel();
+        tableModel.setData(seleccion);
+    }
+
+    @Override
+    public void update(Observable o, Object cmd) {
+    }
 }

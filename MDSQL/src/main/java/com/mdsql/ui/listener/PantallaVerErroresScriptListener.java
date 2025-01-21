@@ -4,10 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-
-import javax.swing.JButton;
-
 import com.mdsql.bussiness.entities.ErrorScript;
 import com.mdsql.bussiness.entities.OutputErroresScript;
 import com.mdsql.bussiness.entities.Proceso;
@@ -22,89 +18,98 @@ import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.utils.OnLoadListener;
-import com.mdval.ui.utils.observer.Observer;
+//import com.mdval.ui.utils.observer.Observer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-public class PantallaVerErroresScriptListener extends ListenerSupport implements ActionListener, OnLoadListener {
+public class PantallaVerErroresScriptListener extends ListenerSupport implements ActionListener, OnLoadListener, ListSelectionListener {
 
-	private PantallaVerErroresScript pantallaVerErroresScript;
+    private final PantallaVerErroresScript pantalla;
 
-	public PantallaVerErroresScriptListener(PantallaVerErroresScript pantallaVerErroresScript) {
-		super();
-		this.pantallaVerErroresScript = pantallaVerErroresScript;
-	}
+    public PantallaVerErroresScriptListener(PantallaVerErroresScript pantallaVerErroresScript) {
+        super();
+        this.pantalla = pantallaVerErroresScript;
+    }
+/*
+    public void addObservador(Observer o) {
+        this.addObserver(o);
+    }*/
 
-	public void addObservador(Observer o) {
-		this.addObserver(o);
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(pantalla.getBtnCancelar())) {
+            pantalla.dispose();
+        }
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton jButton = (JButton) e.getSource();
+    @Override
+    public void onLoad() {
+        try {
+            ErroresService erroresService = (ErroresService) getService(MDSQLConstants.ERRORES_SERVICE);
 
-		if (MDSQLConstants.PANTALLA_VER_ERRORES_SCRIPT_BTN_CANCELAR.equals(jButton.getActionCommand())) {
-			pantallaVerErroresScript.dispose();
-		}
-	}
+            Proceso proceso = (Proceso) pantalla.getParams().get("proceso");
+            String tipo = (String) pantalla.getParams().get("tipo");
 
-	@Override
-	public void onLoad() {
-		try {
-			ErroresService erroresService = (ErroresService) getService(MDSQLConstants.ERRORES_SERVICE);
+            BigDecimal idProceso = proceso.getIdProceso();
+            BigDecimal numeroOrden;
+            if ("type".equals(tipo)) {
+                numeroOrden = (BigDecimal) pantalla.getParams().get("numeroOrden");
+            } else {
+                Scriptable script = (Scriptable) pantalla.getParams().get("script");
+                numeroOrden = script.getNumeroOrden();
+            }
 
-			Proceso proceso = (Proceso) pantallaVerErroresScript.getParams().get("proceso");
-			String tipo = (String) pantallaVerErroresScript.getParams().get("tipo");
-			
-			BigDecimal idProceso = proceso.getIdProceso();
-			BigDecimal numeroOrden = null;
-			if ("type".equals(tipo)) {
-				numeroOrden = (BigDecimal) pantallaVerErroresScript.getParams().get("numeroOrden");
-			}
-			else {
-				Scriptable script = (Scriptable) pantallaVerErroresScript.getParams().get("script");
-				numeroOrden = script.getNumeroOrden();
-			} 
+            /**
+             * Se llamará al método específico según se estén ejecutando scripts
+             * o scripts tipo
+             */
+            List<ErrorScript> errores;
+            List<ScriptParche> parches = null;
 
-			/**
-			 * Se llamará al método específico según se estén ejecutando scripts o scripts
-			 * tipo
-			 */
-			List<ErrorScript> errores = null;
-			List<ScriptParche> parches = null;
-			
-			if ("type".equals(tipo)) {
-				errores = erroresService.consultaErroresType(idProceso, numeroOrden);
-			} else {
-				OutputErroresScript outputErroresScript = erroresService.consultaErroresScript(idProceso, numeroOrden);
-				errores = outputErroresScript.getListaErroresScript();
-				parches = outputErroresScript.getListaScriptParche();
-			}
+            if ("type".equals(tipo)) {
+                errores = erroresService.consultaErroresType(idProceso, numeroOrden);
+            } else {
+                OutputErroresScript outputErroresScript = erroresService.consultaErroresScript(idProceso, numeroOrden);
+                errores = outputErroresScript.getListaErroresScript();
+                parches = outputErroresScript.getListaScriptParche();
+            }
 
-			populateErrores(errores);
-			populateParches(parches);
+            populateErrores(errores);
+            populateParches(parches);
 
-		} catch (ServiceException e) {
-			Map<String, Object> params = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaVerErroresScript.getFrameParent(), MDSQLConstants.CMD_ERROR, params);
-		}
-	}
+        } catch (ServiceException e) {
+            pantalla.setErrorOnload(Boolean.TRUE);
+            MDSQLUIHelper.showErrors(pantalla, e);
+        }
+    }
 
-	/**
-	 * @param errores
-	 */
-	private void populateErrores(List<ErrorScript> errores) {
-		// Obtiene el modelo y lo actualiza
-		VerErroresScriptTableModel tableModel = (VerErroresScriptTableModel) pantallaVerErroresScript
-				.getTblErroresScript().getModel();
-		tableModel.setData(errores);
-	}
+    /**
+     * @param errores
+     */
+    private void populateErrores(List<ErrorScript> errores) {
+        // Obtiene el modelo y lo actualiza
+        VerErroresScriptTableModel tableModel = (VerErroresScriptTableModel) pantalla
+                .getTblErroresScript().getModel();
+        tableModel.setData(errores);
+    }
 
-	/**
-	 * @param parches
-	 */
-	private void populateParches(List<ScriptParche> parches) {
-		// Obtiene el modelo y lo actualiza
-		VerParchesScriptTableModel tableModel = (VerParchesScriptTableModel) pantallaVerErroresScript
-				.getTblParches().getModel();
-		tableModel.setData(parches);
-	}
+    /**
+     * @param parches
+     */
+    private void populateParches(List<ScriptParche> parches) {
+        // Obtiene el modelo y lo actualiza
+        VerParchesScriptTableModel tableModel = (VerParchesScriptTableModel) pantalla
+                .getTblParches().getModel();
+        tableModel.setData(parches);
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        int row = pantalla.getTblErroresScript().getSelectedRow();
+
+        VerErroresScriptTableModel tableModel = (VerErroresScriptTableModel) pantalla.getTblErroresScript().getModel();
+        ErrorScript seleccionado = tableModel.getData().get(row);
+        // Desmarcamos la tabla
+        pantalla.getTxtError().setText(seleccionado.getTxtError());
+    }
 }

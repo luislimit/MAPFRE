@@ -2,7 +2,7 @@ package com.mdsql.bussiness.service.impl;
 
 import com.mdsql.bussiness.entities.BBDD;
 import com.mdsql.bussiness.entities.OutputConsultaPermisosPersonalizados;
-import com.mdsql.bussiness.entities.OutputProcesaPermisoPersonalizado;
+import com.mdsql.bussiness.entities.OutputProcesaScript;
 import com.mdsql.bussiness.entities.OutputRegistraEjecucion;
 import com.mdsql.bussiness.entities.PermisoColumna;
 import com.mdsql.bussiness.entities.Proceso;
@@ -10,31 +10,25 @@ import com.mdsql.bussiness.entities.Script;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.entities.SinonimoObjeto;
 import com.mdsql.bussiness.entities.TextoLinea;
-import com.mdsql.bussiness.service.BBDDService;
 import com.mdsql.bussiness.service.PermisosPersonalizadosService;
-import com.mdsql.utils.DateFormatter;
+import com.mdsql.bussiness.service.ScriptService;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
+import com.mdval.utils.DateFormatter;
 import com.mdval.utils.LogWrapper;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.nio.file.Paths;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import javax.sql.DataSource;
 import java.sql.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.internal.OracleConnection;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service(MDSQLConstants.PERMISOS_PERSONALIZADOS_SERVICE)
 @Slf4j
@@ -44,7 +38,7 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
     private DataSource dataSource;
 
     @Autowired
-    private BBDDService bbddService;
+    private ScriptService scriptService;
 
     @Override
     public OutputConsultaPermisosPersonalizados consulta(
@@ -70,8 +64,8 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
 
         try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-            String typePermisoCol = createCallType("T_T_PERMISO_COL");
-            String typeSinonimoObj = createCallType("T_T_SINONIMO_OBJ");
+            String typePermisoCol = createCallType(MDSQLConstants.T_T_PERMISO_COL);
+            String typeSinonimoObj = createCallType(MDSQLConstants.T_T_SINONIMO_OBJ);
             String typeError = createCallTypeError();
 
             logProcedure(runSP,
@@ -110,8 +104,8 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
             callableStatement.setString(13, p_mca_pdc);
             callableStatement.setString(14, p_mca_habilitado);
             callableStatement.setString(15, p_cod_usr);
-            callableStatement.setDate(16, StringToSqlDate(p_fec_desde));
-            callableStatement.setDate(17, StringToSqlDate(p_fec_hasta));
+            setDate(callableStatement, 16, p_fec_desde);
+            setDate(callableStatement, 17, p_fec_hasta);
 
             callableStatement.registerOutParameter(18, Types.ARRAY, typePermisoCol);
             callableStatement.registerOutParameter(19, Types.ARRAY, typeSinonimoObj);
@@ -126,7 +120,7 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
             Array errores = callableStatement.getArray(21);
 
             return trataRespuesta(arrayPermisos, arraySinonimos, result, errores);
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             LogWrapper.error(log, "[PermisosPersonalizadosService.consulta] Error:  %s", e.getMessage());
             throw new ServiceException(e);
         }
@@ -154,8 +148,8 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
 
         try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-            String typePermisoCol = createCallType("T_T_PERMISO_COL");
-            String typeSinonimoObj = createCallType("T_T_SINONIMO_OBJ");
+            String typePermisoCol = createCallType(MDSQLConstants.T_T_PERMISO_COL);
+            String typeSinonimoObj = createCallType(MDSQLConstants.T_T_SINONIMO_OBJ);
             String typeError = createCallTypeError();
 
             logProcedure(runSP, p_cod_proyecto, p_cod_sub_proy, p_nom_objeto, p_tip_objeto, p_cod_peticion);
@@ -250,23 +244,13 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
         output.setResult(result);
         // Hay avisos
         if (result == 2) {
-            output.setServiceException(buildException(arrayErrores));
+            output.setWarnings(buildException(arrayErrores));
         }
         return output;
     }
 
-    public java.sql.Date StringToSqlDate(String stringDate) throws ParseException {
-        java.sql.Date sqlDate = null;
-
-        if (stringDate != null && !stringDate.isEmpty()) {
-            long longDate = dateFormatter.stringToDate(stringDate).getTime();
-            sqlDate = new java.sql.Date(longDate);
-        }
-        return sqlDate;
-    }
-
     @Override
-    public OutputProcesaPermisoPersonalizado procesa(
+    public OutputProcesaScript procesa(
             String p_cod_proyecto,
             String p_cod_sub_proy,
             String p_tip_objeto, // Viene de la pantalla anterior
@@ -285,7 +269,7 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
 
         try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-            String typeScript = createCallType("T_T_SCRIPT");
+            String typeScript = createCallType(MDSQLConstants.T_T_SCRIPT);
             String typeError = createCallTypeError();
 
             logProcedure(runSP,
@@ -333,15 +317,15 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
             BigDecimal p_cod_estado_proc = callableStatement.getBigDecimal(17);
             String p_des_estado_proc = callableStatement.getString(18);
             Array arrayScripts = callableStatement.getArray(19);
-            List<Script> listScripts = arrayToListScript(arrayScripts);
+            List<Script> listScripts = fromDBListScript(arrayScripts);
 
             Integer result = callableStatement.getInt(20);
             Array arrayErrores = callableStatement.getArray(21);
             if (result == 0) {
                 throw buildException(arrayErrores);
             }
-            //Cargar datos de salida 
-            OutputProcesaPermisoPersonalizado output = new OutputProcesaPermisoPersonalizado();
+            //Cargar datos de salida
+            OutputProcesaScript output = new OutputProcesaScript();
             output.setIdProceso(p_id_proceso);
             output.setFechaProceso(p_fec_proceso);
             output.setCodigoEstadoProceso(p_cod_estado_proc);
@@ -349,7 +333,7 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
             output.setListaScripts(listScripts);
             // Hay avisos
             if (result == 2) {
-                output.setServiceException(buildException(arrayErrores));
+                output.setWarnings(buildException(arrayErrores));
             }
             return output;
         } catch (SQLException e) {
@@ -404,7 +388,7 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
 
             // Hay avisos
             if (result == 2) {
-                outputRegistraEjecucion.setServiceException(buildException(arrayErrores));
+                outputRegistraEjecucion.setWarnings(buildException(arrayErrores));
             }
 
             BigDecimal codigoEstadoProceso = callableStatement.getBigDecimal(5);
@@ -423,128 +407,31 @@ public class PermisosPersonalizadosServiceImpl extends ServiceSupportScript impl
 
     @Override
     public List<OutputRegistraEjecucion> executeScripts(BBDD bbdd, List<Script> scripts, String ruta) throws ServiceException {
-        try {
-            Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-            String codigoUsuario = session.getCodUsr();
-            Proceso proceso = session.getProceso();
+        Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+        String codigoUsuario = session.getCodUsr();
+        Proceso proceso = session.getProceso();
 
-            String nombreEsquema = StringUtils.EMPTY;
-            String nombreBBDD = StringUtils.EMPTY;
+        List<OutputRegistraEjecucion> ejecuciones = new ArrayList<>();
 
-            List<OutputRegistraEjecucion> ejecuciones = new ArrayList<>();
-            String txtClaveEncriptada = configuration.getConfig(MDSQLConstants.TOKEN).substring(17, 29);
-
-            String separator = File.separator;
-            if (!ruta.endsWith(separator)) {
-                ruta = ruta.concat(separator);
-            }
-
-            if (CollectionUtils.isNotEmpty(scripts)) {
-                for (Script script : scripts) {
-                    //Verificamos que estén indicados tanto el nombre como el contenido
-                    if (script.getNombreScript() != null && script.getLineasScript() != null) {
-                        // Esto causa reescritura de ficheros
-                        MDSQLAppHelper.dumpLinesToFile(script.getLineasScript(), Paths.get(ruta.concat(script.getNombreScript())).toFile());
-                        /**
-                         * Según sea el tipo de script (SQL, PDC, SQLH, PDCH),
-                         * se seleccionará la base de datos o la de histórico
-                         * para su ejecución
-                         */
-                        if ("SQL".equals(script.getTipoScript()) || "PDC".equals(script.getTipoScript())) {
-                            nombreEsquema = bbdd.getNombreEsquema();
-                            nombreBBDD = bbdd.getNombreBBDD();
-                        }
-
-                        if ("SQLH".equals(script.getTipoScript()) || "PDCH".equals(script.getTipoScript())) {
-                            nombreEsquema = bbdd.getNombreEsquemaHis();
-                            nombreBBDD = bbdd.getNombreBBDDHis();
-                        }
-
-                        // Sólo hay que crear el script lanza
-                        String lanzaFile = ruta.concat(script.getNombreScriptLanza());
-                        MDSQLAppHelper.writeToFile(script.getTxtScriptLanza().concat(System.lineSeparator()), Paths.get(lanzaFile).toFile());
-
-                        String password = bbddService.consultaPasswordBBDD(nombreBBDD, nombreEsquema, txtClaveEncriptada);
-                        //bbdd.setPassword(password);
-
-                        // Ejecución del script
-                        executeLanzaFile(nombreEsquema, nombreBBDD, password, lanzaFile);
-
-                        // Obtiene el log
-                        String logFile = ruta.concat(script.getNombreScriptLog());
-                        List<TextoLinea> logLinesList = MDSQLAppHelper.writeFileToLines(new File(logFile));
-
-                        // Registra la ejecución, al primer fallo dispara la excepcion
-                        OutputRegistraEjecucion outputRegistraEjecucion = registraEjecucion(
-                                proceso.getIdProceso(), script.getNumeroOrden(), codigoUsuario, logLinesList);
-                        outputRegistraEjecucion.setNumOrden(script.getNumeroOrden());
-                        outputRegistraEjecucion.setFechaEjecucion(new java.util.Date());
-                        ejecuciones.add(outputRegistraEjecucion);
-                    }
-                }
-            }
-            return ejecuciones;
-        } catch (IOException e) {
-            LogWrapper.error(log, "[PermisosPersonalizadosService.executeScripts] Error", e);
-            throw new ServiceException(e);
+        String separator = File.separator;
+        if (!ruta.endsWith(separator)) {
+            ruta = ruta.concat(separator);
         }
-    }
+        if (CollectionUtils.isNotEmpty(scripts)) {
+            for (Script script : scripts) {
+                //Verificamos que estén indicados tanto el nombre como el contenido
+                if (script.getNombreScript() != null && script.getLineasScript() != null) {
+                    List<TextoLinea> logLinesList = scriptService.executeScript(bbdd, script, ruta);
 
-    public void executeLanzaFile(String nombreEsquema, String nombreBBDD, String password, String fileLocation) throws ServiceException {
-        String connection = String.format(MDSQLConstants.FORMATO_CONEXION, nombreEsquema, password, nombreBBDD);
-
-        ProcessBuilder processBuilder = new ProcessBuilder(MDSQLConstants.SQL_PLUS, connection,
-                String.format(MDSQLConstants.FORMATO_FICHERO, fileLocation));
-        LogWrapper.debug(log, processBuilder.command());
-
-        Boolean invalidLogon = Boolean.FALSE;
-        String lineError = StringUtils.EMPTY;
-
-        List<TextoLinea> logLines = new ArrayList<>();
-
-        processBuilder.redirectErrorStream(true);
-
-        try {
-            Process process = processBuilder.start();
-
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-
-                LogWrapper.debug(log, "[ScriptService.executeScriptFile] Inicio Ejecucion fichero: %s", fileLocation);
-                while (((line = in.readLine()) != null)) {
-                    TextoLinea textoLinea = TextoLinea.builder().valor(line).build();
-                    logLines.add(textoLinea);
-                    LogWrapper.debug(log, line);
-
-                    // Error de clave incorrecta
-                    if (line.contains("ORA-01017")) {
-                        invalidLogon = Boolean.TRUE;
-                        lineError = line;
-                        break;
-                    }
+                    // Registra la ejecución, al primer fallo dispara la excepcion
+                    OutputRegistraEjecucion outputRegistraEjecucion = registraEjecucion(
+                            proceso.getIdProceso(), script.getNumeroOrden(), codigoUsuario, logLinesList);
+                    outputRegistraEjecucion.setNumOrden(script.getNumeroOrden());
+                    outputRegistraEjecucion.setFechaEjecucion(new java.util.Date());
+                    ejecuciones.add(outputRegistraEjecucion);
                 }
-
-                if (invalidLogon) {
-                    process.destroyForcibly();
-                }
-            } catch (IOException e) {
-                LogWrapper.error(log, e.getMessage());
-                throw new ServiceException(e);
             }
-
-            // Si se fuerza la parada del proceso, se sale con error 137, en Windows es 1
-            int exitCode = process.waitFor();
-
-            LogWrapper.debug(log, "[ScriptService.executeScriptFile] Fin Ejecucion exitCode: %s", exitCode);
-            // Si ha dado error, escribe el fichero de log
-            //MDSQLAppHelper.dumpLinesToFile(logLines, Paths.get(logFile).toFile());
-
-            if (exitCode == 1 || exitCode == 137) {
-                throw new ServiceException(lineError);
-            }
-        } catch (IOException | InterruptedException e) {
-            LogWrapper.error(log, e.getMessage());
-            throw new ServiceException(e);
         }
+        return ejecuciones;
     }
 }

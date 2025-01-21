@@ -1,21 +1,9 @@
 package com.mdsql.ui.listener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.swing.JButton;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.mdsql.bussiness.entities.Aviso;
 import com.mdsql.bussiness.entities.Modelo;
 import com.mdsql.bussiness.entities.NivelImportancia;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.service.AvisoService;
 import com.mdsql.ui.PantallaMantenimientoNotasModelos;
@@ -29,188 +17,191 @@ import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.utils.OnLoadListener;
 import com.mdval.utils.AppHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import javax.swing.JButton;
+import org.apache.commons.lang3.StringUtils;
 
 public class PantallaMantenimientoNotasModelosListener extends ListenerSupport implements ActionListener, OnLoadListener {
-	private PantallaMantenimientoNotasModelos pantallaMantenimientoNotasModelos;
-	
-	public PantallaMantenimientoNotasModelosListener(PantallaMantenimientoNotasModelos pantallaMantenimientoNotasModelos) {
-		super();
-		this.pantallaMantenimientoNotasModelos = pantallaMantenimientoNotasModelos;
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton jButton = (JButton) e.getSource();
-		
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_NOTAS_MODELOS_GUARDAR.equals(jButton.getActionCommand())) {
-			eventBtnGuardar();
-		}
+    private final PantallaMantenimientoNotasModelos pantalla;
 
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_NOTAS_MODELOS_BUSCAR_MODELO.equals(jButton.getActionCommand())) {
-			eventBtnBuscarModelo();
-			cargarModelo(pantallaMantenimientoNotasModelos.getModeloSeleccionado());
-		}
+    public PantallaMantenimientoNotasModelosListener(PantallaMantenimientoNotasModelos pantalla) {
+        super();
+        this.pantalla = pantalla;
+    }
 
-		if (MDSQLConstants.PANTALLA_MANTENIMIENTO_NOTAS_MODELOS_CANCELAR.equals(jButton.getActionCommand())) {
-			pantallaMantenimientoNotasModelos.dispose();
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton jButton = (JButton) e.getSource();
 
-	private void eventBtnBuscarModelo() {
-		Modelo seleccionado = null;
-		Map<String, Object> params = new HashMap<>();
-		params.put("opcion", "mntoNotasModelos");
+        if (MDSQLConstants.PANTALLA_MANTENIMIENTO_NOTAS_MODELOS_GUARDAR.equals(jButton.getActionCommand())) {
+            eventBtnGuardar();
+        }
 
-		String codigoProyecto = pantallaMantenimientoNotasModelos.getTxtCodigoProyecto().getText();
+        if (MDSQLConstants.PANTALLA_MANTENIMIENTO_NOTAS_MODELOS_BUSCAR_MODELO.equals(jButton.getActionCommand())) {
+            eventBtnBuscarModelo();
+            cargarModelo(pantalla.getModeloSeleccionado());
+        }
 
-		if (StringUtils.isNotBlank(codigoProyecto)) {
-			params.put("codigoProyecto", codigoProyecto);
-		}
+        if (MDSQLConstants.PANTALLA_MANTENIMIENTO_NOTAS_MODELOS_CANCELAR.equals(jButton.getActionCommand())) {
+            pantalla.dispose();
+        }
+    }
 
-		PantallaSeleccionModelos pantallaSeleccionModelos = (PantallaSeleccionModelos) MDSQLUIHelper.createDialog(pantallaMantenimientoNotasModelos.getFrameParent(),
+    private void eventBtnBuscarModelo() {
+        Modelo seleccionado;
+        Map<String, Object> params = new HashMap<>();
+        params.put("opcion", "mntoNotasModelos");
+
+        String codigoProyecto = pantalla.getTxtCodigoProyecto().getText();
+
+        if (StringUtils.isNotBlank(codigoProyecto)) {
+            params.put("codigoProyecto", codigoProyecto);
+        }
+
+        /*PantallaSeleccionModelos pantallaSeleccionModelos = (PantallaSeleccionModelos) MDSQLUIHelper.createDialog(pantallaMantenimientoNotasModelos.getFrameParent(),
 				MDSQLConstants.CMD_SEARCH_MODEL, params);
-		MDSQLUIHelper.show(pantallaSeleccionModelos);
-		seleccionado = pantallaSeleccionModelos.getSeleccionado();
-		pantallaMantenimientoNotasModelos.setModeloSeleccionado(seleccionado);
-	}
-	
-	private void eventBtnGuardar() {
-		try {
-			Aviso avisoSeleccionado = pantallaMantenimientoNotasModelos.getAvisoSeleccionado();
+		MDSQLUIHelper.show(pantallaSeleccionModelos);*/
+        PantallaSeleccionModelos pantallaSeleccionModelos = MDSQLUIHelper.showForm(pantalla.getFrameParent(), PantallaSeleccionModelos.class, params);
+        seleccionado = pantallaSeleccionModelos.getSeleccionado();
+        pantalla.setModeloSeleccionado(seleccionado);
+    }
 
-			if (!Objects.isNull(avisoSeleccionado)) {
-				modificacion(avisoSeleccionado);
-			}
-			else {
-				alta();
-			}
+    private void eventBtnGuardar() {
+        try {
+            Aviso avisoSeleccionado = pantalla.getAvisoSeleccionado();
 
-			clearForm();
-			clearList();
-			cargarAvisosModelo(pantallaMantenimientoNotasModelos.getModeloSeleccionado());
-		} catch (ServiceException e) {
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaMantenimientoNotasModelos.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
-	}
+            if (!Objects.isNull(avisoSeleccionado)) {
+                modificacion(avisoSeleccionado);
+            } else {
+                alta();
+            }
 
-	private void alta() throws ServiceException {
-		AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		String codUsr = session.getCodUsr();
+            clearForm();
+            clearList();
+            cargarAvisosModelo(pantalla.getModeloSeleccionado());
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
+        }
+    }
 
-		Modelo modelo = pantallaMantenimientoNotasModelos.getModeloSeleccionado();
-		
-		if (!Objects.isNull(modelo)) {
-			String codigoProyecto = modelo.getCodigoProyecto();
-			String descripcionAviso = pantallaMantenimientoNotasModelos.getTxtDescripcion().getText();
-			String txtAviso = pantallaMantenimientoNotasModelos.getTxtTitulo().getText();
+    private void alta() throws ServiceException {
+        AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
+        Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+        String codUsr = session.getCodUsr();
 
-			String codNivelAviso = StringUtils.EMPTY;
-			NivelImportancia nivelAviso = (NivelImportancia) pantallaMantenimientoNotasModelos.getCmbImportancia().getSelectedItem();
-			if (!Objects.isNull(nivelAviso)) {
-				codNivelAviso = nivelAviso.getCodigoNivelAviso().toString();
-			}
+        Modelo modelo = pantalla.getModeloSeleccionado();
 
-			String codPeticion = pantallaMantenimientoNotasModelos.getTxtPeticion().getText();
+        if (!Objects.isNull(modelo)) {
+            String codigoProyecto = modelo.getCodigoProyecto();
+            String txtAviso = pantalla.getTxtDescripcion().getText();
+            String desAviso = pantalla.getTxtTitulo().getText();
 
-			avisoService.altaAviso(codigoProyecto, descripcionAviso, txtAviso, codNivelAviso, codPeticion, codUsr);
-		}
-	}
+            String codNivelAviso = StringUtils.EMPTY;
+            NivelImportancia nivelAviso = (NivelImportancia) pantalla.getCmbImportancia().getSelectedItem();
+            if (!Objects.isNull(nivelAviso)) {
+                codNivelAviso = nivelAviso.getCodigoNivelAviso().toString();
+            }
 
-	private void modificacion(Aviso avisoSeleccionado) throws ServiceException {
-		AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
-		Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
-		String codUsr = session.getCodUsr();
+            String codPeticion = pantalla.getTxtPeticion().getText();
 
-		Modelo modelo = pantallaMantenimientoNotasModelos.getModeloSeleccionado();
-		String codigoProyecto = modelo.getCodigoProyecto();
-		BigDecimal codigoAviso = avisoSeleccionado.getCodigoAviso();
-		String descripcionAviso = pantallaMantenimientoNotasModelos.getTxtDescripcion().getText();
-		String txtAviso = pantallaMantenimientoNotasModelos.getTxtTitulo().getText();
+            avisoService.altaAviso(codigoProyecto, desAviso, txtAviso, codNivelAviso, codPeticion, codUsr);
+        }
+    }
 
-		String codNivelAviso = StringUtils.EMPTY;
-		NivelImportancia nivelAviso = (NivelImportancia) pantallaMantenimientoNotasModelos.getCmbImportancia().getSelectedItem();
-		if (!Objects.isNull(nivelAviso)) {
-			codNivelAviso = nivelAviso.getCodigoNivelAviso().toString();
-		}
+    private void modificacion(Aviso avisoSeleccionado) throws ServiceException {
+        AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
+        Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+        String codUsr = session.getCodUsr();
 
-		String mcaHabilitado = AppHelper.normalizeValueToCheck(pantallaMantenimientoNotasModelos.getChkHabilitada().isSelected());
-		String codPeticion = pantallaMantenimientoNotasModelos.getTxtPeticion().getText();
+        Modelo modelo = pantalla.getModeloSeleccionado();
+        String codigoProyecto = modelo.getCodigoProyecto();
+        BigDecimal codigoAviso = avisoSeleccionado.getCodigoAviso();
+        String txtAviso = pantalla.getTxtDescripcion().getText();
+        String desAviso = pantalla.getTxtTitulo().getText();
 
-		avisoService.modificarAviso(codigoProyecto, codigoAviso, descripcionAviso, txtAviso, codNivelAviso, mcaHabilitado, codPeticion, codUsr);
-	}
+        String codNivelAviso = StringUtils.EMPTY;
+        NivelImportancia nivelAviso = (NivelImportancia) pantalla.getCmbImportancia().getSelectedItem();
+        if (!Objects.isNull(nivelAviso)) {
+            codNivelAviso = nivelAviso.getCodigoNivelAviso().toString();
+        }
 
-	private void cargarModelo(Modelo modeloSeleccionado) {
-		try {
-			clearForm();
-			clearList();
+        String mcaHabilitado = AppHelper.normalizeValueToCheck(pantalla.getChkHabilitada().isSelected());
+        String codPeticion = pantalla.getTxtPeticion().getText();
 
-			if (!Objects.isNull(modeloSeleccionado)) {
-				pantallaMantenimientoNotasModelos.getTxtCodigoProyecto().setText(modeloSeleccionado.getCodigoProyecto());
-				pantallaMantenimientoNotasModelos.getTxtModeloProyecto().setText(modeloSeleccionado.getNombreModelo());
+        avisoService.modificarAviso(codigoProyecto, codigoAviso, desAviso, txtAviso, codNivelAviso, mcaHabilitado, codPeticion, codUsr);
+    }
 
-				cargarAvisosModelo(modeloSeleccionado);
-			}
-		} catch (ServiceException e) {
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaMantenimientoNotasModelos.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
-	}
+    private void cargarModelo(Modelo modeloSeleccionado) {
+        try {
+            clearForm();
+            clearList();
 
-	private void cargarAvisosModelo(Modelo modeloSeleccionado) throws ServiceException {
-		if (!Objects.isNull(modeloSeleccionado)) {
-			// Limpiar la tabla de avisos
-			NotasModeloTableModel tableModel = (NotasModeloTableModel) pantallaMantenimientoNotasModelos.getTblNotasModelos().getModel();
-			tableModel.clearData();
-	
-			// Hacer la consulta
-			AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
-			List<Aviso> avisos = avisoService.consultaAvisosModelo(modeloSeleccionado.getCodigoProyecto());
-	
-			if (CollectionUtils.isNotEmpty(avisos)) {
-				tableModel.setData(avisos);
-			}
-		}
-	}
+            if (!Objects.isNull(modeloSeleccionado)) {
+                pantalla.getTxtCodigoProyecto().setText(modeloSeleccionado.getCodigoProyecto());
+                pantalla.getTxtModeloProyecto().setText(modeloSeleccionado.getNombreModelo());
 
-	private void cargarNivelesImportancia() throws ServiceException {
-		AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
+                cargarAvisosModelo(modeloSeleccionado);
+            }
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
+        }
+    }
 
-		List<NivelImportancia> niveles = avisoService.consultaNivelesImportancia();
-		if (CollectionUtils.isNotEmpty(niveles)) {
-			NivelesImportanciaComboBoxModel nivelesImportanciaComboBoxModel = new NivelesImportanciaComboBoxModel(niveles);
-			pantallaMantenimientoNotasModelos.getCmbImportancia().setModel(nivelesImportanciaComboBoxModel);
-		}
-	}
+    private void cargarAvisosModelo(Modelo modeloSeleccionado) throws ServiceException {
+        if (!Objects.isNull(modeloSeleccionado)) {
+            // Limpiar la tabla de avisos
+            NotasModeloTableModel tableModel = (NotasModeloTableModel) pantalla.getTblNotasModelos().getModel();
+            tableModel.clearData();
 
-	private void clearForm() {
-		pantallaMantenimientoNotasModelos.getTxtPeticion().setText(StringUtils.EMPTY);
-		MDSQLUIHelper.setSelectedItem(pantallaMantenimientoNotasModelos.getCmbImportancia(), null);
-		pantallaMantenimientoNotasModelos.getChkHabilitada().setSelected(Boolean.FALSE);
-		pantallaMantenimientoNotasModelos.getTxtTitulo().setText(StringUtils.EMPTY);
-		pantallaMantenimientoNotasModelos.getTxtDescripcion().setText(StringUtils.EMPTY);
-		pantallaMantenimientoNotasModelos.getTxtUsuarioAlta().setText(StringUtils.EMPTY);
-		pantallaMantenimientoNotasModelos.getTxtFechaAlta().setText(StringUtils.EMPTY);
-		pantallaMantenimientoNotasModelos.getTxtUsuarioModificacion().setText(StringUtils.EMPTY);
-		pantallaMantenimientoNotasModelos.getTxtFechaModificacion().setText(StringUtils.EMPTY);
+            // Hacer la consulta
+            AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
+            OutputConsulta<Aviso> output = avisoService.consultaAvisosModelo(modeloSeleccionado.getCodigoProyecto());
+            tableModel.setData(output.getLista());
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
+        }
+    }
 
-		pantallaMantenimientoNotasModelos.getBtnGuardar().setEnabled(Boolean.TRUE);
-	}
+    private void cargarNivelesImportancia() throws ServiceException {
+        AvisoService avisoService = (AvisoService) getService(MDSQLConstants.AVISO_SERVICE);
 
-	private void clearList() {
-		NotasModeloTableModel tableModel = (NotasModeloTableModel) pantallaMantenimientoNotasModelos
-				.getTblNotasModelos().getModel();
-		tableModel.clearData();
-	}
+        OutputConsulta<NivelImportancia> output = avisoService.consultaNivelesImportancia();
+        NivelesImportanciaComboBoxModel nivelesImportanciaComboBoxModel = new NivelesImportanciaComboBoxModel(output.getLista());
+        pantalla.getCmbImportancia().setModel(nivelesImportanciaComboBoxModel);
+        MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
+    }
 
-	@Override
-	public void onLoad() {
-		try {
-			cargarNivelesImportancia();
-		} catch (ServiceException e) {
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaMantenimientoNotasModelos.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
-		}
-	}
+    private void clearForm() {
+        pantalla.getTxtPeticion().setText(StringUtils.EMPTY);
+        MDSQLUIHelper.setSelectedItem(pantalla.getCmbImportancia(), null);
+        pantalla.getChkHabilitada().setSelected(Boolean.FALSE);
+        pantalla.getTxtTitulo().setText(StringUtils.EMPTY);
+        pantalla.getTxtDescripcion().setText(StringUtils.EMPTY);
+        pantalla.getTxtUsuarioAlta().setText(StringUtils.EMPTY);
+        pantalla.getTxtFechaAlta().setText(StringUtils.EMPTY);
+        pantalla.getTxtUsuarioModificacion().setText(StringUtils.EMPTY);
+        pantalla.getTxtFechaModificacion().setText(StringUtils.EMPTY);
+
+        pantalla.getBtnGuardar().setEnabled(Boolean.TRUE);
+    }
+
+    private void clearList() {
+        NotasModeloTableModel tableModel = (NotasModeloTableModel) pantalla
+                .getTblNotasModelos().getModel();
+        tableModel.clearData();
+    }
+
+    @Override
+    public void onLoad() {
+        try {
+            cargarNivelesImportancia();
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
+        }
+    }
 }

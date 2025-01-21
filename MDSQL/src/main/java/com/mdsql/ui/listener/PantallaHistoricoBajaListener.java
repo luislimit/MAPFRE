@@ -9,7 +9,7 @@ import javax.swing.JButton;
 
 import com.mdsql.bussiness.entities.Historico;
 import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.bussiness.entities.OutputBajaHistorico;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.service.HistoricoService;
 import com.mdsql.ui.PantallaHistoricoBaja;
@@ -21,11 +21,11 @@ import com.mdval.exceptions.ServiceException;
 
 public class PantallaHistoricoBajaListener extends ListenerSupport implements ActionListener {
 
-	private PantallaHistoricoBaja pantallaHistoricoBaja;
+	private final PantallaHistoricoBaja pantalla;
 
-	public PantallaHistoricoBajaListener(PantallaHistoricoBaja pantallaHistoricoBaja) {
+	public PantallaHistoricoBajaListener(PantallaHistoricoBaja pantalla) {
 		super();
-		this.pantallaHistoricoBaja = pantallaHistoricoBaja;
+		this.pantalla = pantalla;
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class PantallaHistoricoBajaListener extends ListenerSupport implements Ac
 		}
 
 		if (MDSQLConstants.PANTALLA_HISTORICO_BAJA_BTN_CANCELAR.equals(jButton.getActionCommand())) {
-			pantallaHistoricoBaja.getReturnParams().put("response", "KO");
-			pantallaHistoricoBaja.dispose();
+			pantalla.getReturnParams().put("response", "KO");
+			pantalla.dispose();
 		}
 	}
 
@@ -48,30 +48,24 @@ public class PantallaHistoricoBajaListener extends ListenerSupport implements Ac
 			Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
 			String codUsr = session.getCodUsr();
 
-			Modelo modeloSeleccionado = pantallaHistoricoBaja.getModeloSeleccionado();
-			Historico seleccionado = pantallaHistoricoBaja.getSeleccionado();
+			Modelo modeloSeleccionado = pantalla.getModeloSeleccionado();
+			Historico seleccionado = pantalla.getSeleccionado();
 			
 			if (!Objects.isNull(modeloSeleccionado)) {
 				String codigoProyecto = modeloSeleccionado.getCodigoProyecto();
 				String nombreObjeto = seleccionado.getNombreObjeto();
-				String peticion = pantallaHistoricoBaja.getTxtPeticion().getText();
+				String peticion = pantalla.getTxtPeticion().getText();
 
-				OutputBajaHistorico outputBajaHistorico = historicoService.bajaHistorico(codigoProyecto, nombreObjeto, peticion, codUsr);
+				OutputWarning output = historicoService.bajaHistorico(codigoProyecto, nombreObjeto, peticion, codUsr);
 			
-				// Hay avisos
-				if (outputBajaHistorico.getResult() == 2) {
-					ServiceException serviceException = outputBajaHistorico.getServiceException();
-					Map<String, Object> params = MDSQLUIHelper.buildWarnings(serviceException.getErrors());
-					MDSQLUIHelper.showPopup(pantallaHistoricoBaja.getFrameParent(), MDSQLConstants.CMD_WARN, params);
-				}
+                                MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
 			}
 			
-			pantallaHistoricoBaja.getReturnParams().put("response", "OK");
-			pantallaHistoricoBaja.dispose();
+			pantalla.getReturnParams().put("response", "OK");
+			pantalla.dispose();
 		} catch (ServiceException e) {
-			pantallaHistoricoBaja.getReturnParams().put("response", "KO");
-			Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaHistoricoBaja.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+			pantalla.getReturnParams().put("response", "KO");
+			MDSQLUIHelper.showErrors(pantalla, e);
 		}
 	}
 }

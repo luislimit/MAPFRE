@@ -12,7 +12,7 @@ import javax.swing.table.TableCellRenderer;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.mdsql.utils.ConfigurationSingleton;
+import com.mdval.utils.ConfigurationSingleton;
 import com.mdval.utils.LogWrapper;
 
 import lombok.extern.slf4j.Slf4j;

@@ -19,6 +19,7 @@ import com.mdsql.bussiness.entities.Proceso;
 import com.mdsql.ui.listener.PantallaEjecutarTypesActionListener;
 import com.mdsql.ui.listener.tables.TypesTableListener;
 import com.mdsql.ui.model.TypesTableModel;
+import com.mdsql.ui.model.cabeceras.TablaTypesCabecera;
 import com.mdsql.ui.renderer.TypesTableCellRenderer;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdsql.utils.MDSQLConstants;
@@ -280,7 +281,7 @@ public class PantallaEjecutarTypes extends DialogSupport {
     
     @Override
     protected void initModels() {
-    	Cabecera cabecera = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.TYPES_TABLA_CABECERA);
+    	Cabecera cabecera = new TablaTypesCabecera();
     	tblTypes.initModel(new TypesTableModel(cabecera));
     	
     	tblTypes.setDefaultRenderer(String.class, new TypesTableCellRenderer());

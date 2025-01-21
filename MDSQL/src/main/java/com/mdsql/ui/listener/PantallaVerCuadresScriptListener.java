@@ -4,13 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-
-import javax.swing.JButton;
-
 import com.mdsql.bussiness.entities.CuadreObjeto;
 import com.mdsql.bussiness.entities.CuadreOperacion;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.Proceso;
 import com.mdsql.bussiness.entities.Script;
 import com.mdsql.bussiness.service.CuadreService;
@@ -26,68 +23,70 @@ import com.mdval.ui.utils.observer.Observer;
 
 public class PantallaVerCuadresScriptListener extends ListenerSupport implements ActionListener, OnLoadListener {
 
-	private PantallaVerCuadresScript pantallaVerCuadresScript;
+    private final PantallaVerCuadresScript pantalla;
 
-	public PantallaVerCuadresScriptListener(PantallaVerCuadresScript pantallaVerCuadresScript) {
-		super();
-		this.pantallaVerCuadresScript = pantallaVerCuadresScript;
-	}
+    public PantallaVerCuadresScriptListener(PantallaVerCuadresScript pantalla) {
+        super();
+        this.pantalla = pantalla;
+    }
 
-	public void addObservador(Observer o) {
-		this.addObserver(o);
-	}
+    public void addObservador(Observer o) {
+        this.addObserver(o);
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton jButton = (JButton) e.getSource();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
 
-		if (MDSQLConstants.PANTALLA_VER_ERRORES_SCRIPT_BTN_CANCELAR.equals(jButton.getActionCommand())) {
-			cancelar();
-		}
-	}
+        if (obj.equals(pantalla.getBtnCancelar())) {
+            cancelar();
+        }
+    }
 
-	@Override
-	public void onLoad() {
-		try {
-			CuadreService cuadreService = (CuadreService) getService(MDSQLConstants.CUADRE_SERVICE);
+    @Override
+    public void onLoad() {
+        try {
+            CuadreService cuadreService = (CuadreService) getService(MDSQLConstants.CUADRE_SERVICE);
 
-			Script script = (Script) pantallaVerCuadresScript.getParams().get("script");
-			Proceso proceso = (Proceso) pantallaVerCuadresScript.getParams().get("proceso");
-			BigDecimal orden = (BigDecimal) pantallaVerCuadresScript.getParams().get("orden");
+            Script script = (Script) pantalla.getParams().get("script");
+            Proceso proceso = (Proceso) pantalla.getParams().get("proceso");
+            BigDecimal orden = (BigDecimal) pantalla.getParams().get("orden");
 
-			BigDecimal idProceso = proceso.getIdProceso();
-			BigDecimal numeroOrden = (!Objects.isNull(script)) ? script.getNumeroOrden() : orden;
-			List<CuadreObjeto> cuadreObjetos = cuadreService.consultaCuadreOperacionesObjetoScript(idProceso,
-					numeroOrden);
-			List<CuadreOperacion> cuadreOperaciones = cuadreService.consultaCuadreOperacionesScript(idProceso,
-					numeroOrden);
+            BigDecimal idProceso = proceso.getIdProceso();
+            BigDecimal numeroOrden = (!Objects.isNull(script)) ? script.getNumeroOrden() : orden;
 
-			populateModels(cuadreOperaciones, cuadreObjetos);
+            OutputConsulta<CuadreOperacion> outputCuadreOperaciones = cuadreService.consultaCuadreOperacionesScript(idProceso,
+                    numeroOrden);
+            MDSQLUIHelper.showWarnings(pantalla, outputCuadreOperaciones.getWarnings());
 
-		} catch (ServiceException e) {
-			Map<String, Object> params = MDSQLUIHelper.buildError(e);
-			MDSQLUIHelper.showPopup(pantallaVerCuadresScript.getFrameParent(), MDSQLConstants.CMD_ERROR, params);
-		}
-	}
+            OutputConsulta<CuadreObjeto> outputCuadreObjetos = cuadreService.consultaCuadreOperacionesObjetoScript(idProceso,
+                    numeroOrden);
+            MDSQLUIHelper.showWarnings(pantalla, outputCuadreObjetos.getWarnings());
 
-	private void cancelar() {
-		pantallaVerCuadresScript.dispose();
-	}
+            populateModels(outputCuadreOperaciones.getLista(), outputCuadreObjetos.getLista());
 
-	/**
-	 * @param cuadreOperaciones
-	 * @param cuadreObjetos
-	 */
-	private void populateModels(List<CuadreOperacion> cuadreOperaciones, List<CuadreObjeto> cuadreObjetos) {
-		// Obtiene el modelo y lo actualiza
-		CuadresOperacionesTableModel tableModelOperaciones = (CuadresOperacionesTableModel) pantallaVerCuadresScript
-				.getTblOperaciones().getModel();
-		tableModelOperaciones.setData(cuadreOperaciones);
+        } catch (ServiceException e) {
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
+        }
+    }
 
-		// Obtiene el modelo y lo actualiza
-		CuadresObjetosTableModel tableModelObjetos = (CuadresObjetosTableModel) pantallaVerCuadresScript
-				.getTblObjetos().getModel();
-		tableModelObjetos.setData(cuadreObjetos);
+    private void cancelar() {
+        pantalla.dispose();
+    }
 
-	}
+    /**
+     * @param cuadreOperaciones
+     * @param cuadreObjetos
+     */
+    private void populateModels(List<CuadreOperacion> cuadreOperaciones, List<CuadreObjeto> cuadreObjetos) {
+        // Obtiene el modelo y lo actualiza
+        CuadresOperacionesTableModel tableModelOperaciones = (CuadresOperacionesTableModel) pantalla
+                .getTblOperaciones().getModel();
+        tableModelOperaciones.setData(cuadreOperaciones);
+
+        // Obtiene el modelo y lo actualiza
+        CuadresObjetosTableModel tableModelObjetos = (CuadresObjetosTableModel) pantalla
+                .getTblObjetos().getModel();
+        tableModelObjetos.setData(cuadreObjetos);
+    }
 }

@@ -3,7 +3,6 @@ package com.mdsql.bussiness.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,13 +21,13 @@ public class Aviso implements Serializable {
 
     private NivelImportancia nivelImportancia;
     private BigDecimal codigoAviso;
-    private String descripcionAviso;
-    private String txtAviso;
+    private String titulo;
+    private String descripcion;
     private String codigoPeticion;
     private Date fechaAlta;
     private String codigoUsrAlta;
     private String mcaHabilitado;
     private Date fechaActualizacion;
     private String codigoUsuario;
-
+    private String nombreObjeto;
 }

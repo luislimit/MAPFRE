@@ -17,19 +17,21 @@ import lombok.NoArgsConstructor;
 public class Script implements Serializable, Scriptable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -3317596703100222456L;
-	
-	private String tipoScript;
+     *
+     */
+    private static final long serialVersionUID = -3317596703100222456L;
+
+    private String tipoScript;
     private List<TextoLinea> lineasScript;
     private String nombreScript;
     private BigDecimal codigoEstadoScript;
     private String descripcionEstadoScript;
     private BigDecimal numeroOrden;
     private String nombreScriptLanza;
-    private String txtScriptLanza;
+    private List<TextoLinea> lineasScriptLanza;
     private String nombreScriptLog;
+    private String charset_script;
+    
     private String operaciones;
     private String objetos;
     private Date fecha;

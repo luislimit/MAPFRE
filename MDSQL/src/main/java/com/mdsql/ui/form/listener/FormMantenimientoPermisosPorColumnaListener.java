@@ -6,20 +6,19 @@
 package com.mdsql.ui.form.listener;
 
 import com.mdsql.bussiness.entities.Grant;
-import com.mdsql.bussiness.entities.OutputConsultaPermisosColumna;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.PermisoColumna;
 import com.mdsql.bussiness.entities.Session;
 import com.mdsql.bussiness.service.PermisosColumnaService;
 import com.mdsql.ui.form.FormMantenimientoPermisosPorColumna;
 import com.mdsql.ui.utils.ListenerSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.DateFormatter;
+import com.mdval.utils.DateFormatter;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 /**
  *
@@ -53,9 +52,9 @@ public class FormMantenimientoPermisosPorColumnaListener extends ListenerSupport
             }            
             PermisosColumnaService permisosColumnaService = (PermisosColumnaService) getService(MDSQLConstants.PERMISOS_COLUMNA_SERVICE);
             PermisoColumna permisoColumna = formToPermisoColumna();
-            OutputConsultaPermisosColumna output = permisosColumnaService.guardarPermiso(permisoColumna, mcaAlta);
+            OutputConsulta<PermisoColumna> output = permisosColumnaService.guardarPermiso(permisoColumna, mcaAlta);
             
-            MDSQLUIHelper.showWarnings(pantalla, output.getServiceException());
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
 
             // Indicamos que han ocurrido cambios en la pantalla
             pantalla.getReturnParams().put(MDSQLConstants.P_OUT_DATA_CHANGED, Boolean.TRUE);
@@ -63,7 +62,7 @@ public class FormMantenimientoPermisosPorColumnaListener extends ListenerSupport
                 pantalla.dispose();
             }
             
-        } catch (IOException | ServiceException e) {
+        } catch (ServiceException e) {
             MDSQLUIHelper.showErrors(pantalla, e);
         }
     }

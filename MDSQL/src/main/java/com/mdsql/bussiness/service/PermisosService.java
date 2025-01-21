@@ -1,5 +1,6 @@
 package com.mdsql.bussiness.service;
 
+import com.mdsql.bussiness.entities.OutputWarning;
 import java.util.List;
 
 import com.mdsql.bussiness.entities.Modelo;
@@ -18,7 +19,7 @@ public interface PermisosService {
 
     List<String> consultarPermisosPorTipoObjeto(String tipoObjeto) throws ServiceException;
 
-    List<Permiso> guardarPermiso(String codProyecto, String codUsrGrant, String valGrant, String desEntorno, String tipoObjeto, String mcaGrantOption, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException;
+    OutputWarning guardarPermiso(String codProyecto, String codUsrGrant, String valGrant, String desEntorno, String tipoObjeto, String mcaGrantOption, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException;
 
-    List<Sinonimo> guardarSinonimo(String codProyecto, String codUsrGrant, String codOwnerSyn, String desEntorno, String tipoObjeto, String funcionNombre, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException;
+    OutputWarning guardarSinonimo(String codProyecto, String codUsrGrant, String codOwnerSyn, String desEntorno, String tipoObjeto, String funcionNombre, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException;
 }

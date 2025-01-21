@@ -9,9 +9,22 @@ import com.mdval.ui.model.cabeceras.Cabecera;
  *
  */
 public class TablaHistoricoObjetosCabecera extends Cabecera {
-	
-	public void setupCabecera() {
-		columnIdentifiers.add("Petición");
+
+    @Override
+    public void setupCabecera() {
+
+        addColumn("colPeticion", 150, String.class);
+        addColumn("colEstado", 50, String.class);
+        addColumn("colFecha", 80, Date.class);
+        addColumn("colSubmodelo", 100, String.class);
+        addColumn("colSolicitado", 50, String.class);
+        addColumn("colUsuario", 50, String.class);
+        addColumn("colOperacion", 75, String.class);
+        addColumn("colOperPadre", 75, String.class);
+        addColumn("colScript", 400, String.class);
+        addColumn("colEstado", 100, String.class);
+
+        /*columnIdentifiers.add("Petición");
 		columnIdentifiers.add("Estado");
 		columnIdentifiers.add("Fecha");
 		columnIdentifiers.add("Submodelo");
@@ -42,6 +55,6 @@ public class TablaHistoricoObjetosCabecera extends Cabecera {
 		columnSizes.add(75);
 		columnSizes.add(75);
 		columnSizes.add(400);
-		columnSizes.add(100);
-	}
+		columnSizes.add(100);*/
+    }
 }

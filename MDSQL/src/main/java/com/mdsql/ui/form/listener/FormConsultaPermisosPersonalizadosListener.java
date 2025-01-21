@@ -45,10 +45,6 @@ public class FormConsultaPermisosPersonalizadosListener extends ListenerSupportM
         }
     }
 
-    private void evtBtnLimpiar() {
-        clearForm();
-    }
-
     @Override
     public void clearForm(){
         super.clearForm();
@@ -108,7 +104,7 @@ public class FormConsultaPermisosPersonalizadosListener extends ListenerSupportM
             sinonimosTableModel.clearData();
             sinonimosTableModel.setData(output.getSinonimosObjeto());    
             
-            MDSQLUIHelper.showWarnings(pantalla, output.getServiceException());
+            MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
 
         } catch (ServiceException e) {
             MDSQLUIHelper.showErrors(pantalla, e);

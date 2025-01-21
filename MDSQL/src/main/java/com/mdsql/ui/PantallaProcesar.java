@@ -8,7 +8,7 @@ package com.mdsql.ui;
 import javax.swing.JButton;
 
 import com.mdsql.bussiness.entities.Proceso;
-import com.mdval.ui.utils.TableSupport;
+import javax.swing.JTable;
 
 /**
  *
@@ -16,7 +16,7 @@ import com.mdval.ui.utils.TableSupport;
  */
 public interface PantallaProcesar {
 
-	TableSupport getTblUltimasPeticiones();
+	JTable getTblUltimasPeticiones();
 	
 	void setProcesoSeleccionado(Proceso proceso);
 	

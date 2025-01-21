@@ -10,6 +10,7 @@ import java.util.Map;
 import com.mdsql.ui.listener.PantallaMantenimientoEntornosListener;
 import com.mdsql.ui.listener.tables.EntornosTableListener;
 import com.mdsql.ui.model.EntornoTableModel;
+import com.mdsql.ui.model.cabeceras.TablaEntornosCabecera;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
@@ -187,7 +188,7 @@ public class PantallaMantenimientoEntornos extends DialogSupport {
 	 
 	 @Override
 	 protected void initModels() {
-		 Cabecera cabecera = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.MNTO_ENTORNOS_TABLA_CABECERA);
+		 Cabecera cabecera = new TablaEntornosCabecera();
 		 tblMantenimientoEntornos.initModel(
 				 new EntornoTableModel(cabecera));
 	 }

@@ -7,15 +7,19 @@ import com.mdval.ui.model.cabeceras.Cabecera;
  *
  */
 public class TablaTypesCabecera extends Cabecera {
-	
-	public void setupCabecera() {
-		columnIdentifiers.add("Orden");
+
+    @Override
+    public void setupCabecera() {
+        addColumn("colOrden", 75, Integer.class);
+        addColumn("colObjeto", 500, String.class);
+
+        /*columnIdentifiers.add("Orden");
 		columnIdentifiers.add("Objeto");
 		
 		columnClasses.add(Integer.class);
 		columnClasses.add(String.class);
 		
 		columnSizes.add(75);
-		columnSizes.add(500);
-	}
+		columnSizes.add(500);*/
+    }
 }

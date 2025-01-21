@@ -28,7 +28,7 @@ public class OutputConsultaPermisosPersonalizados implements Serializable {
     private Integer result;
     private List<PermisoColumna> permisosColumna;
     private List<SinonimoObjeto> sinonimosObjeto;
-    private ServiceException serviceException;
+    private ServiceException warnings;
 }
 
 

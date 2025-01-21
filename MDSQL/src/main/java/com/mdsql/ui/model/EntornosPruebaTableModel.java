@@ -41,19 +41,24 @@ public class EntornosPruebaTableModel extends DefaultTableModel<EntornoPrueba> {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		EntornoPrueba row = data.get(rowIndex);
 
-		if (columnIndex == 0) {
-			return row.getNombreEntorno();
-		} else if (1 == columnIndex) {
-			return row.getBbdd();
-		} else if (2 == columnIndex) {
-			return row.getEsquema();
-		} else if (3 == columnIndex) {
-			return row.getTablespace();
-		} else if (4 == columnIndex) {
-			return row.getGradoParal();
-		} else if (5 == columnIndex) {
-			return row.getDescripcion();
-		}
+            switch (columnIndex) {
+                case 0:
+                    return row.getNombreEntorno();
+                case 1:
+                    return row.getBbdd();
+                case 2:
+                    return row.getEsquema();
+                case 3:
+                    return row.getTablespace();
+                case 4:
+                    return row.getGradoParal();
+                case 5:
+                    return row.getDescripcion();
+                case 6:
+                    return row.getMcaHabilitado();                    
+                default:
+                    break;
+            }
 
 		return null;
 	}

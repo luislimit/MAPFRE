@@ -7,9 +7,17 @@ import com.mdval.ui.model.cabeceras.Cabecera;
  *
  */
 public class TablaEntornosCabecera extends Cabecera {
-	
-	public void setupCabecera() {
-		columnIdentifiers.add("BBDD");
+
+    @Override
+    public void setupCabecera() {
+
+        addColumn("colBBDD", 150, String.class);
+        addColumn("colEsquema", 150, String.class);
+        addColumn("colPassword", 150, String.class);
+        addColumn("colComentario", 450, String.class);
+        addColumn("colHabilitada", 100, String.class);
+
+        /*columnIdentifiers.add("BBDD");
 		columnIdentifiers.add("Esquema");
 		columnIdentifiers.add("Password");
 		columnIdentifiers.add("Comentario");
@@ -25,6 +33,6 @@ public class TablaEntornosCabecera extends Cabecera {
 		columnSizes.add(150);
 		columnSizes.add(150);
 		columnSizes.add(450);
-		columnSizes.add(100);
-	}
+		columnSizes.add(100);*/
+    }
 }

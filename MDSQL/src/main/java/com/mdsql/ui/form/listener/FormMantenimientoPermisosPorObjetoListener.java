@@ -13,7 +13,7 @@ import com.mdsql.bussiness.service.PermisosObjetoService;
 import com.mdsql.ui.form.FormMantenimientoPermisosPorObjeto;
 import com.mdsql.ui.utils.ListenerSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.DateFormatter;
+import com.mdval.utils.DateFormatter;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
@@ -69,7 +69,7 @@ public class FormMantenimientoPermisosPorObjetoListener extends ListenerSupportM
             if (mcaAlta.equals(MDSQLConstants.N)) {
                 pantalla.dispose();
             }
-        } catch (IOException | ServiceException e) {
+        } catch (ServiceException e) {
             MDSQLUIHelper.showErrors(pantalla, e);
         }
     }

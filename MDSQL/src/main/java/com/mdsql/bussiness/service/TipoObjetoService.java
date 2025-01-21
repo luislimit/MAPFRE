@@ -1,8 +1,7 @@
 package com.mdsql.bussiness.service;
 
-import java.util.List;
+import com.mdsql.bussiness.entities.OutputConsulta;
 
-import com.mdsql.bussiness.entities.OutputConsultaTiposObjeto;
 import com.mdval.exceptions.ServiceException;
 
 /**
@@ -10,7 +9,7 @@ import com.mdval.exceptions.ServiceException;
  */
 public interface TipoObjetoService {
 
-    OutputConsultaTiposObjeto consultarTiposObjeto() throws ServiceException;
+    OutputConsulta<String> consultarTiposObjeto() throws ServiceException;
 
-    List<String> consultarTiposVariable() throws ServiceException;
+    OutputConsulta<String> consultarTiposVariable() throws ServiceException;
 }

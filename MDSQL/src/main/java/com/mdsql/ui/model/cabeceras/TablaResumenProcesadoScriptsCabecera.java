@@ -10,8 +10,17 @@ import com.mdval.ui.model.cabeceras.Cabecera;
  */
 public class TablaResumenProcesadoScriptsCabecera extends Cabecera {
 	
+        @Override
 	public void setupCabecera() {
-		columnIdentifiers.add("Orden");
+		addColumn("colOrden", 50, Integer.class);
+		addColumn("colEstado", 50, String.class);
+		addColumn("colFecha", 50, Date.class);
+		addColumn("colOperacion", 75, String.class);
+		addColumn("colObjeto", 50, String.class);
+		addColumn("colConErrores", 50, String.class);
+		addColumn("colScript", 550, String.class);
+		
+		/*columnIdentifiers.add("Orden");
 		columnIdentifiers.add("Estado");
 		columnIdentifiers.add("Fecha");
 		columnIdentifiers.add("Operaciones");
@@ -33,6 +42,6 @@ public class TablaResumenProcesadoScriptsCabecera extends Cabecera {
 		columnSizes.add(75);
 		columnSizes.add(50);
 		columnSizes.add(50);
-		columnSizes.add(550);
+		columnSizes.add(550);*/
 	}
 }

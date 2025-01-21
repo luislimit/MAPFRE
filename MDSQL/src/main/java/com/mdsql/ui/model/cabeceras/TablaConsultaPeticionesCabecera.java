@@ -1,44 +1,25 @@
 package com.mdsql.ui.model.cabeceras;
 
-import java.math.BigDecimal;
-
 import com.mdval.ui.model.cabeceras.Cabecera;
+import java.util.Date;
 
 /**
  * @author federico
  *
  */
 public class TablaConsultaPeticionesCabecera extends Cabecera {
-	
-	public void setupCabecera() {
-		columnIdentifiers.add("Peticion");
-		columnIdentifiers.add("Estado");
-		columnIdentifiers.add("Fecha");
-		columnIdentifiers.add("Modelo");
-		columnIdentifiers.add("Submodelo");
-		columnIdentifiers.add("Con errores");
-		columnIdentifiers.add("Solicitado");
-		columnIdentifiers.add("Descripcion");
-		columnIdentifiers.add("Usuario");
-		
-		columnClasses.add(BigDecimal.class);
-		columnClasses.add(String.class);
-		columnClasses.add(String.class);
-		columnClasses.add(String.class);
-		columnClasses.add(String.class);
-		columnClasses.add(String.class);
-		columnClasses.add(String.class);
-		columnClasses.add(String.class);
-		columnClasses.add(String.class);
-		
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(100);
-		columnSizes.add(50);
-		columnSizes.add(100);
-		columnSizes.add(450);
-		columnSizes.add(100);
-	}
+
+    @Override
+    public void setupCabecera() {
+        addColumn("colPeticion", 100, String.class);
+        addColumn("colEstado", 100, String.class);
+        addColumn("colFecha", 100, Date.class);
+        addColumn("colModelo", 100, String.class);
+        addColumn("colSubModelo", 100, String.class);
+        addColumn("colConErrores", 80, String.class);
+        addColumn("colSolicitante", 100, String.class);
+        addColumn("colDescripcion", 450, String.class);
+        addColumn("colProcesado", 100, String.class);
+        addColumn("colUsuario", 100, String.class);
+    }
 }

@@ -10,7 +10,16 @@ import com.mdval.ui.model.cabeceras.Cabecera;
  */
 public class TablaErroresCabecera extends Cabecera {
 	
+        @Override
 	public void setupCabecera() {
+            	addColumn("colOrden", 70, Integer.class);
+		addColumn("colFecha", 120, Date.class);
+		addColumn("colProcesado", 100, String.class);
+		addColumn("colEjecucion", 100, String.class);
+		addColumn("colIteracion", 100, String.class);
+		addColumn("colScript", 400, String.class);
+            
+            /*
 		columnIdentifiers.add("Orden");
 		columnIdentifiers.add("Fecha");
 		columnIdentifiers.add("Procesado");
@@ -34,5 +43,6 @@ public class TablaErroresCabecera extends Cabecera {
 		columnSizes.add(100);
 		columnSizes.add(350);
 		columnSizes.add(800);
+*/
 	}
 }

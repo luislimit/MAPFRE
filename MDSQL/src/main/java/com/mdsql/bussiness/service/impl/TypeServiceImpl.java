@@ -155,9 +155,9 @@ public class TypeServiceImpl extends ServiceSupport implements TypeService {
 
             OutputProcesaType outputProcesaType = new OutputProcesaType();
             outputProcesaType.setIdProceso(idProceso);
-            outputProcesaType.setPFechaProceso(pFechaProceso);
-            outputProcesaType.setPCodigoEstadoProceso(pCodigoEstadoProceso);
-            outputProcesaType.setPDescripcionEstadoProceso(pDescripcionEstadoProceso);
+            outputProcesaType.setFechaProceso(pFechaProceso);
+            outputProcesaType.setCodigoEstadoProceso(pCodigoEstadoProceso);
+            outputProcesaType.setDescripcionEstadoProceso(pDescripcionEstadoProceso);
             outputProcesaType.setPNombreScriptLanza(nombreScriptLanza);
             outputProcesaType.setPNombreScriptLog(nombreScripLog);
             outputProcesaType.setTxtScriptLanza(scriptLanza);

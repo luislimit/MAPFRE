@@ -5,29 +5,29 @@
  */
 package com.mdsql.ui;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
-
 import com.mdsql.bussiness.entities.Modelo;
 import com.mdsql.ui.listener.PantallaMantenimientoVariablesListener;
 import com.mdsql.ui.listener.tables.VariablesTableListener;
 import com.mdsql.ui.model.SiNoComboBoxModel;
 import com.mdsql.ui.model.VariableTableModel;
 import com.mdsql.ui.model.VigenteHistoricoComboBoxModel;
+import com.mdsql.ui.model.cabeceras.TablaVariablesCabecera;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.LiteralesSingleton;
-import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
 import com.mdval.ui.utils.DialogSupport;
 import com.mdval.ui.utils.FrameSupport;
-
-import com.mdval.ui.utils.TableSupport;
+import java.util.Map;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -35,384 +35,502 @@ import javax.swing.event.ListSelectionListener;
  */
 public class PantallaMantenimientoVariables extends DialogSupport {
 
-	 	private static final long serialVersionUID = 1L;
-	 
-	 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	    private javax.swing.JLabel jLabel10;
-	    private javax.swing.JLabel jLabel11;
-	    private javax.swing.JLabel jLabel12;
-	    private javax.swing.JLabel jLabel13;
-	    private javax.swing.JLabel jLabel15;
-	    private javax.swing.JLabel jLabel16;
-	    private javax.swing.JLabel jLabel17;
-	    private javax.swing.JLabel jLabel3;
-	    private javax.swing.JLabel jLabel4;
-	    private javax.swing.JLabel jLabel5;
-	    private javax.swing.JLabel jLabel6;
-	    private javax.swing.JLabel jLabel7;
-	    private javax.swing.JLabel jLabel8;
-	    private javax.swing.JLabel jLabel9;
-	    private javax.swing.JScrollPane jScrollPane1;
-	    
-	    @Getter
-	    private TableSupport tblVariables;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtBBDD;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtCodigoVariable;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtComentario;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtFechaAlta;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtFechaModificacion;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtModeloProyecto;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtCodigoProyecto;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtPeticion;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtUsuarioAlta;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtUsuarioModificacion;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtValorVariable;
-	    
-	    @Getter
-	    private javax.swing.JTextField txtValorVariableSustituir;
-	    
-	    @Getter
-	    private javax.swing.JButton btnCancelar;
-	    
-	    @Getter
-	    private javax.swing.JButton btnGuardar;
-	    
-	    @Getter
-	    private javax.swing.JCheckBox chkHabilitada;
-	    
-	    @Getter
-	    private javax.swing.JCheckBox chkUsoPermisos;
-	    
-	    @Getter
-	    private javax.swing.JComboBox<String> cmbEntorno;
-	    
-	    @Getter
-	    private javax.swing.JComboBox<String> cmbTipoVariable;
-	    
-	    @Getter
-	    private javax.swing.JComboBox<String> cmbUsoInterno;
-	    // End of variables declaration//GEN-END:variables
+    @Getter
+    @Setter
+    private Modelo modelo;
 
-		@Getter
-		@Setter
-		private Modelo modelo;
+    public PantallaMantenimientoVariables(FrameSupport parent, Boolean modal) {
+        super(parent, modal);
+    }
 
-	    public PantallaMantenimientoVariables(FrameSupport parent, Boolean modal) {
-			 super(parent, modal);
-		 }
+    public PantallaMantenimientoVariables(FrameSupport parent, Boolean modal, Map<String, Object> params) {
+        super(parent, modal, params);
+    }
 
-		 public PantallaMantenimientoVariables(FrameSupport parent, Boolean modal, Map<String, Object> params) {
-			super(parent, modal, params);
-		 }
-	 
-		 @Override
-		 protected void setupComponents() {
-			 	jLabel3 = new javax.swing.JLabel();
-		        txtModeloProyecto = new javax.swing.JTextField();
-		        btnCancelar = new javax.swing.JButton();
-		        jLabel15 = new javax.swing.JLabel();
-		        cmbTipoVariable = new javax.swing.JComboBox<>();
-		        btnGuardar = new javax.swing.JButton();
-		        jScrollPane1 = new javax.swing.JScrollPane();
-		        tblVariables = new TableSupport();
-		        jLabel4 = new javax.swing.JLabel();
-		        txtCodigoVariable = new javax.swing.JTextField();
-		        chkHabilitada = new javax.swing.JCheckBox();
-		        txtCodigoProyecto = new javax.swing.JTextField();
-		        jLabel10 = new javax.swing.JLabel();
-		        txtPeticion = new javax.swing.JTextField();
-		        jLabel16 = new javax.swing.JLabel();
-		        cmbEntorno = new javax.swing.JComboBox<>();
-		        jLabel5 = new javax.swing.JLabel();
-		        txtValorVariable = new javax.swing.JTextField();
-		        jLabel6 = new javax.swing.JLabel();
-		        txtValorVariableSustituir = new javax.swing.JTextField();
-		        jLabel7 = new javax.swing.JLabel();
-		        txtBBDD = new javax.swing.JTextField();
-		        chkUsoPermisos = new javax.swing.JCheckBox();
-		        jLabel17 = new javax.swing.JLabel();
-		        cmbUsoInterno = new javax.swing.JComboBox<>();
-		        jLabel8 = new javax.swing.JLabel();
-		        txtUsuarioAlta = new javax.swing.JTextField();
-		        jLabel9 = new javax.swing.JLabel();
-		        txtFechaAlta = new javax.swing.JTextField();
-		        jLabel11 = new javax.swing.JLabel();
-		        txtUsuarioModificacion = new javax.swing.JTextField();
-		        jLabel12 = new javax.swing.JLabel();
-		        txtFechaModificacion = new javax.swing.JTextField();
-		        jLabel13 = new javax.swing.JLabel();
-		        txtComentario = new javax.swing.JTextField();
-		        
-		        setBounds(1366, 768);
-		        
-		        jScrollPane1.setViewportView(tblVariables);
-		        
-		        chkHabilitada.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		        chkHabilitada.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-		        
-		        chkUsoPermisos.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		        chkUsoPermisos.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-		        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		        getContentPane().setLayout(layout);
-		        layout.setHorizontalGroup(
-		            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		            .addGroup(layout.createSequentialGroup()
-		                .addGap(566, 566, 566)
-		                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                .addGap(0, 0, Short.MAX_VALUE))
-		            .addGroup(layout.createSequentialGroup()
-		                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                    .addGroup(layout.createSequentialGroup()
-		                        .addGap(583, 583, 583)
-		                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                        .addGap(0, 0, Short.MAX_VALUE))
-		                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-		                        .addContainerGap()
-		                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-		                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-		                                .addComponent(jLabel3)
-		                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addComponent(txtCodigoProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                .addGap(18, 18, 18)
-		                                .addComponent(txtModeloProyecto))
-		                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-		                                .addGap(852, 852, 852)
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
-		                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                                        .addComponent(cmbUsoInterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                        .addComponent(txtUsuarioAlta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                        .addComponent(txtFechaAlta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                        .addComponent(txtUsuarioModificacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                                    .addComponent(txtFechaModificacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-		                    .addGroup(layout.createSequentialGroup()
-		                        .addContainerGap()
-		                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-		                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-		                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                            .addComponent(txtComentario)
-		                            .addGroup(layout.createSequentialGroup()
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-		                                    .addComponent(txtPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(txtCodigoVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(cmbTipoVariable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(cmbEntorno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                                    .addGroup(layout.createSequentialGroup()
-		                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-		                                            .addComponent(chkHabilitada, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                            .addComponent(chkUsoPermisos))
-		                                        .addGap(0, 0, Short.MAX_VALUE))
-		                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-		                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-		                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-		                                                .addComponent(txtValorVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-		                                                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-		                                                .addComponent(txtBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-		                                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-		                                                .addComponent(txtValorVariableSustituir, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-		                                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-		                                        .addGap(319, 319, 319)))))))
-		                .addContainerGap())
-		        );
-		        layout.setVerticalGroup(
-		            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		            .addGroup(layout.createSequentialGroup()
-		                .addContainerGap()
-		                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                        .addComponent(jLabel3)
-		                        .addComponent(txtCodigoProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                    .addComponent(txtModeloProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                    .addGroup(layout.createSequentialGroup()
-		                        .addComponent(cmbUsoInterno, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                        .addComponent(txtUsuarioAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                        .addComponent(txtFechaAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                            .addComponent(jLabel11)
-		                            .addComponent(txtUsuarioModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                            .addComponent(jLabel12)
-		                            .addComponent(txtFechaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-		                    .addGroup(layout.createSequentialGroup()
-		                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-		                            .addGroup(layout.createSequentialGroup()
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                                    .addComponent(txtValorVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(jLabel5)
-		                                    .addComponent(jLabel17))
-		                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                                    .addComponent(txtValorVariableSustituir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(jLabel6)
-		                                    .addComponent(jLabel8)))
-		                            .addGroup(layout.createSequentialGroup()
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                                    .addComponent(jLabel4)
-		                                    .addComponent(txtCodigoVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                                    .addComponent(jLabel10)
-		                                    .addComponent(txtPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-		                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                                    .addComponent(cmbTipoVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(jLabel15)
-		                                    .addComponent(jLabel7)
-		                                    .addComponent(txtBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(jLabel9))
-		                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                                    .addComponent(cmbEntorno, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                                    .addComponent(jLabel16)
-		                                    .addComponent(chkHabilitada))))
-		                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                        .addComponent(chkUsoPermisos)))
-		                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-		                    .addComponent(txtComentario, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-		                    .addComponent(jLabel13))
-		                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                .addComponent(btnGuardar)
-		                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-		                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-		                .addGap(18, 18, 18)
-		                .addComponent(btnCancelar)
-		                .addContainerGap())
-		        );
-                        pack();
-		 }
-	 
-		 @Override
-		 protected void initEvents() {
-			 PantallaMantenimientoVariablesListener actionListener = new PantallaMantenimientoVariablesListener(this);
-			 ListSelectionListener listSelectionListener = new VariablesTableListener(this);
+        lblModeloProyecto = new javax.swing.JLabel();
+        txtModeloProyecto = new javax.swing.JTextField();
+        txtModeloProyectoDescrip = new javax.swing.JTextField();
+        lblCodigoVariable = new javax.swing.JLabel();
+        txtCodigoVariable = new javax.swing.JTextField();
+        lblValorVariable = new javax.swing.JLabel();
+        txtValorVariable = new javax.swing.JTextField();
+        lblUsoInterno = new javax.swing.JLabel();
+        cmbUsoInterno = new javax.swing.JComboBox<>();
+        lblPeticion = new javax.swing.JLabel();
+        txtPeticion = new javax.swing.JTextField();
+        lblValorSustituir = new javax.swing.JLabel();
+        txtValorSustituir = new javax.swing.JTextField();
+        lblUsuarioAlta = new javax.swing.JLabel();
+        txtUsuarioAlta = new javax.swing.JTextField();
+        lblTipoVariable = new javax.swing.JLabel();
+        cmbTipoVariable = new javax.swing.JComboBox<>();
+        lblBBDD = new javax.swing.JLabel();
+        txtBBDD = new javax.swing.JTextField();
+        lblFechaAlta = new javax.swing.JLabel();
+        txtFechaAlta = new javax.swing.JTextField();
+        lblEntorno = new javax.swing.JLabel();
+        cmbEntorno = new javax.swing.JComboBox<>();
+        chkHabilitada = new javax.swing.JCheckBox();
+        chkExcepcion = new javax.swing.JCheckBox();
+        lblUsuarioModificacion = new javax.swing.JLabel();
+        txtUsuarioModificacion = new javax.swing.JTextField();
+        chkUsoPermisos = new javax.swing.JCheckBox();
+        lblFechaModificacion = new javax.swing.JLabel();
+        txtFechaModificacion = new javax.swing.JTextField();
+        lblComentario = new javax.swing.JLabel();
+        scpComentario = new javax.swing.JScrollPane();
+        txtComentario = new javax.swing.JTextArea();
+        btnGuardar = new javax.swing.JButton();
+        scpVariables = new javax.swing.JScrollPane();
+        tblVariables = new javax.swing.JTable();
+        btnCancelar = new javax.swing.JButton();
 
-			 btnGuardar.setActionCommand(MDSQLConstants.PANTALLA_MANTENIMIENTO_VARIABLES_GUARDAR);
-			 btnCancelar.setActionCommand(MDSQLConstants.PANTALLA_MANTENIMIENTO_VARIABLES_CANCELAR);
-			 
-			 btnGuardar.addActionListener(actionListener);
-			 btnCancelar.addActionListener(actionListener);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("PantallaMantenimientoNotasModelos");
+        setMinimumSize(new java.awt.Dimension(1366, 768));
+        setSize(new java.awt.Dimension(1366, 768));
 
-			 ListSelectionModel rowPM = tblVariables.getSelectionModel();
-			 rowPM.addListSelectionListener(listSelectionListener);
+        lblModeloProyecto.setText("Modelo o Proyecto");
 
-			 this.addOnLoadListener(actionListener);
-		 }
-		 
-		 @Override
-		 protected void initModels() {
-			 SiNoComboBoxModel siNoComboBoxModel = new SiNoComboBoxModel();
-			 VigenteHistoricoComboBoxModel vigenteHistoricoComboBoxModel = new VigenteHistoricoComboBoxModel();
+        txtModeloProyecto.setMinimumSize(new java.awt.Dimension(200, 24));
+        txtModeloProyecto.setName(""); // NOI18N
+        txtModeloProyecto.setPreferredSize(new java.awt.Dimension(200, 24));
 
-			 cmbEntorno.setModel(vigenteHistoricoComboBoxModel);
-			 cmbUsoInterno.setModel(siNoComboBoxModel);
+        txtModeloProyectoDescrip.setMinimumSize(new java.awt.Dimension(200, 24));
+        txtModeloProyectoDescrip.setName(""); // NOI18N
+        txtModeloProyectoDescrip.setPreferredSize(new java.awt.Dimension(200, 24));
 
-			 Cabecera cabecera = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.MNTO_VARIABLES_TABLA_CABECERA);
-			 tblVariables.initModel(
-					 new VariableTableModel(cabecera));
-		 }
-		 
-		 @Override
-		 protected void initialState() {
-			try {
-				 LiteralesSingleton literales = LiteralesSingleton.getInstance();
+        lblCodigoVariable.setText("Código Variable");
 
-				txtModeloProyecto.setEditable(Boolean.FALSE);
-				txtCodigoProyecto.setEditable(Boolean.FALSE);
-				txtUsuarioAlta.setEditable(Boolean.FALSE);
-				txtFechaAlta.setEditable(Boolean.FALSE);
-				txtUsuarioModificacion.setEditable(Boolean.FALSE);
-				txtFechaModificacion.setEditable(Boolean.FALSE);
+        lblValorVariable.setText("Valor Variable");
 
-				MDSQLUIHelper.setSelectedItem(cmbUsoInterno, literales.getLiteral("no"));
+        lblUsoInterno.setText("Uso Interno");
 
-				if (!Objects.isNull(modelo)) {
-					txtCodigoProyecto.setText(modelo.getCodigoProyecto());
-					txtModeloProyecto.setText(modelo.getNombreModelo());
-				}
-			} catch (IOException e) {}
-		 }
-		 
-		 @Override
-		 protected void setupLiterals() {
-			 setTitle(literales.getLiteral("PantallaMantenimientoVariables.titulo"));
+        cmbUsoInterno.setMinimumSize(new java.awt.Dimension(154, 24));
+        cmbUsoInterno.setPreferredSize(new java.awt.Dimension(154, 24));
 
-			 jLabel3.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel3"));
-			 btnCancelar.setText(literales.getLiteral("PantallaMantenimientoVariables.btnCancelar"));
-			 jLabel15.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel15"));
-			 btnGuardar.setText(literales.getLiteral("PantallaMantenimientoVariables.btnGuardar"));
-			 jLabel4.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel4"));
-			 chkHabilitada.setText(literales.getLiteral("PantallaMantenimientoVariables.chkHabilitada"));
-			 jLabel10.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel10"));
-			 jLabel16.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel16"));
-			 jLabel5.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel5"));
-			 jLabel6.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel6"));
-			 jLabel7.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel7"));
-			 chkUsoPermisos.setText(literales.getLiteral("PantallaMantenimientoVariables.chkUsoPermisos"));
-			 jLabel17.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel17"));
-			 jLabel8.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel8"));
-			 jLabel9.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel9"));
-			 jLabel11.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel11"));
-			 jLabel12.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel12"));
-			 jLabel13.setText(literales.getLiteral("PantallaMantenimientoVariables.jLabel13"));
-		 }
-	 
-		 /**
-			 * 
-			 */
-		public void enableButtons(Boolean val) {
-			btnGuardar.setEnabled(val);
-			btnCancelar.setEnabled(val);
-		}
+        lblPeticion.setText("Petición");
+
+        lblValorSustituir.setText("Valor a Sustituir");
+
+        lblUsuarioAlta.setText("Usuario Alta");
+
+        txtUsuarioAlta.setMinimumSize(new java.awt.Dimension(154, 24));
+        txtUsuarioAlta.setPreferredSize(new java.awt.Dimension(154, 24));
+
+        lblTipoVariable.setText("Tipo Variable");
+
+        lblBBDD.setText("BBDD");
+
+        lblFechaAlta.setText("Fecha Alta");
+
+        txtFechaAlta.setMinimumSize(new java.awt.Dimension(154, 24));
+        txtFechaAlta.setName(""); // NOI18N
+        txtFechaAlta.setPreferredSize(new java.awt.Dimension(154, 24));
+
+        lblEntorno.setText("Entorno");
+
+        chkHabilitada.setText("Habilitada");
+        chkHabilitada.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        chkHabilitada.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        chkExcepcion.setText("Excepción");
+        chkExcepcion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        chkExcepcion.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+
+        lblUsuarioModificacion.setText("Usuario Modificación");
+
+        txtUsuarioModificacion.setMinimumSize(new java.awt.Dimension(154, 24));
+        txtUsuarioModificacion.setPreferredSize(new java.awt.Dimension(154, 24));
+
+        chkUsoPermisos.setText("Se usa para permisos");
+        chkUsoPermisos.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        chkUsoPermisos.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        lblFechaModificacion.setText("Fecha Modificación");
+
+        txtFechaModificacion.setMinimumSize(new java.awt.Dimension(154, 24));
+        txtFechaModificacion.setPreferredSize(new java.awt.Dimension(154, 24));
+
+        lblComentario.setText("Comentario");
+
+        txtComentario.setColumns(20);
+        txtComentario.setRows(5);
+        scpComentario.setViewportView(txtComentario);
+
+        btnGuardar.setText("Guardar");
+
+        tblVariables.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Código Variable", "Valor", "Tipo", "Entorno", "Valor Sustituir", "BBDD", "Habilitada", "Uso Interno", "Excepción", "Petición"
+            }
+        ));
+        scpVariables.setViewportView(tblVariables);
+
+        btnCancelar.setText("Cancelar");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scpVariables, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblModeloProyecto)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtModeloProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtModeloProyectoDescrip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblEntorno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblTipoVariable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblCodigoVariable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(lblPeticion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblComentario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cmbEntorno, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cmbTipoVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtPeticion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCodigoVariable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(lblValorVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lblValorSustituir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(lblBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(txtValorVariable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtValorSustituir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(chkHabilitada, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(chkUsoPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(104, 104, 104)
+                                                .addComponent(chkExcepcion, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(lblFechaAlta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblUsuarioAlta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblUsoInterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblUsuarioModificacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(lblFechaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtFechaModificacion, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                            .addComponent(txtUsuarioModificacion, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                            .addComponent(cmbUsoInterno, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtFechaAlta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtUsuarioAlta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(scpComentario))))))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblModeloProyecto)
+                        .addComponent(txtModeloProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtModeloProyectoDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbUsoInterno, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUsoInterno, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtUsuarioAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUsuarioAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFechaAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFechaAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUsuarioModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuarioModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtFechaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFechaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblCodigoVariable)
+                                    .addComponent(txtCodigoVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblPeticion)
+                                    .addComponent(txtPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmbTipoVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblTipoVariable)
+                                    .addComponent(lblBBDD)
+                                    .addComponent(txtBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtValorVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblValorVariable))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtValorSustituir, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblValorSustituir))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkHabilitada, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cmbEntorno, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblEntorno))
+                            .addComponent(chkExcepcion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(chkUsoPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblComentario)
+                    .addComponent(scpComentario, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scpVariables, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox chkExcepcion;
+    private javax.swing.JCheckBox chkHabilitada;
+    private javax.swing.JCheckBox chkUsoPermisos;
+    private javax.swing.JComboBox<String> cmbEntorno;
+    private javax.swing.JComboBox<String> cmbTipoVariable;
+    private javax.swing.JComboBox<String> cmbUsoInterno;
+    private javax.swing.JLabel lblBBDD;
+    private javax.swing.JLabel lblCodigoVariable;
+    private javax.swing.JLabel lblComentario;
+    private javax.swing.JLabel lblEntorno;
+    private javax.swing.JLabel lblFechaAlta;
+    private javax.swing.JLabel lblFechaModificacion;
+    private javax.swing.JLabel lblModeloProyecto;
+    private javax.swing.JLabel lblPeticion;
+    private javax.swing.JLabel lblTipoVariable;
+    private javax.swing.JLabel lblUsoInterno;
+    private javax.swing.JLabel lblUsuarioAlta;
+    private javax.swing.JLabel lblUsuarioModificacion;
+    private javax.swing.JLabel lblValorSustituir;
+    private javax.swing.JLabel lblValorVariable;
+    private javax.swing.JScrollPane scpComentario;
+    private javax.swing.JScrollPane scpVariables;
+    private javax.swing.JTable tblVariables;
+    private javax.swing.JTextField txtBBDD;
+    private javax.swing.JTextField txtCodigoVariable;
+    private javax.swing.JTextArea txtComentario;
+    private javax.swing.JTextField txtFechaAlta;
+    private javax.swing.JTextField txtFechaModificacion;
+    private javax.swing.JTextField txtModeloProyecto;
+    private javax.swing.JTextField txtModeloProyectoDescrip;
+    private javax.swing.JTextField txtPeticion;
+    private javax.swing.JTextField txtUsuarioAlta;
+    private javax.swing.JTextField txtUsuarioModificacion;
+    private javax.swing.JTextField txtValorSustituir;
+    private javax.swing.JTextField txtValorVariable;
+    // End of variables declaration//GEN-END:variables
+
+    @Override
+    protected void setupComponents() {
+        initComponents();
+    }
+
+    @Override
+    protected void initEvents() {
+        PantallaMantenimientoVariablesListener actionListener = new PantallaMantenimientoVariablesListener(this);
+        ListSelectionListener listSelectionListener = new VariablesTableListener(this);
+
+        btnGuardar.addActionListener(actionListener);
+        btnCancelar.addActionListener(actionListener);
+
+        ListSelectionModel rowPM = tblVariables.getSelectionModel();
+        rowPM.addListSelectionListener(listSelectionListener);
+
+        this.addOnLoadListener(actionListener);
+    }
+
+    @Override
+    protected void initModels() {
+        SiNoComboBoxModel siNoComboBoxModel = new SiNoComboBoxModel();
+        VigenteHistoricoComboBoxModel vigenteHistoricoComboBoxModel = new VigenteHistoricoComboBoxModel();
+
+        cmbEntorno.setModel(vigenteHistoricoComboBoxModel);
+        cmbUsoInterno.setModel(siNoComboBoxModel);
+
+        Cabecera cabecera = new TablaVariablesCabecera();
+        MDSQLUIHelper.setTableModelRenderer(tblVariables, new VariableTableModel(cabecera), null);
+    }
+
+    @Override
+    protected void initialState() {
+        txtModeloProyectoDescrip.setEditable(Boolean.FALSE);
+        txtModeloProyecto.setEditable(Boolean.FALSE);
+        txtUsuarioAlta.setEditable(Boolean.FALSE);
+        txtFechaAlta.setEditable(Boolean.FALSE);
+        txtUsuarioModificacion.setEditable(Boolean.FALSE);
+        txtFechaModificacion.setEditable(Boolean.FALSE);
+    }
+
+    @Override
+    protected void setupLiterals() {
+        setTitulo();
+        setTexto(lblModeloProyecto, "lblModeloProyecto");
+        setTexto(lblCodigoVariable, "lblCodigoVariable");
+        setTexto(lblValorVariable, "lblValorVariable");
+        setTexto(lblUsoInterno, "lblUsoInterno");
+        setTexto(lblPeticion, "lblPeticion");
+        setTexto(lblValorSustituir, "lblValorSustituir");
+        setTexto(lblUsuarioAlta, "lblUsuarioAlta");
+        setTexto(lblTipoVariable, "lblTipoVariable");
+        setTexto(lblBBDD, "lblBBDD");
+        setTexto(lblFechaAlta, "lblFechaAlta");
+        setTexto(lblEntorno, "lblEntorno");
+        setTexto(chkHabilitada, "chkHabilitada");
+        setTexto(chkExcepcion, "chkExcepcion");
+        setTexto(lblUsuarioModificacion, "lblUsuarioModificacion");
+        setTexto(chkUsoPermisos, "chkUsoPermisos");
+        setTexto(lblFechaModificacion, "lblFechaModificacion");
+        setTexto(lblComentario, "lblComentario");
+        setTexto(btnGuardar, "btnGuardar");
+        setTexto(btnCancelar, "btnCancelar");
+    }
+
+    public JButton getBtnCancelar() {
+        return btnCancelar;
+    }
+
+    public JButton getBtnGuardar() {
+        return btnGuardar;
+    }
+
+    public JCheckBox getChkExcepcion() {
+        return chkExcepcion;
+    }
+
+    public JCheckBox getChkHabilitada() {
+        return chkHabilitada;
+    }
+
+    public JCheckBox getChkUsoPermisos() {
+        return chkUsoPermisos;
+    }
+
+    public JComboBox<String> getCmbEntorno() {
+        return cmbEntorno;
+    }
+
+    public JComboBox<String> getCmbTipoVariable() {
+        return cmbTipoVariable;
+    }
+
+    public JComboBox<String> getCmbUsoInterno() {
+        return cmbUsoInterno;
+    }
+
+    public JLabel getLblBBDD() {
+        return lblBBDD;
+    }
+
+    public JTable getTblVariables() {
+        return tblVariables;
+    }
+
+    public JTextField getTxtBBDD() {
+        return txtBBDD;
+    }
+
+    public JTextField getTxtCodigoVariable() {
+        return txtCodigoVariable;
+    }
+
+    public JTextArea getTxtComentario() {
+        return txtComentario;
+    }
+
+    public JTextField getTxtFechaAlta() {
+        return txtFechaAlta;
+    }
+
+    public JTextField getTxtFechaModificacion() {
+        return txtFechaModificacion;
+    }
+
+    public JTextField getTxtModeloProyecto() {
+        return txtModeloProyecto;
+    }
+
+    public JTextField getTxtModeloProyectoDescrip() {
+        return txtModeloProyectoDescrip;
+    }
+
+    public JTextField getTxtPeticion() {
+        return txtPeticion;
+    }
+
+    public JTextField getTxtUsuarioAlta() {
+        return txtUsuarioAlta;
+    }
+
+    public JTextField getTxtUsuarioModificacion() {
+        return txtUsuarioModificacion;
+    }
+
+    public JTextField getTxtValorSustituir() {
+        return txtValorSustituir;
+    }
+
+    public JTextField getTxtValorVariable() {
+        return txtValorVariable;
+    }
+
 }

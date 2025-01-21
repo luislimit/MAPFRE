@@ -7,7 +7,8 @@ package com.mdsql.ui.form.listener;
 
 import com.mdsql.bussiness.entities.BBDD;
 import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.bussiness.entities.OutputProcesaPermisoPersonalizado;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputProcesaScript;
 import com.mdsql.bussiness.entities.OutputRegistraEjecucion;
 import com.mdsql.bussiness.entities.Proceso;
 import com.mdsql.bussiness.entities.Script;
@@ -19,11 +20,11 @@ import com.mdsql.ui.form.FormConfirmacionGeneracionPermisos;
 import com.mdsql.ui.model.BBDDComboBoxModel;
 import com.mdsql.ui.utils.ListenerSupport;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.ConfigurationSingleton;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.utils.OnLoadListener;
+import com.mdval.utils.ConfigurationSingleton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -101,7 +102,6 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
             }
             PermisosPersonalizadosService permisosPersonalizadosService;
             permisosPersonalizadosService = (PermisosPersonalizadosService) getService(MDSQLConstants.PERMISOS_PERSONALIZADOS_SERVICE);
-            OutputProcesaPermisoPersonalizado output;
             String p_cod_proyecto = modelo.getCodigoProyecto();
             String p_cod_sub_proy = subModelo.getCodigoSubProyecto();
             String p_tip_objeto = tipObjeto; // Viene de la pantalla anterior
@@ -121,7 +121,7 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
 
             String p_cod_usr = session.getCodUsr();
 
-            output = permisosPersonalizadosService.procesa(
+            OutputProcesaScript output = permisosPersonalizadosService.procesa(
                     p_cod_proyecto,
                     p_cod_sub_proy,
                     p_tip_objeto, // Viene de la pantalla anterior
@@ -153,6 +153,7 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
                     codigoDemanda(p_cod_demanda).
                     scripts(scripts).build();
             session.setProceso(proceso);
+            session.setSelectedRoute(p_ruta_salida);
             // Procesamos los scripts vinculados al nuevo proceso, si hay error, renombramos los scripts generados
             List<OutputRegistraEjecucion> ejecuciones = null;
             try {
@@ -165,12 +166,12 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
             for (OutputRegistraEjecucion ejecucion : ejecuciones) {
                 // Por cada script muestra un aviso
                 if (ejecucion.getResult() == 2) {
-                    MDSQLUIHelper.showWarnings(pantalla, ejecucion.getServiceException());
+                    MDSQLUIHelper.showWarnings(pantalla, ejecucion.getWarnings());
                 }
             }
             pantalla.getReturnParams().put(MDSQLConstants.P_OUT_EXIT_BUTTON, MDSQLConstants.BTN_ACEPTAR);
             pantalla.dispose();
-        } catch (IOException | ServiceException e) {
+        } catch (ServiceException e) {
             session.setProceso(null);
             MDSQLUIHelper.showErrors(pantalla, e);
         }
@@ -207,8 +208,10 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
     private void fillCmbBBDD() throws ServiceException {
         BBDDService bbddService = (BBDDService) getService(MDSQLConstants.BBDD_SERVICE);
 
-        List<BBDD> bbdds = bbddService.consultaBBDDModelo(modelo.getCodigoProyecto(), subModelo.getCodigoSubProyecto());
-        BBDDComboBoxModel modelBBDD = new BBDDComboBoxModel(bbdds);
+        OutputConsulta<BBDD> output = bbddService.consultaBBDDModelo(modelo.getCodigoProyecto(), subModelo.getCodigoSubProyecto());
+        BBDDComboBoxModel modelBBDD = new BBDDComboBoxModel(output.getLista());
+        MDSQLUIHelper.showWarnings(pantalla, output.getWarnings());
+
         pantalla.getCmbBBDD().setModel(modelBBDD);
 
         // Pone la base de datos por defecto
@@ -225,13 +228,13 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
     }
 
     private void renameGeneratedScripts(String ruta, List<Script> scripts) throws ServiceException {
+        System.out.println("Renombrando Scripts generados");
         if (scripts == null || scripts.isEmpty()) {
             return;
         }
-        String separator = File.separator;
         String rutaScripts = ruta;
-        if (!rutaScripts.endsWith(separator)) {
-            rutaScripts = rutaScripts.concat(separator);
+        if (!rutaScripts.endsWith(File.separator)) {
+            rutaScripts = rutaScripts.concat(File.separator);
         }
         try {
             String sufijoRechazo = ConfigurationSingleton.getInstance().getConfig("SufijoRechazoProcesado");
@@ -247,12 +250,20 @@ public class FormConfirmacionGeneracionPermisosListener extends ListenerSupport 
     }
 
     private void renameFile(String ruta, String sufijoRechazo, String oldName) throws ServiceException {
+        System.out.println("Renombrando Script " + ruta.concat(oldName));
+
         File oldFile = Paths.get(ruta.concat(oldName)).toFile();
         if (oldFile.exists()) {
-            String newName = oldName + "_" + sufijoRechazo ;
+            String[] nameAndExt = MDSQLAppHelper.separateFileNameAndExtension(oldName);
+            String newName = nameAndExt[0] + "_" + sufijoRechazo;
+            if (!nameAndExt[1].isEmpty()) {
+                newName = newName + "." + nameAndExt[1];
+            }
             File newFile = Paths.get(ruta.concat(newName)).toFile();
+            System.out.println("Nuevo Nombre" + newFile.getAbsolutePath());
+
             if (!oldFile.renameTo(newFile)) {
-                throw new ServiceException(String.format("Error al renombrar el fichero \"%s\" como \"%s\"", oldName, newName));
+                throw new ServiceException(String.format("Error al renombrar el fichero \"%s\" como \"%s\"", oldFile.getAbsolutePath(), newFile.getAbsolutePath()));
             }
         }
     }

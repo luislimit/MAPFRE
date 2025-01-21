@@ -18,11 +18,11 @@ import com.mdsql.ui.model.PermisosObjetoTableModel;
 import com.mdsql.ui.model.SinonimosObjetoTableModel;
 import com.mdsql.ui.utils.ListenerSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.ConfigurationSingleton;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.model.DefaultTableModel;
+import com.mdval.utils.ConfigurationSingleton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -82,8 +82,7 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
             excelGeneratorService.generarExcelSinonimos(pantalla.getTblSinonimos(), sufijoSinonimos, proyecto);
 
         } catch (IOException e) {
-            Map<String, Object> errParams = MDSQLUIHelper.buildError(e);
-            MDSQLUIHelper.showPopup(pantalla.getFrameParent(), MDSQLConstants.CMD_ERROR, errParams);
+            MDSQLUIHelper.showErrors(pantalla.getFrameParent(), e);
         }
 
     }
@@ -167,7 +166,7 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
             System.out.println("(String) pantalla.getCmbPermiso().getSelectedItem()=" + (String) pantalla.getCmbPermiso().getSelectedItem());
             String p_val_grant = (String) pantalla.getCmbPermiso().getSelectedItem(); // Permiso
 
-            // Receptor permisos 
+            // Receptor permisos
             Grant grant = ((Grant) pantalla.getCmbReceptorPermisos().getSelectedItem());
             String p_cod_usr_grant = null;
             if (grant != null) {
@@ -202,11 +201,11 @@ public class FormDetallePermisosPorObjetoListener extends ListenerSupportModeloP
 
             // Si hay datos en una de las dos tablas, habilitamos el botón de informe
             boolean hayDatosParaInforme = ((output.getPermisosObjeto() != null && !output.getPermisosObjeto().isEmpty())
-                    || (output.getSinonimosObjeto() != null && !output.getSinonimosObjeto().isEmpty())) ;
+                    || (output.getSinonimosObjeto() != null && !output.getSinonimosObjeto().isEmpty()));
             pantalla.getBtnInforme().setEnabled(hayDatosParaInforme);
             //No hay elemento seleccionado, no se puede modificar
             pantalla.getBtnModificacion().setEnabled(false);
-            
+
             MDSQLUIHelper.showWarnings(pantalla, output.getServiceException());
         } catch (ServiceException e) {
             MDSQLUIHelper.showErrors(pantalla, e);

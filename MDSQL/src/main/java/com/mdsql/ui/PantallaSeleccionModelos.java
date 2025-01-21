@@ -5,30 +5,23 @@
  */
 package com.mdsql.ui;
 
-import java.util.Map;
-
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionListener;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.bussiness.entities.Session;
 import com.mdsql.ui.adapter.DoubleClickMouseAdapter;
 import com.mdsql.ui.listener.PantallaSeleccionModelosListener;
 import com.mdsql.ui.listener.tables.PantallaSeleccionModelosTableListener;
 import com.mdsql.ui.model.SeleccionModelosTableModel;
 import com.mdsql.ui.model.cabeceras.TablaModelosCabecera;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
 import com.mdval.ui.utils.DialogSupport;
 import com.mdval.ui.utils.FrameSupport;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +30,7 @@ public class PantallaSeleccionModelos extends DialogSupport {
     @Getter
     @Setter
     private Modelo seleccionado;
-    // End of variables declaration                   
+    // End of variables declaration
 
     @Getter
     private PantallaSeleccionModelosListener pantallaSeleccionModelosListener;
@@ -79,7 +72,6 @@ public class PantallaSeleccionModelos extends DialogSupport {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1350, 500));
-        setPreferredSize(new java.awt.Dimension(1400, 500));
 
         jLabel3.setText("Cod. modelo");
 
@@ -87,30 +79,7 @@ public class PantallaSeleccionModelos extends DialogSupport {
 
         jLabel5.setText("Cod. submodelo");
 
-        txtCodModelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodModeloActionPerformed(evt);
-            }
-        });
-
-        txtNombreModelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreModeloActionPerformed(evt);
-            }
-        });
-
-        txtCodSubmodelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodSubmodeloActionPerformed(evt);
-            }
-        });
-
         btnBuscar.setText("BUSCAR");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
 
         tblModelos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -236,22 +205,6 @@ public class PantallaSeleccionModelos extends DialogSupport {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCodModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodModeloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodModeloActionPerformed
-
-    private void txtNombreModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreModeloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombreModeloActionPerformed
-
-    private void txtCodSubmodeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodSubmodeloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodSubmodeloActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnNotas;
@@ -302,7 +255,7 @@ public class PantallaSeleccionModelos extends DialogSupport {
 
         ListSelectionModel rowSM = tblModelos.getSelectionModel();
         rowSM.addListSelectionListener(listSelectionListener);
-        
+
         // Tratamiendo doble click
         DoubleClickMouseAdapter doubleClickMouseAdapter = new DoubleClickMouseAdapter();
         doubleClickMouseAdapter.setListener(pantallaSeleccionModelosListener);
@@ -313,8 +266,8 @@ public class PantallaSeleccionModelos extends DialogSupport {
     protected void initModels() {
         Cabecera cabecera = new TablaModelosCabecera();
         SeleccionModelosTableModel seleccionModelosTableModel = new SeleccionModelosTableModel(cabecera);
-        MDSQLUIHelper.setTableModel(tblModelos, seleccionModelosTableModel);
-    }    
+        MDSQLUIHelper.setTableModelRenderer(tblModelos, seleccionModelosTableModel, null);
+    }
 
     @Override
     protected void initialState() {

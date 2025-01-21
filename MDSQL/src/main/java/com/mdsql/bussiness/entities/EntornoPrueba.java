@@ -1,6 +1,7 @@
 package com.mdsql.bussiness.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +23,7 @@ public class EntornoPrueba implements Serializable {
 	private String bbdd;
 	private String esquema;
 	private String tablespace;
-	private String gradoParal;
+	private BigDecimal gradoParal;
 	private String descripcion;
 	private String mcaHabilitado; 
-
 }

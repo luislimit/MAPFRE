@@ -9,9 +9,19 @@ import com.mdval.ui.model.cabeceras.Cabecera;
  *
  */
 public class TablaParchesCabecera extends Cabecera {
-	
-	public void setupCabecera() {
-		columnIdentifiers.add("Orden");
+
+    @Override
+    public void setupCabecera() {
+
+        addColumn("colOrden", 100, Integer.class);
+        addColumn("colEstado", 120, String.class);
+        addColumn("colFecha", 120, Date.class);
+        addColumn("colProcesado", 120, String.class);
+        addColumn("colEjecucion", 120, String.class);
+        addColumn("colIteracion", 120, String.class);
+        addColumn("colScript", 350, String.class);
+        addColumn("colComentario", 500, String.class);
+        /*	columnIdentifiers.add("Orden");
 		columnIdentifiers.add("Estado");
 		columnIdentifiers.add("Fecha");
 		columnIdentifiers.add("Procesado");
@@ -36,6 +46,6 @@ public class TablaParchesCabecera extends Cabecera {
 		columnSizes.add(120);
 		columnSizes.add(120);
 		columnSizes.add(350);
-		columnSizes.add(500);
-	}
+		columnSizes.add(500);*/
+    }
 }

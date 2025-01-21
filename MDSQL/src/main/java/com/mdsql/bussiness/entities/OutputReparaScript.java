@@ -1,5 +1,6 @@
 package com.mdsql.bussiness.entities;
 
+import com.mdval.exceptions.ServiceException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,16 +18,15 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 public class OutputReparaScript implements Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1276065065767986360L;
-	private String nombreScriptRepara;
+    private static final long serialVersionUID = 1276065065767986360L;
+    private String nombreScriptRepara;
     private List<TextoLinea> scriptRepara;
     private String nombreScriptLanza;
-    private String scriptLanza;
+    private List<TextoLinea> scriptLanza;
     private String nombreLogRepara;
     private List<ScriptOld> listaScriptOld;
     private List<Script> listaScript;
 
+    private Integer result;
+    private ServiceException warnings;    
 }

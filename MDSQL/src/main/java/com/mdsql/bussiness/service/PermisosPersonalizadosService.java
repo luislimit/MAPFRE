@@ -2,7 +2,7 @@ package com.mdsql.bussiness.service;
 
 import com.mdsql.bussiness.entities.BBDD;
 import com.mdsql.bussiness.entities.OutputConsultaPermisosPersonalizados;
-import com.mdsql.bussiness.entities.OutputProcesaPermisoPersonalizado;
+import com.mdsql.bussiness.entities.OutputProcesaScript;
 import com.mdsql.bussiness.entities.OutputRegistraEjecucion;
 import com.mdsql.bussiness.entities.Script;
 import com.mdval.exceptions.ServiceException;
@@ -41,7 +41,7 @@ public interface PermisosPersonalizadosService {
     ) throws ServiceException;
 
     
-    OutputProcesaPermisoPersonalizado procesa(
+    OutputProcesaScript procesa(
             String p_cod_proyecto,
             String p_cod_sub_proy,
             String p_tip_objeto, // Viene de la pantalla anterior

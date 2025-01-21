@@ -65,14 +65,15 @@
                                   <Component id="lblEntorno" alignment="1" min="-2" pref="124" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="cmbPermisoSinonimo" alignment="0" pref="169" max="32767" attributes="0"/>
-                                  <Component id="txtPeticion" alignment="0" pref="169" max="32767" attributes="0"/>
-                                  <Component id="cmbTipoObjeto" alignment="0" pref="169" max="32767" attributes="0"/>
-                                  <Component id="cmbPermiso" alignment="0" pref="169" max="32767" attributes="0"/>
-                                  <Component id="cmbEntorno" alignment="0" pref="169" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="cmbPermisoSinonimo" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtPeticion" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbTipoObjeto" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbPermiso" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbEntorno" alignment="0" max="32767" attributes="0"/>
                                   <Component id="txtModeloProyecto" alignment="0" max="32767" attributes="0"/>
                               </Group>
+                              <EmptySpace min="1247" pref="1247" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="312" max="-2" attributes="0"/>
@@ -83,65 +84,68 @@
                   </Group>
               </Group>
           </Group>
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="-2" pref="588" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="588" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="lblPropietarioSinonimo" min="-2" pref="141" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbPropietarioSinonimo" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblReceptorPermisos" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+                          <Component id="lblFuncionNombre" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+                          <Component id="lblIncluirPDC" alignment="0" min="-2" pref="141" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtFuncionNombre" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cmbReceptorPermisos" alignment="0" pref="169" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="cmbIncluirPDC" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="108" pref="108" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Component id="chkHabilitada" alignment="0" min="-2" pref="166" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="328" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblWithGrantOption" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+                  <Component id="lblUsuarioAlta" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+                  <Component id="lblFechaAlta" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+                  <Component id="lblUsuarioModificacion" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+                  <Component id="lblFechaModificacion" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="txtUsuarioModificacion" alignment="1" max="32767" attributes="0"/>
+                  <Component id="txtUsuarioAlta" max="32767" attributes="0"/>
+                  <Component id="txtFechaModificacion" alignment="0" pref="169" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="cmbWithGrantOption" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="108" pref="108" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="txtFechaAlta" alignment="1" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btnGuardar" min="-2" pref="132" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="113" max="-2" attributes="0"/>
+                      <Component id="btnLimpiar" min="-2" pref="133" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="btnInforme" min="-2" pref="133" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
                       <Component id="btnCancelar" min="-2" pref="133" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="588" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="lblPropietarioSinonimo" min="-2" pref="141" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cmbPropietarioSinonimo" min="-2" pref="169" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblReceptorPermisos" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                                      <Component id="lblFuncionNombre" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                                      <Component id="lblIncluirPDC" alignment="0" min="-2" pref="141" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtFuncionNombre" alignment="0" min="-2" pref="169" max="-2" attributes="0"/>
-                                      <Component id="cmbReceptorPermisos" alignment="0" min="-2" pref="169" max="-2" attributes="0"/>
-                                      <Component id="cmbIncluirPDC" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Component id="chkHabilitada" alignment="0" min="-2" pref="166" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="btnGuardar" min="-2" pref="133" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                              <Component id="btnLimpiar" min="-2" pref="133" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="328" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblWithGrantOption" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                          <Component id="lblUsuarioAlta" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                          <Component id="lblFechaAlta" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                          <Component id="lblUsuarioModificacion" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                          <Component id="lblFechaModificacion" alignment="1" min="-2" pref="141" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtUsuarioModificacion" alignment="1" min="-2" pref="169" max="-2" attributes="0"/>
-                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Component id="txtUsuarioAlta" min="-2" pref="169" max="-2" attributes="0"/>
-                              <Component id="txtFechaModificacion" alignment="0" min="-2" pref="169" max="-2" attributes="0"/>
-                              <Component id="cmbWithGrantOption" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="txtFechaAlta" alignment="1" min="-2" pref="169" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -186,7 +190,12 @@
                           <Component id="lblEntorno" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                           <Component id="cmbEntorno" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnGuardar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblPermisos" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -217,11 +226,6 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chkHabilitada" min="-2" pref="24" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnGuardar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                          <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="120" pref="120" max="-2" attributes="0"/>
@@ -487,17 +491,11 @@
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkHabilitadaActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnGuardar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnLimpiar">
       <Properties>
@@ -547,7 +545,6 @@
                 <Column editable="true" title="Fecha Modificacion" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="autoResizeMode" type="int" value="0"/>
             <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
               <JTableSelectionModel selectionMode="0"/>
             </Property>
@@ -585,7 +582,6 @@
                 <Column editable="true" title="Fecha Modificacion" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="autoResizeMode" type="int" value="0"/>
             <Property name="cellSelectionEnabled" type="boolean" value="true"/>
             <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
               <JTableSelectionModel selectionMode="0"/>
@@ -603,9 +599,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

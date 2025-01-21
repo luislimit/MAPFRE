@@ -1,5 +1,11 @@
 package com.mdsql.bussiness.service.impl;
 
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputWarning;
+import com.mdsql.bussiness.service.TipoObjetoService;
+import com.mdsql.utils.MDSQLConstants;
+import com.mdval.exceptions.ServiceException;
+import com.mdval.utils.LogWrapper;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -7,19 +13,10 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.DataSource;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mdsql.bussiness.entities.OutputConsultaTiposObjeto;
-import com.mdsql.bussiness.service.TipoObjetoService;
-import com.mdsql.utils.MDSQLConstants;
-import com.mdval.exceptions.ServiceException;
-import com.mdval.utils.LogWrapper;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service(MDSQLConstants.TIPO_OBJETO_SERVICE)
 @Slf4j
@@ -29,36 +26,21 @@ public class TipoObjetoServiceImpl extends ServiceSupport implements TipoObjetoS
     private DataSource dataSource;
 
     @Override
-    public OutputConsultaTiposObjeto consultarTiposObjeto() throws ServiceException {
-        String runSP = createCall("p_con_tipos_obj_per", MDSQLConstants.CALL_03_ARGS);
+    public OutputConsulta<String> consultarTiposObjeto() throws ServiceException {
+        String runSP = createCall("p_con_tipos_obj_per", 3);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             String typeTipoObjeto = createCallType(MDSQLConstants.T_T_TIP_OBJETO);
-            String typeError = createCallTypeError();
 
             logProcedure(runSP);
 
             callableStatement.registerOutParameter(1, Types.ARRAY, typeTipoObjeto);
-            callableStatement.registerOutParameter(2, Types.INTEGER);
-            callableStatement.registerOutParameter(3, Types.ARRAY, typeError);
 
-            callableStatement.execute();
+            OutputWarning result = executeStatement(callableStatement);
 
-            Integer result = callableStatement.getInt(2);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(3));
-            }
-            
-            OutputConsultaTiposObjeto outputConsultaTiposObjeto = new OutputConsultaTiposObjeto();
-            outputConsultaTiposObjeto.setResult(result);
-			
-			// Hay avisos
-			if (result == 2) {
-				outputConsultaTiposObjeto.setServiceException(buildException(callableStatement.getArray(3)));
-			}
+            OutputConsulta<String> outputConsultaTiposObjeto = new OutputConsulta<>();
+            outputConsultaTiposObjeto.setOutputWarning(result);
 
             List<String> tipos = new ArrayList<>();
             Array arrayTipo = callableStatement.getArray(1);
@@ -70,8 +52,8 @@ public class TipoObjetoServiceImpl extends ServiceSupport implements TipoObjetoS
                     String tipo = (String) cols[0];
                     tipos.add(tipo);
                 }
-                
-                outputConsultaTiposObjeto.setTiposObjeto(tipos);
+
+                outputConsultaTiposObjeto.setLista(tipos);
             }
             return outputConsultaTiposObjeto;
         } catch (SQLException e) {
@@ -81,28 +63,20 @@ public class TipoObjetoServiceImpl extends ServiceSupport implements TipoObjetoS
     }
 
     @Override
-    public List<String> consultarTiposVariable() throws ServiceException {
-        String runSP = createCall("p_con_tipos_vbles", MDSQLConstants.CALL_03_ARGS);
+    public OutputConsulta<String> consultarTiposVariable() throws ServiceException {
+        String runSP = createCall("p_con_tipos_vbles", 3);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             String typeTipoVariable = createCallType(MDSQLConstants.T_T_TIPO_VBLE);
-            String typeError = createCallTypeError();
 
             logProcedure(runSP);
 
             callableStatement.registerOutParameter(1, Types.ARRAY, typeTipoVariable);
-            callableStatement.registerOutParameter(2, Types.INTEGER);
-            callableStatement.registerOutParameter(3, Types.ARRAY, typeError);
 
-            callableStatement.execute();
-
-            Integer result = callableStatement.getInt(2);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(3));
-            }
+            OutputWarning result = executeStatement(callableStatement);
+            OutputConsulta<String> output = new OutputConsulta<>();
+            output.setOutputWarning(result);
 
             List<String> tipos = new ArrayList<>();
             Array arrayTipo = callableStatement.getArray(1);
@@ -115,7 +89,9 @@ public class TipoObjetoServiceImpl extends ServiceSupport implements TipoObjetoS
                     tipos.add(tipo);
                 }
             }
-            return tipos;
+            output.setLista(tipos);
+            return output;
+
         } catch (SQLException e) {
             LogWrapper.error(log, "[TipoObjetoService.consultarTiposVariable] Error:  %s", e.getMessage());
             throw new ServiceException(e);

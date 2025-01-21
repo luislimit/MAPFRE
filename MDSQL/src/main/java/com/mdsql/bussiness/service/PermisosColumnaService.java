@@ -1,6 +1,6 @@
 package com.mdsql.bussiness.service;
 
-import com.mdsql.bussiness.entities.OutputConsultaPermisosColumna;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.PermisoColumna;
 import com.mdval.exceptions.ServiceException;
 
@@ -9,7 +9,7 @@ import com.mdval.exceptions.ServiceException;
  */
 public interface PermisosColumnaService {
 
-    OutputConsultaPermisosColumna consultaPermisos(
+    OutputConsulta<PermisoColumna> consultaPermisos(
                         String p_cod_proyecto,
                         String p_nom_objeto,
                         String p_nom_columna,
@@ -21,7 +21,7 @@ public interface PermisosColumnaService {
                         String p_mca_habilitado
     ) throws ServiceException;
     
-    OutputConsultaPermisosColumna guardarPermiso(
+    OutputConsulta<PermisoColumna> guardarPermiso(
                         PermisoColumna permisoColumna,
                         String p_mca_alta
     ) throws ServiceException;

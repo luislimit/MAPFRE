@@ -1,7 +1,7 @@
 package com.mdsql.ui.model;
 
 import com.mdsql.bussiness.entities.PermisoObjeto;
-import com.mdsql.utils.DateFormatter;
+import com.mdval.utils.DateFormatter;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.DefaultTableModel;
 import com.mdval.ui.model.cabeceras.Cabecera;

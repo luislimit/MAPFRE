@@ -305,22 +305,21 @@ public class FormMantenimientoPermisosPorColumna extends DialogSupportModeloPerm
 
     @Override
     protected void setupLiterals() {
-        setTitle(literales.getLiteral("FormMantenimientoPermisosPorColumna.title"));
-
-        lblModeloProyecto.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblModeloProyecto"));
-        lblTabla.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblTabla"));
-        lblPeticion.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblPeticion"));
-        lblColumna.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblColumna"));
-        lblPermiso.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblPermiso"));
-        lblReceptorPermisos.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblReceptorPermisos"));
-        lblEntorno.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblEntorno"));
-        lblWithGrantOption.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblWithGrantOption"));
-        lblIncluirPDC.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblIncluirPDC"));
-        chkHabilitada.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.chkHabilitada"));
-        lblUsuario.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblUsuario"));
-        lblFecha.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.lblFecha"));
-        btnGuardar.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.btnGuardar"));
-        btnCancelar.setText(literales.getLiteral("FormMantenimientoPermisosPorColumna.btnCancelar"));
+        setTitulo();
+        setTexto(lblModeloProyecto, "lblModeloProyecto");
+        setTexto(lblTabla, "lblTabla");
+        setTexto(lblPeticion, "lblPeticion");
+        setTexto(lblColumna, "lblColumna");
+        setTexto(lblPermiso, "lblPermiso");
+        setTexto(lblReceptorPermisos, "lblReceptorPermisos");
+        setTexto(lblEntorno, "lblEntorno");
+        setTexto(lblWithGrantOption, "lblWithGrantOption");
+        setTexto(lblIncluirPDC, "lblIncluirPDC");
+        setTexto(chkHabilitada, "chkHabilitada");
+        setTexto(lblUsuario, "lblUsuario");
+        setTexto(lblFecha, "lblFecha");
+        setTexto(btnGuardar, "btnGuardar");
+        setTexto(btnCancelar, "btnCancelar");
     }
 
     @Override

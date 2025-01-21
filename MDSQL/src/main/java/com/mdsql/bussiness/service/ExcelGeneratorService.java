@@ -1,18 +1,24 @@
 package com.mdsql.bussiness.service;
 
-import java.util.Date;
-import java.util.List;
-
 import com.mdsql.bussiness.entities.Historico;
 import com.mdsql.bussiness.entities.InformeCambios;
 import com.mdsql.bussiness.entities.Permiso;
 import com.mdsql.bussiness.entities.Sinonimo;
+import com.mdval.exceptions.ServiceException;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JTable;
 
 /**
  * @author hcarreno
  */
 public interface ExcelGeneratorService {
+
+    void exportListToExcel(String plantilla, File ficheroSalida, List<Object> filas) throws ServiceException;
+
+    void exportTableToExcel(String fileName, JTable table) throws IOException;
 
     void generarExcelHistoricoCambios(List<InformeCambios> listaCambios, String path, String codigoProyecto,
             String fechaDesde, String fechaHasta);

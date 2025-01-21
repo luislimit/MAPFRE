@@ -9,9 +9,18 @@ import java.util.Date;
  *
  */
 public class TablaHistoricoCabecera extends Cabecera {
-	
-	public void setupCabecera() {
-		columnIdentifiers.add("Nombre Objeto");
+
+    @Override
+    public void setupCabecera() {
+
+        addColumn("colNombreObjeto", 450, String.class);
+        addColumn("colHistorificado", 150, String.class);
+        addColumn("colTipoObjeto", 150, String.class);
+        addColumn("colPeticion", 150, String.class);
+        addColumn("colFecha", 100, Date.class);
+        addColumn("colUsuario", 100, String.class);
+
+        /*columnIdentifiers.add("Nombre Objeto");
 		columnIdentifiers.add("Historificado");
 		columnIdentifiers.add("Tipo Objeto");
 		columnIdentifiers.add("Petición");
@@ -31,5 +40,6 @@ public class TablaHistoricoCabecera extends Cabecera {
 		columnSizes.add(150);
 		columnSizes.add(100);
 		columnSizes.add(100);
-	}
+         */
+    }
 }

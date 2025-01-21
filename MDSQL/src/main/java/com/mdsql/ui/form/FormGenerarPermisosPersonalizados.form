@@ -30,8 +30,8 @@
                   <Component id="scrollPaneSinonimos" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblTablaPermisos" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblTablaSinonimos" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPermisos" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblSinonimos" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lblModeloProyecto" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
@@ -126,11 +126,11 @@
                   <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblTablaPermisos" min="-2" pref="24" max="-2" attributes="0"/>
+              <Component id="lblPermisos" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="scrollPanePermisos" pref="177" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Component id="lblTablaSinonimos" min="-2" pref="24" max="-2" attributes="0"/>
+              <Component id="lblSinonimos" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Component id="scrollPaneSinonimos" pref="177" max="32767" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -234,7 +234,7 @@
         <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
       </AccessibilityProperties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblTablaPermisos">
+    <Component class="javax.swing.JLabel" name="lblPermisos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Permisos"/>
       </Properties>
@@ -263,12 +263,11 @@
                 <Column editable="true" title="Petici&#xf3;n" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="autoResizeMode" type="int" value="0"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="lblTablaSinonimos">
+    <Component class="javax.swing.JLabel" name="lblSinonimos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sin&#xf3;nimos"/>
       </Properties>
@@ -296,7 +295,6 @@
                 <Column editable="true" title="Funci&#xf3;n Nombre" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="autoResizeMode" type="int" value="0"/>
           </Properties>
         </Component>
       </SubComponents>

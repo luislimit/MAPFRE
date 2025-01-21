@@ -7,7 +7,7 @@ package com.mdsql.ui.form;
 
 import com.mdsql.ui.form.listener.FormConfirmacionGeneracionPermisosListener;
 import com.mdsql.ui.model.BBDDComboBoxModel;
-import com.mdsql.ui.renderer.BBDDRenderer;
+import com.mdsql.ui.renderer.CmbBBDDRenderer;
 import com.mdval.ui.utils.DialogSupport;
 import com.mdval.ui.utils.FrameSupport;
 import java.util.Map;
@@ -136,7 +136,7 @@ public class FormConfirmacionGeneracionPermisos extends DialogSupport {
                         .addComponent(btnRuta)
                         .addGap(7, 7, 7)
                         .addComponent(txtRuta)))
-                .addGap(20, 20, 20))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -150,7 +150,7 @@ public class FormConfirmacionGeneracionPermisos extends DialogSupport {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,12 +178,12 @@ public class FormConfirmacionGeneracionPermisos extends DialogSupport {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblComentario, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(scrollPaneComentario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(scrollPaneComentario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27))
+                .addContainerGap())
         );
 
         pack();
@@ -228,24 +228,24 @@ public class FormConfirmacionGeneracionPermisos extends DialogSupport {
 
     @Override
     protected void setupLiterals() {
-        setTitle(literales.getLiteral("FormConfirmacionGeneracionPermisos.title"));
-        lblPeticion.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblPeticion"));
-        chkGenerarPermisosGenerales.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.chkGenerarPermisosGenerales"));
-        lblSolicitadaPor.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblSolicitadaPor"));
-        chkGenerarRestoPermisosPersonalizados.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.chkGenerarRestoPermisosPersonalizados"));
-        lblBBDD.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblBBDD"));
-        lblDemanda.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblDemanda"));
-        lblRuta.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblRuta"));
-        lblComentario.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.lblComentario"));
-        btnAceptar.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.btnAceptar"));
-        btnCancelar.setText(literales.getLiteral("FormConfirmacionGeneracionPermisos.btnCancelar"));
+        setTitulo();
+        setTexto(lblPeticion,"lblPeticion");
+        setTexto(chkGenerarPermisosGenerales,"chkGenerarPermisosGenerales");
+        setTexto(lblSolicitadaPor,"lblSolicitadaPor");
+        setTexto(chkGenerarRestoPermisosPersonalizados,"chkGenerarRestoPermisosPersonalizados");
+        setTexto(lblBBDD,"lblBBDD");
+        setTexto(lblDemanda,"lblDemanda");
+        setTexto(lblRuta,"lblRuta");
+        setTexto(lblComentario,"lblComentario");
+        setTexto(btnAceptar,"btnAceptar");
+        setTexto(btnCancelar,"btnCancelar");
     }
 
     @Override
     protected void initModels() {
         BBDDComboBoxModel bbddModel = new BBDDComboBoxModel();
         cmbBBDD.setModel(bbddModel);
-        cmbBBDD.setRenderer(new BBDDRenderer());
+        cmbBBDD.setRenderer(new CmbBBDDRenderer());
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.mdsql.bussiness.entities.LogEjecucion;
 import com.mdsql.ui.listener.PantallaAjustarLogEjecucionListener;
 import com.mdsql.ui.listener.tables.PantallaAjustarLogTableListener;
 import com.mdsql.ui.model.AjustarLogEjecucionTableModel;
+import com.mdsql.ui.model.cabeceras.TablaAjustarLogEjecucionCabecera;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
@@ -142,7 +143,7 @@ public class PantallaAjustarLogEjecucion extends DialogSupport {
     
     @Override
 	protected void initModels() {
-    	Cabecera cabecera = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.DLG_AJUSTAR_LOG_EJECUCION_TABLA_CABECERA);
+    	Cabecera cabecera = new TablaAjustarLogEjecucionCabecera();
     	tblAjustarLog.initModel(new AjustarLogEjecucionTableModel(cabecera));
     }
     

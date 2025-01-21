@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CreateTypeScriptsClosure implements Closure {
 	
-	private String selectedRoute;
+	private final String selectedRoute;
 
 	public CreateTypeScriptsClosure(String selectedRoute) {
 		super();
@@ -46,7 +46,7 @@ public class CreateTypeScriptsClosure implements Closure {
 				for (ScriptType scriptType : scriptTypes) {
 					String nombreScript = scriptType.getNombreScript();
 					Path filePath = Paths.get(selectedRoute, nombreObjeto + File.separator + nombreScript);
-					MDSQLAppHelper.dumpLinesToFile(scriptType.getTxtScript(), filePath.toFile());
+					MDSQLAppHelper.dumpLinesToFile(scriptType.getTxtScript(), filePath.toString());
 				}
 			}
 		} catch (IOException e) {

@@ -1,5 +1,6 @@
 package com.mdsql.bussiness.entities;
 
+import com.mdsql.utils.MDSQLConstants.Procesado;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,15 +18,15 @@ import lombok.NoArgsConstructor;
 public class Proceso implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2012801467618032649L;
-	
-	private BigDecimal idProceso;
-	private Modelo modelo;
-	private String codProyecto;
-	private String codSubproyecto;
-	private SubProyecto subproyecto;
+     *
+     */
+    private static final long serialVersionUID = -2012801467618032649L;
+
+    private BigDecimal idProceso;
+    private Modelo modelo;
+    private String codProyecto;
+    private String codSubproyecto;
+    private SubProyecto subproyecto;
     private String codigoPeticion;
     private String codigoUsrPeticion;
     private BBDD bbdd;
@@ -40,12 +41,20 @@ public class Proceso implements Serializable {
     private String mcaErrores;
     private String rutaTrabajo;
     private String rutaScript;
-    
+
     private List<BBDD> bbdds;
     private List<Script> scripts;
+    private List<Lanza> lanzas;
     private List<Type> types;
-    
+
     // Para el procesado de Types, el script lanza va aparte
     private Script scriptLanza;
     private String ficheroLog;
+    //
+    private String mcaRechazar;
+    private String mcaExcluir;
+    private String mcaIncidencia;
+    private String mcaEntregar;
+    private Procesado tipo;
 }
+

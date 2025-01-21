@@ -5,22 +5,6 @@
  */
 package com.mdsql.ui;
 
-import java.awt.Dimension;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionListener;
-
 import com.mdsql.bussiness.entities.Aviso;
 import com.mdsql.bussiness.entities.Modelo;
 import com.mdsql.bussiness.entities.Proceso;
@@ -29,406 +13,545 @@ import com.mdsql.ui.listener.PantallaProcesadoEnCursoActionListener;
 import com.mdsql.ui.listener.tables.UltimasPeticionesTableListener;
 import com.mdsql.ui.model.ProcesarScriptNotaTableModel;
 import com.mdsql.ui.model.ProcesarScriptUltimasPeticionesTableModel;
+import com.mdsql.ui.model.cabeceras.TablaNotasCabecera;
+import com.mdsql.ui.model.cabeceras.TablaUltimasPeticionesCabecera;
 import com.mdsql.ui.renderer.NivelAvisosTableCellRenderer;
+import com.mdsql.ui.utils.DialogSupportModelo;
 import com.mdsql.ui.utils.MDSQLUIHelper;
-import com.mdsql.utils.MDSQLConstants;
 import com.mdsql.utils.MDSQLConstants.Procesado;
 import com.mdval.ui.model.cabeceras.Cabecera;
-import com.mdval.ui.utils.DialogSupport;
 import com.mdval.ui.utils.FrameSupport;
-import com.mdval.ui.utils.TableSupport;
-
+import java.util.Map;
+import java.util.Objects;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  *
- * @author federico
+ * @author LVARONA
  */
-public class PantallaProcesadoEnCurso extends DialogSupport implements PantallaProcesar {
+public class PantallaProcesadoEnCurso extends DialogSupportModelo implements PantallaProcesar {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7845375531319490239L;
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private JButton btnCancelar;
-	
-	private JButton jButton1;
-	private JLabel jLabel1;
-	private JLabel jLabel10;
-	private JLabel jLabel11;
-	private JLabel jLabel12;
-	private JLabel jLabel13;
-	private JLabel jLabel2;
-	private JLabel jLabel3;
-	private JLabel jLabel4;
-	private JLabel jLabel5;
-	private JLabel jLabel6;
-	private JLabel jLabel7;
-	private JLabel jLabel8;
-	private JLabel jLabel9;
-	private JScrollPane jScrollPane1;
-	private JScrollPane jScrollPane2;
-	private JScrollPane jScrollPane3;
-	
-	@Getter
-	private JTextArea txtDescripcion;
-	
-	@Getter
-	private JTextField txtPeticion;
-	
-	@Getter
-	private JTextField txtSolicitadaPor;
+    @Getter
+    @Setter
+    private Modelo modeloSeleccionado;
 
-	@Getter
-	private JTextField txtModelo;
-	
-	@Getter
-	private JTextField txtEsquema;
-	
-	@Getter
-	private JTextField txtBBDDHistorico;
-	
-	@Getter
-	private JTextField txtEsquemaHistorico;
-	
-	@Getter
-	private JTextField txtDemanda;
-	
-	@Getter
-	private JCheckBox chkGenerarHistorico;
-	
-	@Getter
-	private TableSupport tblNotas;
-	
-	@Getter
-	private TableSupport tblUltimasPeticiones;
-	
-	@Getter
-	private JButton btnVerProcesado;
-	
-	@Getter
-	private JButton btnProcesar;
-	
-	@Getter
-	private JButton btnLimpiar;
-	// End of variables declaration//GEN-END:variables
-	
-	@Getter
-	@Setter
-	private Modelo modeloSeleccionado;
-	
-	@Getter
-	@Setter
-	private SubProyecto subproyectoSeleccionado;
-	
-	@Getter
-	@Setter
-	private Aviso avisoSeleccionado;
-	
-	@Getter
-	@Setter
-	private Proceso procesoSeleccionado;
-	
-	@Getter
-	@Setter
-	private Procesado procesado;
-	
-	private JTextField txtBBDD;
-	
-	private JTextField txtSubproyecto;
-	
-	/**
-	 * @param params
-	 */
-	public PantallaProcesadoEnCurso(FrameSupport parent, Boolean modal) {
-		super(parent, modal);
-	}
+    @Getter
+    @Setter
+    private SubProyecto subproyectoSeleccionado;
 
-	/**
-	 * Creates new form
-	 */
-	public PantallaProcesadoEnCurso(FrameSupport parent, Boolean modal, Map<String, Object> params) {
-		super(parent, modal, params);
-	}
-	
-	@Override
-	protected void setupComponents() {
-		jLabel1 = new JLabel();
-        jLabel2 = new JLabel();
-        jLabel3 = new JLabel();
-        jLabel4 = new JLabel();
-        jLabel5 = new JLabel();
-        jLabel6 = new JLabel();
-        jLabel7 = new JLabel();
-        jLabel8 = new JLabel();
-        jLabel9 = new JLabel();
-        jLabel10 = new JLabel();
-        txtModelo = new JTextField();
-        txtPeticion = new JTextField();
-        txtSolicitadaPor = new JTextField();
-        txtEsquema = new JTextField();
-        chkGenerarHistorico = new JCheckBox();
-        txtBBDDHistorico = new JTextField();
-        txtEsquemaHistorico = new JTextField();
-        jScrollPane1 = new JScrollPane();
-        txtDescripcion = new JTextArea();
-        btnLimpiar = new JButton();
-        jButton1 = new JButton();
-        jLabel11 = new JLabel();
-        jScrollPane2 = new JScrollPane();
-        tblNotas = new TableSupport();
-        jLabel12 = new JLabel();
-        jScrollPane3 = new JScrollPane();
-        tblUltimasPeticiones = new TableSupport();
-        btnVerProcesado = new JButton();
-        btnProcesar = new JButton();
-        btnCancelar = new JButton();
-        txtDemanda = new JTextField();
-        jLabel13 = new JLabel();
-        txtSubproyecto = new JTextField();
-        txtBBDD = new JTextField();
-        
-        Dimension dimension = new Dimension(1450, 665);
-        setMinimumSize(dimension);
-        setPreferredSize(dimension);
-        
+    @Getter
+    @Setter
+    private Aviso avisoSeleccionado;
+
+    @Getter
+    @Setter
+    private Proceso procesoSeleccionado;
+
+    @Getter
+    @Setter
+    private Procesado procesado;
+
+    /**
+     * @param parent
+     * @param modal
+     */
+    public PantallaProcesadoEnCurso(FrameSupport parent, Boolean modal) {
+        super(parent, modal);
+    }
+
+    /**
+     * Creates new form
+     *
+     * @param parent
+     * @param modal
+     * @param params
+     */
+    public PantallaProcesadoEnCurso(FrameSupport parent, Boolean modal, Map<String, Object> params) {
+        super(parent, modal, params);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        lblModeloProyecto = new javax.swing.JLabel();
+        txtModeloProyecto = new javax.swing.JTextField();
+        btnModeloProyecto = new javax.swing.JButton();
+        lblSubModelo = new javax.swing.JLabel();
+        txtSubModelo = new javax.swing.JTextField();
+        lblPeticion = new javax.swing.JLabel();
+        txtPeticion = new javax.swing.JTextField();
+        lblSolicitadaPor = new javax.swing.JLabel();
+        txtSolicitadaPor = new javax.swing.JTextField();
+        lblEsquema = new javax.swing.JLabel();
+        txtEsquema = new javax.swing.JTextField();
+        lblBBDD = new javax.swing.JLabel();
+        txtBBDD = new javax.swing.JTextField();
+        lblGenerarHistorico = new javax.swing.JLabel();
+        chkGenerarHistorico = new javax.swing.JCheckBox();
+        lblBBDDHistorico = new javax.swing.JLabel();
+        txtBBDDHistorico = new javax.swing.JTextField();
+        lblEsquemaHistorico = new javax.swing.JLabel();
+        txtEsquemaHistorico = new javax.swing.JTextField();
+        lblDemanda = new javax.swing.JLabel();
+        txtDemanda = new javax.swing.JTextField();
+        lblDescripcion = new javax.swing.JLabel();
+        scpDescripcion = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
+        btnLimpiar = new javax.swing.JButton();
+        lblNotasAvisos = new javax.swing.JLabel();
+        scpNotas = new javax.swing.JScrollPane();
+        tblNotas = new javax.swing.JTable();
+        lblUltimasPeticiones = new javax.swing.JLabel();
+        scpUltimasPeticiones = new javax.swing.JScrollPane();
+        tblUltimasPeticiones = new javax.swing.JTable();
+        btnVerProcesado = new javax.swing.JButton();
+        btnProcesar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1700, 700));
+
+        lblModeloProyecto.setText("Modelo o proyecto");
+
+        btnModeloProyecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loupe.png"))); // NOI18N
+
+        lblSubModelo.setText("Submodelo");
+
+        lblPeticion.setText("Petición");
+
+        lblSolicitadaPor.setText("Solicitada por");
+
+        lblEsquema.setText("Esquema");
+
+        txtEsquema.setEditable(false);
+
+        lblBBDD.setText("BBDD");
+
+        txtBBDD.setEditable(false);
+
+        lblGenerarHistorico.setText("Generar histórico");
+
+        chkGenerarHistorico.setEnabled(false);
+
+        lblBBDDHistorico.setText("BBDD histórico");
+
+        txtBBDDHistorico.setEditable(false);
+
+        lblEsquemaHistorico.setText("Esquema histórico");
+
+        txtEsquemaHistorico.setEditable(false);
+
+        lblDemanda.setText("Demanda");
+
+        txtDemanda.setEditable(false);
+
+        lblDescripcion.setText("Descripción");
+
         txtDescripcion.setColumns(20);
         txtDescripcion.setRows(5);
-        jScrollPane1.setViewportView(txtDescripcion);
-        
-        jScrollPane2.setViewportView(tblNotas);
-        jScrollPane3.setViewportView(tblUltimasPeticiones);
-        
-        GroupLayout layout = new GroupLayout(getContentPane());
+        scpDescripcion.setViewportView(txtDescripcion);
+
+        btnLimpiar.setText("Limpiar");
+
+        lblNotasAvisos.setText("Notas / avisos");
+
+        tblNotas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Nivel", "Título", "Descripción", "Petición"
+            }
+        ));
+        scpNotas.setViewportView(tblNotas);
+        if (tblNotas.getColumnModel().getColumnCount() > 0) {
+            tblNotas.getColumnModel().getColumn(0).setPreferredWidth(75);
+            tblNotas.getColumnModel().getColumn(1).setPreferredWidth(500);
+            tblNotas.getColumnModel().getColumn(2).setPreferredWidth(500);
+            tblNotas.getColumnModel().getColumn(3).setPreferredWidth(500);
+        }
+
+        lblUltimasPeticiones.setText("Últimas peticiones");
+
+        tblUltimasPeticiones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Peticíon", "Solicitado", "Estado", "Fecha", "Usuario", "Descripción", "Comentario Entrega"
+            }
+        ));
+        scpUltimasPeticiones.setViewportView(tblUltimasPeticiones);
+        if (tblUltimasPeticiones.getColumnModel().getColumnCount() > 0) {
+            tblUltimasPeticiones.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblUltimasPeticiones.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tblUltimasPeticiones.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tblUltimasPeticiones.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tblUltimasPeticiones.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tblUltimasPeticiones.getColumnModel().getColumn(5).setPreferredWidth(300);
+            tblUltimasPeticiones.getColumnModel().getColumn(6).setPreferredWidth(300);
+        }
+
+        btnVerProcesado.setText("Ver procesado");
+
+        btnProcesar.setText("Procesar");
+
+        btnCancelar.setText("Cancelar");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(192, 192, 192)
                         .addComponent(btnLimpiar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(13, 13, 13)
-                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel6)
-                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel2, GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel3, GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel4, GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel5, GroupLayout.Alignment.TRAILING))))
-                                .addComponent(jLabel9, GroupLayout.Alignment.TRAILING))
-                            .addComponent(jLabel7, GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel8, GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10, GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13, GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblBBDD)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblModeloProyecto)
+                                            .addComponent(lblSubModelo, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lblPeticion, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lblSolicitadaPor, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lblEsquema, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                .addComponent(lblEsquemaHistorico, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(lblGenerarHistorico, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblBBDDHistorico, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblDescripcion, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblDemanda, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(chkGenerarHistorico)
                             .addComponent(txtPeticion)
                             .addComponent(txtSolicitadaPor)
                             .addComponent(txtEsquema)
                             .addComponent(txtBBDDHistorico)
                             .addComponent(txtEsquemaHistorico)
-                            .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(scpDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtModelo, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))
+                                .addComponent(txtModeloProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnModeloProyecto, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))
                             .addComponent(txtDemanda)
-                            .addComponent(txtSubproyecto)
+                            .addComponent(txtSubModelo)
                             .addComponent(txtBBDD))))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 1031, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(0, 957, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scpNotas, javax.swing.GroupLayout.DEFAULT_SIZE, 1271, Short.MAX_VALUE)
+                            .addComponent(lblNotasAvisos)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3)
-                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(666, 666, 666)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUltimasPeticiones)
+                            .addComponent(scpUltimasPeticiones)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnVerProcesado)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnProcesar, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnProcesar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtModelo, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1))
-                    .addComponent(jLabel11))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnModeloProyecto)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtModeloProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblModeloProyecto))
+                    .addComponent(lblNotasAvisos))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtSubproyecto, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtPeticion, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtSolicitadaPor, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtEsquema, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtBBDD, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblSubModelo)
+                            .addComponent(txtSubModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPeticion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPeticion))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSolicitadaPor, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSolicitadaPor))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblEsquema)
+                            .addComponent(txtEsquema, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblBBDD)
+                            .addComponent(txtBBDD, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(chkGenerarHistorico)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtBBDDHistorico, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtEsquemaHistorico, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDemanda, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(lblGenerarHistorico))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBBDDHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBBDDHistorico))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtEsquemaHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEsquemaHistorico))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtDemanda, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDemanda))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scpDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDescripcion))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLimpiar))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(scpNotas, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(lblUltimasPeticiones)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scpUltimasPeticiones, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCancelar)
                             .addComponent(btnProcesar)
                             .addComponent(btnVerProcesado))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
         );
-	pack();
-	}
-	
-	@Override
-	protected void initEvents() {
-		PantallaProcesadoEnCursoActionListener actionListener = new PantallaProcesadoEnCursoActionListener(this);
-		ListSelectionListener ultimasPeticionesSelectionListener = new UltimasPeticionesTableListener(this);
 
-		btnCancelar.setActionCommand(MDSQLConstants.PANTALLA_PROCESADO_SCRIPT_CANCELAR);
-		btnVerProcesado.setActionCommand(MDSQLConstants.PANTALLA_PROCESADO_SCRIPT_VER_PROCESADO);
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
-		btnCancelar.addActionListener(actionListener);
-		btnVerProcesado.addActionListener(actionListener);
-		
-		ListSelectionModel ultimasPeticionesRowSM = tblUltimasPeticiones.getSelectionModel();
-		ultimasPeticionesRowSM.addListSelectionListener(ultimasPeticionesSelectionListener);
-		
-		addOnLoadListener(actionListener);
-	}
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnModeloProyecto;
+    private javax.swing.JButton btnProcesar;
+    private javax.swing.JButton btnVerProcesado;
+    private javax.swing.JCheckBox chkGenerarHistorico;
+    private javax.swing.JLabel lblBBDD;
+    private javax.swing.JLabel lblBBDDHistorico;
+    private javax.swing.JLabel lblDemanda;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblEsquema;
+    private javax.swing.JLabel lblEsquemaHistorico;
+    private javax.swing.JLabel lblGenerarHistorico;
+    private javax.swing.JLabel lblModeloProyecto;
+    private javax.swing.JLabel lblNotasAvisos;
+    private javax.swing.JLabel lblPeticion;
+    private javax.swing.JLabel lblSolicitadaPor;
+    private javax.swing.JLabel lblSubModelo;
+    private javax.swing.JLabel lblUltimasPeticiones;
+    private javax.swing.JScrollPane scpDescripcion;
+    private javax.swing.JScrollPane scpNotas;
+    private javax.swing.JScrollPane scpUltimasPeticiones;
+    private javax.swing.JTable tblNotas;
+    private javax.swing.JTable tblUltimasPeticiones;
+    private javax.swing.JTextField txtBBDD;
+    private javax.swing.JTextField txtBBDDHistorico;
+    private javax.swing.JTextField txtDemanda;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtEsquema;
+    private javax.swing.JTextField txtEsquemaHistorico;
+    private javax.swing.JTextField txtModeloProyecto;
+    private javax.swing.JTextField txtPeticion;
+    private javax.swing.JTextField txtSolicitadaPor;
+    private javax.swing.JTextField txtSubModelo;
+    // End of variables declaration//GEN-END:variables
 
-	@Override
-	protected void initModels() {
-		Cabecera cabeceraNotas = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.PROCESAR_SCRIPT_NOTAS_TABLA_CABECERA);
-		tblNotas.initModel(
-				new ProcesarScriptNotaTableModel(cabeceraNotas));
-		tblNotas.setDefaultRenderer(String.class, new NivelAvisosTableCellRenderer());
-		
-		Cabecera cabeceraUltimasPeticiones = MDSQLUIHelper
-				.createCabeceraTabla(MDSQLConstants.PROCESAR_SCRIPT_ULTIMAS_PETICIONES_TABLA_CABECERA);
-		tblUltimasPeticiones.initModel(new ProcesarScriptUltimasPeticionesTableModel(cabeceraUltimasPeticiones));
-	}
+    @Override
+    protected void setupComponents() {
+        initComponents();
+    }
 
-	@Override
-	protected void initialState() {
-		txtEsquema.setEditable(false);
+    @Override
+    protected void initEvents() {
+        PantallaProcesadoEnCursoActionListener actionListener = new PantallaProcesadoEnCursoActionListener(this);
+        ListSelectionListener ultimasPeticionesSelectionListener = new UltimasPeticionesTableListener(this);
+
+        btnCancelar.addActionListener(actionListener);
+        btnVerProcesado.addActionListener(actionListener);
+
+        ListSelectionModel ultimasPeticionesRowSM = tblUltimasPeticiones.getSelectionModel();
+        ultimasPeticionesRowSM.addListSelectionListener(ultimasPeticionesSelectionListener);
+
+        addOnLoadListener(actionListener);
+    }
+
+    @Override
+    protected void setupLiterals() {
+        setTitulo();
+        setTexto(btnCancelar, "btnCancelar");
+        setTexto(btnLimpiar, "btnLimpiar");
+        setTexto(btnProcesar, "btnProcesar");
+        setTexto(btnVerProcesado, "btnVerProcesado");
+        setTexto(lblBBDD, "lblBBDD");
+        setTexto(lblBBDDHistorico, "lblBBDDHistorico");
+        setTexto(lblDemanda, "lblDemanda");
+        setTexto(lblDescripcion, "lblDescripcion");
+        setTexto(lblEsquema, "lblEsquema");
+        setTexto(lblEsquemaHistorico, "lblEsquemaHistorico");
+        setTexto(lblGenerarHistorico, "lblGenerarHistorico");
+        setTexto(lblModeloProyecto, "lblModeloProyecto");
+        setTexto(lblNotasAvisos, "lblNotasAvisos");
+        setTexto(lblPeticion, "lblPeticion");
+        setTexto(lblSolicitadaPor, "lblSolicitadaPor");
+        setTexto(lblSubModelo, "lblSubModelo");
+        setTexto(lblSubModelo, "lblSubModelo");
+    }
+
+    @Override
+    protected void initModels() {
+        Cabecera cabeceraNotas = new TablaNotasCabecera();
+        MDSQLUIHelper.setTableModelRenderer(tblNotas, new ProcesarScriptNotaTableModel(cabeceraNotas), null);
+        tblNotas.setDefaultRenderer(String.class, new NivelAvisosTableCellRenderer());
+
+        Cabecera cabeceraUltimasPeticiones = new TablaUltimasPeticionesCabecera();
+        MDSQLUIHelper.setTableModelRenderer(tblUltimasPeticiones, new ProcesarScriptUltimasPeticionesTableModel(cabeceraUltimasPeticiones), null);
+    }
+
+    @Override
+    protected void initialState() {
+        txtEsquema.setEditable(false);
         chkGenerarHistorico.setEnabled(false);
         txtBBDDHistorico.setEditable(false);
         txtEsquemaHistorico.setEditable(false);
         btnLimpiar.setEnabled(Boolean.FALSE);
         btnVerProcesado.setEnabled(Boolean.FALSE);
-        
+
         Proceso proceso = (Proceso) params.get("proceso");
         if (!Objects.isNull(proceso)) {
-        	txtModelo.setEditable(false);
-        	txtSubproyecto.setEditable(false);
-        	txtPeticion.setEditable(false);
-        	txtSolicitadaPor.setEditable(false);
-        	txtBBDD.setEditable(false);
-        	txtDemanda.setEditable(false);
-        	txtDescripcion.setEditable(false);
-        	
-        	txtModelo.setText(proceso.getModelo().getCodigoProyecto());
-        	txtSubproyecto.setText(proceso.getSubproyecto().getDescripcionSubProyecto());
-        	txtPeticion.setText(proceso.getCodigoPeticion());
-        	txtSolicitadaPor.setText(proceso.getCodigoUsrPeticion());
-        	
-        	if (!Objects.isNull(proceso.getBbdd())) {
-	        	txtBBDD.setText(proceso.getBbdd().getNombreBBDD());
-	        	txtEsquema.setText(proceso.getBbdd().getNombreEsquema());
-	        	txtBBDDHistorico.setText(proceso.getBbdd().getNombreBBDDHis());
-	        	txtEsquemaHistorico.setText(proceso.getBbdd().getNombreEsquemaHis());
-        	}
-        	
-        	txtDemanda.setText(proceso.getCodigoDemanda());
-        	txtDescripcion.setText(proceso.getTxtDescripcion());
-        	
-        	jButton1.setEnabled(false);
-        	btnProcesar.setEnabled(false);
-        }
-	}
+            txtModeloProyecto.setEditable(false);
+            txtSubModelo.setEditable(false);
+            txtPeticion.setEditable(false);
+            txtSolicitadaPor.setEditable(false);
+            txtBBDD.setEditable(false);
+            txtDemanda.setEditable(false);
+            txtDescripcion.setEditable(false);
 
-	@Override
-	protected void setupLiterals() {
-		setTitle(literales.getLiteral("PantallaProcesadoEnCurso.titulo"));
-		
-		jButton1.setIcon(new ImageIcon(getClass().getResource("/loupe.png"))); // NOI18N
-		
-		jLabel1.setText(literales.getLiteral("PantallaProcesadoEnCurso.label1"));
-		jLabel2.setText(literales.getLiteral("PantallaProcesadoEnCurso.label2"));
-		jLabel3.setText(literales.getLiteral("PantallaProcesadoEnCurso.label3"));
-		jLabel4.setText(literales.getLiteral("PantallaProcesadoEnCurso.label4"));
-		jLabel5.setText(literales.getLiteral("PantallaProcesadoEnCurso.label5"));
-		jLabel6.setText(literales.getLiteral("PantallaProcesadoEnCurso.label6"));
-		jLabel7.setText(literales.getLiteral("PantallaProcesadoEnCurso.label7"));
-		jLabel8.setText(literales.getLiteral("PantallaProcesadoEnCurso.label8"));
-		jLabel9.setText(literales.getLiteral("PantallaProcesadoEnCurso.label9"));
-		jLabel10.setText(literales.getLiteral("PantallaProcesadoEnCurso.label10"));
-		btnLimpiar.setText(literales.getLiteral("PantallaProcesadoEnCurso.limpiar"));
-		jLabel11.setText(literales.getLiteral("PantallaProcesadoEnCurso.label11"));
-		jLabel12.setText(literales.getLiteral("PantallaProcesadoEnCurso.label12"));
-		jLabel13.setText(literales.getLiteral("PantallaProcesadoEnCurso.label13"));
-		btnVerProcesado.setText(literales.getLiteral("PantallaProcesadoEnCurso.verProcesado"));
-		btnProcesar.setText(literales.getLiteral("PantallaProcesadoEnCurso.procesar"));
-		btnCancelar.setText(literales.getLiteral("PantallaProcesadoEnCurso.cancelar"));
-	}
+            txtModeloProyecto.setText(proceso.getModelo().getCodigoProyecto());
+            txtSubModelo.setText(proceso.getSubproyecto().getDescripcionSubProyecto());
+            txtPeticion.setText(proceso.getCodigoPeticion());
+            txtSolicitadaPor.setText(proceso.getCodigoUsrPeticion());
+
+            if (!Objects.isNull(proceso.getBbdd())) {
+                txtBBDD.setText(proceso.getBbdd().getNombreBBDD());
+                txtEsquema.setText(proceso.getBbdd().getNombreEsquema());
+                txtBBDDHistorico.setText(proceso.getBbdd().getNombreBBDDHis());
+                txtEsquemaHistorico.setText(proceso.getBbdd().getNombreEsquemaHis());
+            }
+
+            txtDemanda.setText(proceso.getCodigoDemanda());
+            txtDescripcion.setText(proceso.getTxtDescripcion());
+
+            btnModeloProyecto.setEnabled(false);
+            btnProcesar.setEnabled(false);
+        }
+    }
+
+    @Override
+    public JTable getTblUltimasPeticiones() {
+        return tblUltimasPeticiones;
+    }
+
+    @Override
+    public JButton getBtnVerProcesado() {
+        return btnVerProcesado;
+    }
+
+    public JButton getBtnCancelar() {
+        return btnCancelar;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public JButton getBtnModeloProyecto() {
+        return btnModeloProyecto;
+    }
+
+    public JButton getBtnProcesar() {
+        return btnProcesar;
+    }
+
+    public JCheckBox getChkGenerarHistorico() {
+        return chkGenerarHistorico;
+    }
+
+    public JTable getTblNotas() {
+        return tblNotas;
+    }
+
+    public JTextField getTxtBBDD() {
+        return txtBBDD;
+    }
+
+    public JTextField getTxtBBDDHistorico() {
+        return txtBBDDHistorico;
+    }
+
+    public JTextField getTxtDemanda() {
+        return txtDemanda;
+    }
+
+    public JTextArea getTxtDescripcion() {
+        return txtDescripcion;
+    }
+
+    public JTextField getTxtEsquema() {
+        return txtEsquema;
+    }
+
+    public JTextField getTxtEsquemaHistorico() {
+        return txtEsquemaHistorico;
+    }
+
+    public JTextField getTxtModeloProyecto() {
+        return txtModeloProyecto;
+    }
+
+    public JTextField getTxtPeticion() {
+        return txtPeticion;
+    }
+
+    public JTextField getTxtSolicitadaPor() {
+        return txtSolicitadaPor;
+    }
+
+    public JTextField getTxtSubModelo() {
+        return txtSubModelo;
+    }
+    
+    
 }

@@ -1,5 +1,21 @@
 package com.mdsql.bussiness.service.impl;
 
+import com.mdsql.bussiness.entities.CampoGlosario;
+import com.mdsql.bussiness.entities.CodigoDescripcion;
+import com.mdsql.bussiness.entities.DetValidacion;
+import com.mdsql.bussiness.entities.Informe;
+import com.mdsql.bussiness.entities.InformeCambioTRN;
+import com.mdsql.bussiness.entities.InformeCambios;
+import com.mdsql.bussiness.entities.InformeValidacion;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputParamInformeTRN;
+import com.mdsql.bussiness.entities.OutputWarning;
+import com.mdsql.bussiness.service.InformeService;
+import com.mdsql.utils.MDSQLConstants;
+import com.mdval.exceptions.ServiceException;
+import com.mdval.utils.ConfigurationSingleton;
+import com.mdval.utils.LogWrapper;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Array;
 import java.sql.CallableStatement;
@@ -9,25 +25,10 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
 import javax.sql.DataSource;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mdsql.bussiness.entities.CampoGlosario;
-import com.mdsql.bussiness.entities.DetValidacion;
-import com.mdsql.bussiness.entities.InformeCambios;
-import com.mdsql.bussiness.entities.InformeValidacion;
-import com.mdsql.bussiness.entities.OutputInformeCambios;
-import com.mdsql.bussiness.service.InformeService;
-import com.mdsql.utils.MDSQLConstants;
-import com.mdval.exceptions.ServiceException;
-import com.mdval.utils.LogWrapper;
-
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author hcarreno
@@ -40,12 +41,10 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
     private DataSource dataSource;
 
     @Override
-    @SneakyThrows
-    public InformeValidacion generarInformeValidacion(BigDecimal codigoValidacion) {
+    public InformeValidacion generarInformeValidacion(BigDecimal codigoValidacion) throws ServiceException {
         String runSP = createCall("p_generar_informe_val", MDSQLConstants.CALL_06_ARGS);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             String typeDetValidacion = createCallType(MDSQLConstants.T_T_DET_VALIDACION);
             String typeCampoGlosario = createCallType(MDSQLConstants.T_T_CAMPO_GLOSARIO);
@@ -89,11 +88,10 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
     }
 
     @Override
-    public OutputInformeCambios informeCambios(String codigoProyecto, Date fechaDesde, Date fechaHasta) throws ServiceException {
+    public OutputConsulta<InformeCambios> informeCambios(String codigoProyecto, String fechaDesde, String fechaHasta) throws ServiceException {
         String runSP = createCall("p_informe_cambios", MDSQLConstants.CALL_06_ARGS);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             String typeInformeCambios = createCallType(MDSQLConstants.T_T_INFORME_CAMBIOS);
             String typeError = createCallTypeError();
@@ -101,21 +99,8 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
             logProcedure(runSP, codigoProyecto, fechaDesde, fechaHasta);
 
             callableStatement.setString(1, codigoProyecto);
-            
-            if (!Objects.isNull(fechaDesde)) {
-            	callableStatement.setDate(2, new java.sql.Date(fechaDesde.getTime()));
-            }
-            else {
-            	callableStatement.setDate(2, null);
-            }
-            
-            if (!Objects.isNull(fechaHasta)) {
-            	callableStatement.setDate(3, new java.sql.Date(fechaHasta.getTime()));
-            }
-            else {
-            	callableStatement.setDate(3, null);
-            }
-            
+            setDate(callableStatement, 2, fechaDesde);
+            setDate(callableStatement, 3, fechaHasta);
             callableStatement.registerOutParameter(4, Types.ARRAY, typeInformeCambios);
             callableStatement.registerOutParameter(5, Types.INTEGER);
             callableStatement.registerOutParameter(6, Types.ARRAY, typeError);
@@ -127,14 +112,14 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
             if (result == 0) {
                 throw buildException(callableStatement.getArray(6));
             }
-            
-            OutputInformeCambios outputInformeCambios = new OutputInformeCambios();
+
+            OutputConsulta<InformeCambios> outputInformeCambios = new OutputConsulta<>();
             outputInformeCambios.setResult(result);
-			
-			// Hay avisos
-			if (result == 2) {
-				outputInformeCambios.setServiceException(buildException(callableStatement.getArray(6)));
-			}
+
+            // Hay avisos
+            if (result == 2) {
+                outputInformeCambios.setWarnings(buildException(callableStatement.getArray(6)));
+            }
 
             List<InformeCambios> informeCambios = new ArrayList<>();
             Array arrayInformeCambios = callableStatement.getArray(4);
@@ -166,8 +151,8 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
                             .build();
                     informeCambios.add(historicoProceso);
                 }
-                
-                outputInformeCambios.setListaCambios(informeCambios);
+
+                outputInformeCambios.setLista(informeCambios);
             }
             return outputInformeCambios;
         } catch (SQLException e) {
@@ -177,8 +162,7 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
 
     }
 
-    @SneakyThrows
-    private List<DetValidacion> getListaErroneos(Array arrayErroneos) {
+    private List<DetValidacion> getListaErroneos(Array arrayErroneos) throws SQLException {
         List<DetValidacion> listaErroneos = new ArrayList<>();
         if (arrayErroneos != null) {
             Object[] rows = (Object[]) arrayErroneos.getArray();
@@ -203,8 +187,7 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
         return listaErroneos;
     }
 
-    @SneakyThrows
-    private List<DetValidacion> getListaOtraDefinicion(Array arrayOtraDefinicion) {
+    private List<DetValidacion> getListaOtraDefinicion(Array arrayOtraDefinicion) throws SQLException {
         List<DetValidacion> listaOtraDefinicion = new ArrayList<>();
         if (arrayOtraDefinicion != null) {
             Object[] rows = (Object[]) arrayOtraDefinicion.getArray();
@@ -229,8 +212,7 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
         return listaOtraDefinicion;
     }
 
-    @SneakyThrows
-    private List<CampoGlosario> getListaDefinicionGlosario(Array arrayDefinicionGlosarios) {
+    private List<CampoGlosario> getListaDefinicionGlosario(Array arrayDefinicionGlosarios) throws SQLException {
         List<CampoGlosario> listaDefinicionGlosario = new ArrayList<>();
         if (arrayDefinicionGlosarios != null) {
             Object[] rows = (Object[]) arrayDefinicionGlosarios.getArray();
@@ -254,5 +236,206 @@ public class InformeServiceImpl extends ServiceSupport implements InformeService
             }
         }
         return listaDefinicionGlosario;
+    }
+
+    @Override
+    public OutputConsulta<InformeCambioTRN> generaInformeTRN() throws ServiceException {
+        String runSP = createCall("p_genera_informe_TRN", 3);
+
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
+
+            String typeInforme = createCallType(MDSQLConstants.T_T_INFORME);
+
+            logProcedure(runSP);
+
+            callableStatement.registerOutParameter(1, Types.ARRAY, typeInforme);
+
+            OutputWarning result = executeStatement(callableStatement);
+            OutputConsulta<InformeCambioTRN> output = new OutputConsulta();
+            output.setOutputWarning(result);
+            output.setLista(getListInformeCambioTRN(callableStatement.getArray(1)));
+
+            return output;
+
+        } catch (SQLException e) {
+            LogWrapper.error(log, "[InformeService.generaInformeTRN] Error: %s", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     *
+     * @param array
+     * @return
+     * @throws SQLException
+     */
+    private List<InformeCambioTRN> getListInformeCambioTRN(Array array) throws SQLException {
+        List<InformeCambioTRN> lista = new ArrayList<>();
+        if (array != null) {
+            Object[] rows = (Object[]) array.getArray();
+            for (Object row : rows) {
+                Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
+
+                InformeCambioTRN item = InformeCambioTRN.builder()
+                        .fechaCambio((Date) cols[0])
+                        .nomObjeto((String) cols[1])
+                        .tipObjeto((String) cols[2])
+                        .nomElemento((String) cols[3])
+                        .tipElemento((String) cols[4])
+                        .tipCambio((String) cols[5])
+                        .detalle((String) cols[6])
+                        .codPeticion((String) cols[7])
+                        .codUsr((String) cols[8])
+                        .nomScript((String) cols[9])
+                        .versionado((String) cols[10])
+                        .build();
+
+                lista.add(item);
+            }
+        }
+        return lista;
+    }
+
+    @Override
+    public OutputParamInformeTRN paramInformeTRN() throws ServiceException {
+        String runSP = createCall("p_param_informe_TRN", 7);
+
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
+
+            logProcedure(runSP);
+
+            callableStatement.registerOutParameter(1, Types.VARCHAR); //p_tip_envio
+            callableStatement.registerOutParameter(2, Types.VARCHAR); //p_txt_servidor
+            //Deben pasar el puerto
+            callableStatement.registerOutParameter(3, Types.VARCHAR); //p_txt_usr_ftp
+            callableStatement.registerOutParameter(4, Types.VARCHAR); //p_txt_pwd_ftp
+            callableStatement.registerOutParameter(5, Types.VARCHAR); //p_txt_ruta
+
+            OutputWarning result = executeStatement(callableStatement);
+
+            OutputParamInformeTRN output = new OutputParamInformeTRN();
+            output.setOutputWarning(result);
+            String tipoEnvio = callableStatement.getString(1);
+            output.setTipEnvio(tipoEnvio);
+
+            output.setServidor(callableStatement.getString(2));
+            String puertoStr = callableStatement.getString(3);
+            //Si no se indica el puerto asumimos el 21
+            int puerto = (puertoStr == null) ? 21 : Integer.parseInt(puertoStr);
+            output.setPuerto(puerto);
+            //
+            output.setUsrFtp(callableStatement.getString(3));
+            output.setPwdFtp(callableStatement.getString(4));
+            output.setRuta(callableStatement.getString(5));
+
+            // Configuración del FTP desde el fichero de configuración
+            if ("FTP".equals(tipoEnvio) && output.getServidor() == null) {
+                ConfigurationSingleton conf = ConfigurationSingleton.getInstance();
+                output.setServidor(conf.getConfig("ftp.server"));
+                puertoStr = conf.getConfig("ftp.port");
+                output.setPuerto(Integer.parseInt(puertoStr));
+                output.setUsrFtp(conf.getConfig("ftp.user"));
+                output.setPwdFtp(conf.getConfig("ftp.password"));
+            }
+
+            return output;
+
+        } catch (IOException | SQLException e) {
+            LogWrapper.error(log, "[InformeService.paramInformeTRN] Error: %s", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public OutputConsulta<CodigoDescripcion> consultaTipoInforme() throws ServiceException {
+        String runSP = createCall("p_con_tipos_informe", 3);
+
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
+
+            String typeList = createCallType(MDSQLConstants.T_T_TIPOS_INFORME);
+
+            logProcedure(runSP);
+
+            callableStatement.registerOutParameter(1, Types.ARRAY, typeList); //p_tipos_informe
+
+            OutputWarning result = executeStatement(callableStatement);
+
+            return fromDBListCodigoDescripcion(callableStatement.getArray(1), result);
+
+        } catch (SQLException e) {
+            LogWrapper.error(log, "[InformeService.consultaTipoInforme] Error: %s", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public OutputConsulta<Informe> consultaInforme(
+            String codigoProyecto,
+            String tipoInforme,
+            String nombreObjeto,
+            String fechaDesde,
+            String fechaHasta,
+            String mcaPermisos) throws ServiceException {
+        String runSP = createCall("p_con_informe", 9);
+
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
+
+            String typeLista = createCallType(MDSQLConstants.T_T_INFORME);
+
+            logProcedure(runSP, codigoProyecto, tipoInforme, nombreObjeto, fechaDesde, fechaHasta, mcaPermisos);
+
+            callableStatement.setString(1, codigoProyecto);
+            callableStatement.setString(2, tipoInforme);
+            callableStatement.setString(3, nombreObjeto);
+            setDate(callableStatement, 4, fechaDesde);
+            setDate(callableStatement, 5, fechaHasta);
+            callableStatement.setString(6, mcaPermisos);
+            callableStatement.registerOutParameter(7, Types.ARRAY, typeLista);
+
+            OutputWarning result = executeStatement(callableStatement);
+
+            OutputConsulta<Informe> output = new OutputConsulta<>();
+            output.setOutputWarning(result);
+            output.setLista(fromDBListInforme(callableStatement.getArray(7)));
+
+            return output;
+
+        } catch (SQLException e) {
+            LogWrapper.error(log, "[InformeService.consultaInforme] Error: %s", e.getMessage());
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Retorna una lista de informe a partir de lo obtenido desde la BBDD
+     *
+     * @param callableStatement
+     * @param array
+     * @return
+     * @throws SQLException
+     */
+    private List<Informe> fromDBListInforme(Array array) throws SQLException {
+        List<Informe> lista = new ArrayList<>();
+        if (array != null) {
+            Object[] rows = (Object[]) array.getArray();
+            for (Object row : rows) {
+                Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
+                Informe registro = Informe.builder()
+                        .fechaCambio((Date) cols[0])
+                        .nombreObjeto((String) cols[1])
+                        .tipoObjeto((String) cols[2])
+                        .nombreElemento((String) cols[3])
+                        .tipoElemento((String) cols[4])
+                        .tipoCambio((String) cols[5])
+                        .detalle((String) cols[6])
+                        .codPeticion((String) cols[7])
+                        .codUsr((String) cols[8])
+                        .nombreScript((String) cols[9])
+                        .versionado((String) cols[10])
+                        .build();
+                lista.add(registro);
+            }
+        }
+        return lista;
     }
 }

@@ -6,12 +6,13 @@
 package com.mdsql.ui.utils;
 
 import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.bussiness.entities.OutputConsultaModelos;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.SubProyecto;
 import com.mdsql.bussiness.service.ModeloService;
 import com.mdsql.ui.PantallaSeleccionModelos;
+import com.mdsql.ui.listener.text.TxtModeloProyectoListener;
 import com.mdsql.ui.model.SubProyectoComboBoxModel;
-import com.mdsql.ui.renderer.SubProyectoRenderer;
+import com.mdsql.ui.renderer.CmbSubProyectoRenderer;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.ui.utils.OnLoadListener;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +57,7 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
         dialogSupportModelo.dispose();
     }
 
-    protected void evtBtnSearchModel() {
+    public void evtBtnSearchModel() {
         try {
             clearForm();
             Modelo modelo = null;
@@ -70,11 +72,15 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
                 if (StringUtils.isNotBlank(codigoProyecto)) {
                     params.put("codigoProyecto", codigoProyecto);
                 }
-                PantallaSeleccionModelos pantallaSeleccionModelos;
+                /*PantallaSeleccionModelos pantallaSeleccionModelos;
                 pantallaSeleccionModelos = (PantallaSeleccionModelos) MDSQLUIHelper.createDialog(dialogSupportModelo.getFrameParent(),
                         MDSQLConstants.CMD_SEARCH_MODEL, params);
                 if (!pantallaSeleccionModelos.getErrorOnload()) {
                     MDSQLUIHelper.show(pantallaSeleccionModelos);
+                    modelo = pantallaSeleccionModelos.getSeleccionado();
+                }*/
+                PantallaSeleccionModelos pantallaSeleccionModelos = MDSQLUIHelper.showForm(dialogSupportModelo.getFrameParent(), PantallaSeleccionModelos.class, params);
+                if (pantallaSeleccionModelos != null){
                     modelo = pantallaSeleccionModelos.getSeleccionado();
                 }
             }
@@ -107,19 +113,15 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
     private List<Modelo> buscarModelos(String codModelo, String nombreModelo, String codSubmodelo) throws ServiceException {
         ModeloService modeloService = (ModeloService) getService(MDSQLConstants.MODELO_SERVICE);
 
-        OutputConsultaModelos outputConsultaModelos = modeloService.consultaModelos(codModelo, nombreModelo, codSubmodelo);
+        OutputConsulta<Modelo> output = modeloService.consultaModelos(codModelo, nombreModelo, codSubmodelo);
 
         // Si Hay avisos, se muestran
-        MDSQLUIHelper.showWarnings(dialogSupportModelo, outputConsultaModelos.getServiceException());
+        MDSQLUIHelper.showWarnings(dialogSupportModelo, output.getWarnings());
 
-        return outputConsultaModelos.getModelos();
+        return output.getLista();
     }
 
-    /**
-     * @param modelo
-     */
-    private void fillCmbSubModelos() {
-        Modelo modelo = dialogSupportModelo.getModelo();
+    public void fillCmbSubModelos(Modelo modelo) {
         if (modelo == null) {
             return;
         }
@@ -137,22 +139,27 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
     }
 
     public void procesarModelo() throws ServiceException {
+        Modelo modelo = dialogSupportModelo.getModelo();
         if (dialogSupportModelo.getCmbSubModelo() != null) {
-            fillCmbSubModelos();
+            fillCmbSubModelos(modelo);
         }
     }
 
     @Override
     public void onLoad() {
-        //inicializamos los listener por defecto de los objetos
-        if (dialogSupportModelo.getBtnCancelar() != null) {
-            dialogSupportModelo.getBtnCancelar().addActionListener(this);
+        dialogSupportModelo.setFormListener(this);
+        if (dialogSupportModelo.getTxtModeloProyecto() != null) {
+            //Añadimos listener para tratar cambios en el valor del modelo
+            TxtModeloProyectoListener ls = new TxtModeloProyectoListener(dialogSupportModelo);
+            dialogSupportModelo.getTxtModeloProyecto().addActionListener(ls);
+            dialogSupportModelo.getTxtModeloProyecto().addFocusListener(ls);
         }
-        if (dialogSupportModelo.getBtnModeloProyecto() != null) {
-            dialogSupportModelo.getBtnModeloProyecto().addActionListener(this);
-        }
+        //inicializamos los listener por defecto de los botones
+        addComponentActionListener(dialogSupportModelo.getBtnCancelar());
+        addComponentActionListener(dialogSupportModelo.getBtnModeloProyecto());
+
         if (dialogSupportModelo.getCmbSubModelo() != null) {
-            dialogSupportModelo.getCmbSubModelo().setRenderer(new SubProyectoRenderer());
+            dialogSupportModelo.getCmbSubModelo().setRenderer(new CmbSubProyectoRenderer());
         }
 
         //Cargar el parámetro del modelo
@@ -167,41 +174,34 @@ public class ListenerSupportModelo extends ListenerSupport implements ActionList
         }
     }
 
+    private void addComponentActionListener(JButton button) {
+        if (button == null || (button.getActionListeners() != null && button.getActionListeners().length > 0)) {
+            return;
+        }
+        button.addActionListener(this);
+    }
+
+    /**
+     * Se ejecuta al cambiar el modelo
+     */
+    public void clearDepsModelo() {
+        JComboBox cmbSubModelo = dialogSupportModelo.getCmbSubModelo();
+        if (cmbSubModelo != null) {
+            cmbSubModelo.setSelectedIndex(-1);
+            cmbSubModelo.setModel(new SubProyectoComboBoxModel());
+        }
+        if (dialogSupportModelo.getTxtModeloProyectoDescrip() != null) {
+            dialogSupportModelo.getTxtModeloProyectoDescrip().setText("");
+        }
+    }
+
     public void clearForm() {
         JComboBox cmbSubModelo = dialogSupportModelo.getCmbSubModelo();
         if (cmbSubModelo != null) {
             int index = cmbSubModelo.getModel() != null && cmbSubModelo.getModel().getSize() == 1 ? 0 : -1;
             cmbSubModelo.setSelectedIndex(index);
         }
+
         dialogSupportModelo.getContentPane().repaint();
-    }
-
-    /**
-     * Seleccionar el texto en el Combo CmbSubModelo
-     *
-     * @param codigo
-     */
-    public void setValueCmbSubModelo(String codigo) {
-        JComboBox comboBox = dialogSupportModelo.getCmbSubModelo();
-        int idx = -1;
-        for (int i = 1; i < comboBox.getModel().getSize(); i++) {
-            SubProyecto subProyecto = (SubProyecto) comboBox.getItemAt(i);
-            if (subProyecto != null) {
-                if (subProyecto.getCodigoSubProyecto().equals(codigo)) {
-                    idx = i;
-                    break;
-                }
-            }
-        }
-        comboBox.setSelectedIndex(idx);
-    }
-
-    /**
-     *
-     * @return Codigo seleccionado en el CmbSubModelo
-     */
-    public String getValueCmbSubModelo() {
-        SubProyecto subProyecto = (SubProyecto) dialogSupportModelo.getCmbSubModelo().getSelectedItem();
-        return (subProyecto != null) ? subProyecto.getCodigoSubProyecto() : null;
     }
 }

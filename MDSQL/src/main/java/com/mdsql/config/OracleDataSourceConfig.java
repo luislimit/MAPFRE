@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.mdsql.utils.ConfigurationSingleton;
+import com.mdval.utils.ConfigurationSingleton;
 
 import lombok.extern.slf4j.Slf4j;
 import oracle.ucp.jdbc.PoolDataSource;

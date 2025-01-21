@@ -13,7 +13,8 @@ import com.mdsql.bussiness.entities.NivelImportancia;
 import com.mdsql.ui.listener.PantallaMantenimientoNotasModelosListener;
 import com.mdsql.ui.listener.tables.NotasModeloTableListener;
 import com.mdsql.ui.model.NotasModeloTableModel;
-import com.mdsql.ui.renderer.NivelImportanciaRenderer;
+import com.mdsql.ui.model.cabeceras.TablaNotasModeloCabecera;
+import com.mdsql.ui.renderer.CmbNivelImportanciaRenderer;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.ui.model.cabeceras.Cabecera;
@@ -285,9 +286,9 @@ public class PantallaMantenimientoNotasModelos extends DialogSupport {
     
 	 @Override
 	 protected void initModels() {
-		cmbImportancia.setRenderer(new NivelImportanciaRenderer());
+		cmbImportancia.setRenderer(new CmbNivelImportanciaRenderer());
 
-		 Cabecera cabecera = MDSQLUIHelper.createCabeceraTabla(MDSQLConstants.NOTAS_MODELO_TABLA_CABECERA);
+		 Cabecera cabecera = new TablaNotasModeloCabecera();
 		 tblNotasModelos.initModel(
 				 new NotasModeloTableModel(cabecera));
 	 }

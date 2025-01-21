@@ -1,5 +1,6 @@
 package com.mdsql.bussiness.entities;
 
+import com.mdval.exceptions.ServiceException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,14 +18,14 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 public class OutputDescartarScript implements Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4622111798571136344L;
-	private List<Script> listaParches;
+    private static final long serialVersionUID = -4622111798571136344L;
+    private List<Script> listaParches;
     private List<ScriptOld> listaScriptOld;
     private List<Script> listaScriptNew;
     private Integer codigoEstadoProceso;
     private String descripcionEstadoProceso;
+
+    private Integer result;
+    private ServiceException warnings;
 
 }

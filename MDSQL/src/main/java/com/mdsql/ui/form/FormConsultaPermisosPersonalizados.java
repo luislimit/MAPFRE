@@ -12,7 +12,6 @@ import com.mdsql.ui.model.PermisosColumnaTableModel;
 import com.mdsql.ui.model.SinonimosObjetoTableModel;
 import com.mdsql.ui.model.cabeceras.TablaPermisosColumnaCabecera;
 import com.mdsql.ui.model.cabeceras.TablaSinonimosObjetoCabecera;
-import com.mdsql.ui.renderer.TableSelectionRenderer;
 import com.mdsql.ui.utils.DialogSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdval.ui.model.cabeceras.Cabecera;
@@ -23,7 +22,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -175,7 +173,6 @@ public class FormConsultaPermisosPersonalizados extends DialogSupportModeloPermi
                 "Receptor", "Modelo", "Objeto", "Columna", "Tipo Objeto", "Permiso", "Entorno", "Grant Option", "Incluir en PDC", "Habilitada", "Petición", "Usuario Alta", "Fecha Alta", "Usuario Modificacion", "Fecha Modificacion"
             }
         ));
-        tblPermisos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblPermisos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPanePermisos.setViewportView(tblPermisos);
 
@@ -192,7 +189,6 @@ public class FormConsultaPermisosPersonalizados extends DialogSupportModeloPermi
                 "Receptor", "Modelo", "Objeto", "Tipo Objeto", "Entorno", "Propietario", "Incluir en PDC", "Habilitada", "Petición", "Función Nombre", "Usuario Alta", "Fecha Alta", "Usuario Modificacion", "Fecha Modificacion"
             }
         ));
-        tblSinonimos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         scrollPaneSinonimos.setViewportView(tblSinonimos);
 
         btnCancelar.setText("CANCELAR");
@@ -269,8 +265,7 @@ public class FormConsultaPermisosPersonalizados extends DialogSupportModeloPermi
                 .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
                 .addGap(743, 743, 743)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnBuscar, btnCancelar});
@@ -445,46 +440,36 @@ public class FormConsultaPermisosPersonalizados extends DialogSupportModeloPermi
 
     @Override
     protected void setupLiterals() {
-        setTitle(literales.getLiteral("FormConsultaPermisosPersonalizados.title"));
-        lblModeloProyecto.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblModeloProyecto"));
-        lblNombreObjeto.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblNombreObjeto"));
-        lblColumna.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblColumna"));
-        lblPermisoSinonimo.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblPermisoSinonimo"));
-        lblPropietarioSinonimo.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblPropietarioSinonimo"));
-        lblWithGrantOption.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblWithGrantOption"));
-        lblPeticion.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblPeticion"));
-        lblFuncionNombre.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblFuncionNombre"));
-        lblUsuarioModificacion.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblUsuarioModificacion"));
-        lblTipoObjeto.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblTipoObjeto"));
-        lblReceptorPermisos.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblReceptorPermisos"));
-        lblFechaDesde.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblFechaDesde"));
-        lblPermiso.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblPermiso"));
-        lblIncluirPDC.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblIncluirPDC"));
-        lblFechaHasta.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblFechaHasta"));
-        lblEntorno.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.lblEntorno"));
-        chkHabilitada.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.chkHabilitada"));
-        btnBuscar.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.btnBuscar"));
-        btnLimpiar.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.btnLimpiar"));
-        btnCancelar.setText(literales.getLiteral("FormConsultaPermisosPersonalizados.btnCancelar"));
+        setTitulo();
+        setTexto(lblModeloProyecto, "lblModeloProyecto");
+        setTexto(lblNombreObjeto, "lblNombreObjeto");
+        setTexto(lblColumna, "lblColumna");
+        setTexto(lblPermisoSinonimo, "lblPermisoSinonimo");
+        setTexto(lblPropietarioSinonimo, "lblPropietarioSinonimo");
+        setTexto(lblWithGrantOption, "lblWithGrantOption");
+        setTexto(lblPeticion, "lblPeticion");
+        setTexto(lblFuncionNombre, "lblFuncionNombre");
+        setTexto(lblUsuarioModificacion, "lblUsuarioModificacion");
+        setTexto(lblTipoObjeto, "lblTipoObjeto");
+        setTexto(lblReceptorPermisos, "lblReceptorPermisos");
+        setTexto(lblFechaDesde, "lblFechaDesde");
+        setTexto(lblPermiso, "lblPermiso");
+        setTexto(lblIncluirPDC, "lblIncluirPDC");
+        setTexto(lblFechaHasta, "lblFechaHasta");
+        setTexto(lblEntorno, "lblEntorno");
+        setTexto(chkHabilitada, "chkHabilitada");
+        setTexto(btnBuscar, "btnBuscar");
+        setTexto(btnLimpiar, "btnLimpiar");
+        setTexto(btnCancelar, "btnCancelar");
     }
 
     @Override
     protected void initModels() {
         Cabecera cabeceraPermisos = new TablaPermisosColumnaCabecera();
-        MDSQLUIHelper.setTableModel(tblPermisos, new PermisosColumnaTableModel(cabeceraPermisos));
+        MDSQLUIHelper.setTableModelRenderer(tblPermisos, new PermisosColumnaTableModel(cabeceraPermisos), null);
         //
         Cabecera cabeceraSinonimo = new TablaSinonimosObjetoCabecera();
-        MDSQLUIHelper.setTableModel(tblSinonimos, new SinonimosObjetoTableModel(cabeceraSinonimo));
-        //
-        tblPermisos.setDefaultRenderer(String.class, new TableSelectionRenderer());
-        tblPermisos.setCellSelectionEnabled(true);
-        tblPermisos.setRowSelectionAllowed(true);
-        tblPermisos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //
-        tblSinonimos.setDefaultRenderer(String.class, new TableSelectionRenderer());
-        tblSinonimos.setCellSelectionEnabled(true);
-        tblSinonimos.setRowSelectionAllowed(true);        
-        tblSinonimos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        MDSQLUIHelper.setTableModelRenderer(tblSinonimos, new SinonimosObjetoTableModel(cabeceraSinonimo), null);
     }
 
     @Override
@@ -593,6 +578,7 @@ public class FormConsultaPermisosPersonalizados extends DialogSupportModeloPermi
         return txtUsuarioModificacion;
     }
 
+    @Override
     public JButton getBtnLimpiar() {
         return btnLimpiar;
     }

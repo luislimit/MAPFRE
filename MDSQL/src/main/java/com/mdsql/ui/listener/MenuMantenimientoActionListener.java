@@ -1,12 +1,10 @@
 package com.mdsql.ui.listener;
 
+import com.mdsql.ui.PantallaDetalleAvisosPorModelo;
 import com.mdsql.bussiness.entities.*;
 import com.mdsql.ui.*;
-import com.mdsql.ui.form.FormConsultaPermisosPersonalizados;
-import com.mdsql.ui.form.FormDetallePermisosPorColumna;
-import com.mdsql.ui.form.FormDetallePermisosPorObjeto;
-import com.mdsql.ui.form.FormGenerarPermisosPersonalizados;
-import com.mdsql.ui.form.FormPermisosGeneralesPorModeloPorTipoObjeto;
+import com.mdsql.ui.form.*;
+
 import com.mdsql.ui.utils.ListenerSupport;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdsql.utils.MDSQLAppHelper;
@@ -71,6 +69,12 @@ public class MenuMantenimientoActionListener extends ListenerSupport implements 
             case MDSQLConstants.MNU_MANTENIMIENTO_HISTORICO:
                 showForm(PantallaMantenimientoHistorico.class);
                 break;
+            case MDSQLConstants.MNU_CONSULTA_HISTORICO_CAMBIOS:
+                showForm(PantallaHistoricoCambios.class);
+                break;                   
+            case MDSQLConstants.MNU_CONSULTA_HISTORICO_CAMBIOS_MODELO:
+                showForm(PantallaConsultaHistoricoCambiosModelo.class);
+                break;                
             case MDSQLConstants.MNU_NOTAS_MODELOS:
                 showForm(PantallaMantenimientoNotasModelos.class);
                 break;
@@ -80,11 +84,26 @@ public class MenuMantenimientoActionListener extends ListenerSupport implements 
             case MDSQLConstants.MNU_MANTENIMIENTO_ENTORNOS_PRUEBAS:
                 showForm(PantallaMantenimientoEntornosPrueba.class);
                 break;
+            case MDSQLConstants.MNU_CONSULTA_PETICIONES:
+                showForm(PantallaConsultaPeticiones.class);
+                break;
             case MDSQLConstants.MNU_EJECUCION_SCRIPT_INICIAL:
-                showForm(PantallaEjecutarScriptInicialEntornoPrueba.class);
+                evtEjecucionScriptInicial();
                 break;
             case MDSQLConstants.MNU_VARIABLES:
                 selModeloAndShowForm(actionCommand);
+                break;
+            case MDSQLConstants.MNU_AVISOS_OBJETO:
+                showForm(PantallaDetalleAvisosPorModelo.class);
+                break;
+            case MDSQLConstants.MNU_MANTENIMIENTO_DIAGRAMAS:
+                showForm(FormMantenimientoDiagramasModelos.class);
+                break;
+            case MDSQLConstants.MNU_CONSULTA_DIAGRAMAS:
+                showForm(FormConsultaDiagrama.class);
+                break;
+            case MDSQLConstants.MNU_VALIDACIONES_PROGRAMADAS:
+                showForm(PantallaMantenimientoValidacionesProgramadas.class);
                 break;
             default:
                 break;
@@ -117,9 +136,10 @@ public class MenuMantenimientoActionListener extends ListenerSupport implements 
     private void selModeloAndShowForm(String actionCommand) {
         Map<String, Object> params = new HashMap<>();
         params.put(MDSQLConstants.P_IN_OPCION_MENU, actionCommand);
-        PantallaSeleccionModelos pantallaSeleccionModelos = (PantallaSeleccionModelos) MDSQLUIHelper.createDialog(framePrincipal,
+        /*PantallaSeleccionModelos pantallaSeleccionModelos = (PantallaSeleccionModelos) MDSQLUIHelper.createDialog(framePrincipal,
                 MDSQLConstants.CMD_SEARCH_MODEL, params);
-        MDSQLUIHelper.show(pantallaSeleccionModelos);
+        MDSQLUIHelper.show(pantallaSeleccionModelos);*/
+        PantallaSeleccionModelos pantallaSeleccionModelos = MDSQLUIHelper.showForm(framePrincipal, PantallaSeleccionModelos.class, params);
 
         String btnSeleccionModelo = (String) pantallaSeleccionModelos.getReturnParams().get(MDSQLConstants.P_OUT_EXIT_BUTTON);
         if (btnSeleccionModelo != null) {
@@ -149,4 +169,23 @@ public class MenuMantenimientoActionListener extends ListenerSupport implements 
             }
         }
     }
+
+    private void evtEjecucionScriptInicial() {
+        Session session = (Session) MDSQLAppHelper.getGlobalProperty(MDSQLConstants.SESSION);
+        Proceso proceso = session.getProceso();
+
+        if (!Objects.isNull(proceso)) {
+            MDSQLUIHelper.showMessage(framePrincipal, "info.debe_finalizar_rechazar_procesado");
+            return;
+        }
+        DialogSupport pantalla = showForm(PantallaEjecutarScriptInicialEntornoPrueba.class);
+        String result = (String) pantalla.getReturnParams().get(MDSQLConstants.P_OUT_EXIT_BUTTON);
+        if (result != null && result.equals(MDSQLConstants.BTN_EJECUTAR)) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("proceso", proceso);
+            params.put("entregar", Boolean.TRUE);
+            MDSQLUIHelper.showForm(pantalla.getFrameParent(), PantallaResumenProcesado.class, params);
+        }
+    }
+
 }

@@ -8,59 +8,64 @@ import com.mdval.ui.model.cabeceras.Cabecera;
 
 public class ConsultaPeticionesTableModel extends DefaultTableModel<Proceso> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8306918464859990294L;
-	
-	/**
-	 * @param cabecera
-	 */
-	public ConsultaPeticionesTableModel(Cabecera cabecera) {
-		super(cabecera);
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8306918464859990294L;
 
-	/**
-	 * @param columnNames
-	 * @param columnClasses
-	 */
-	public ConsultaPeticionesTableModel(List<String> columnNames, List<Class<?>> columnClasses) {
-		super(columnNames, columnClasses);
-	}
+    /**
+     * @param cabecera
+     */
+    public ConsultaPeticionesTableModel(Cabecera cabecera) {
+        super(cabecera);
+    }
 
-	/**
-	 * @param data
-	 * @param columnNames
-	 * @param columnClasses
-	 */
-	public ConsultaPeticionesTableModel(List<Proceso> data, List<String> columnNames, List<Class<?>> columnClasses) {
-		super(data, columnNames, columnClasses);
-	}
+    /**
+     * @param columnNames
+     * @param columnClasses
+     */
+    public ConsultaPeticionesTableModel(List<String> columnNames, List<Class<?>> columnClasses) {
+        super(columnNames, columnClasses);
+    }
 
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		Proceso row = data.get(rowIndex);
+    /**
+     * @param data
+     * @param columnNames
+     * @param columnClasses
+     */
+    public ConsultaPeticionesTableModel(List<Proceso> data, List<String> columnNames, List<Class<?>> columnClasses) {
+        super(data, columnNames, columnClasses);
+    }
 
-		if (columnIndex == 0) {
-			return row.getCodigoPeticion();
-		} else if (1 == columnIndex) {
-			return row.getDescripcionEstadoProceso();
-		} else if (2 == columnIndex) {
-			return row.getFechaInicio();
-		} else if (3 == columnIndex) {
-			return row.getCodProyecto();
-		} else if (4 == columnIndex) {
-			return row.getCodSubproyecto();
-		} else if (5 == columnIndex) {
-			return row.getMcaErrores();
-		} else if (6 == columnIndex) {
-			return row.getCodigoUsrPeticion();
-		} else if (7 == columnIndex) {
-			return row.getTxtDescripcion();
-		} else if (8 == columnIndex) {
-			return row.getCodigoUsr();
-		} 
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        Proceso row = data.get(rowIndex);
 
-		return null;
-	}
+        switch (columnIndex) {
+            case 0:
+                return row.getCodigoPeticion();
+            case 1:
+                return row.getDescripcionEstadoProceso();
+            case 2:
+                return row.getFechaInicio();
+            case 3:
+                return row.getCodProyecto();
+            case 4:
+                return row.getCodSubproyecto();
+            case 5:
+                return row.getMcaErrores();
+            case 6:
+                return row.getCodigoUsrPeticion();
+            case 7:
+                return row.getTxtDescripcion();
+            case 8:
+                return row.getIdProceso();
+            case 9:
+                return row.getCodigoUsr();
+            default:
+                break;
+        }
+
+        return null;
+    }
 }

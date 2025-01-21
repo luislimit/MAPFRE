@@ -4,19 +4,22 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.mdsql.bussiness.entities.OutputRegistraEjecucion;
-import com.mdsql.bussiness.entities.OutputRegistraEjecucionParche;
 import com.mdsql.bussiness.entities.OutputRegistraEjecucionType;
 import com.mdsql.bussiness.entities.TextoLinea;
+import com.mdval.exceptions.ServiceException;
 
 /**
  * @author hcarreno
  */
 public interface EjecucionService {
 
-    OutputRegistraEjecucion registraEjecucion(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> lineas);
+    OutputRegistraEjecucion registraEjecucion(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> lineas)
+                throws ServiceException;
 
-    OutputRegistraEjecucionType registraEjecucionType(BigDecimal idProceso, String codigoUsuario, List<TextoLinea> logScript);
+    OutputRegistraEjecucionType registraEjecucionType(BigDecimal idProceso, String codigoUsuario, List<TextoLinea> logScript)
+                throws ServiceException;
 
-    OutputRegistraEjecucionParche registraEjecucionParche(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> logScript, String indRepara);
+    OutputRegistraEjecucion registraEjecucionParche(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> logScript, String indRepara)
+                throws ServiceException;
 
 }

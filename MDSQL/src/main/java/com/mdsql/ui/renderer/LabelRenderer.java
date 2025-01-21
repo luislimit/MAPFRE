@@ -8,7 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
-import com.mdsql.utils.LiteralesSingleton;
+import com.mdval.utils.LiteralesSingleton;
 import com.mdval.utils.LogWrapper;
 
 import lombok.extern.slf4j.Slf4j;

@@ -4,6 +4,7 @@ import com.mdsql.bussiness.entities.Modelo;
 import com.mdsql.bussiness.entities.Permiso;
 import com.mdsql.bussiness.entities.Sinonimo;
 import com.mdsql.bussiness.service.PermisosService;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.utils.LogWrapper;
@@ -183,7 +184,7 @@ public class PermisosServiceImpl extends ServiceSupport implements PermisosServi
     }
 
     @Override
-    public List<Permiso> guardarPermiso(String codProyecto, String codUsrGrant, String valGrant, String desEntorno, String tipoObjeto, String mcaGrantOption, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException {
+    public OutputWarning guardarPermiso(String codProyecto, String codUsrGrant, String valGrant, String desEntorno, String tipoObjeto, String mcaGrantOption, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException {
         String runSP = createCall("p_mnto_per_general", MDSQLConstants.CALL_13_ARGS);
 
         try (Connection conn = dataSource.getConnection();
@@ -211,38 +212,8 @@ public class PermisosServiceImpl extends ServiceSupport implements PermisosServi
 
             callableStatement.execute();
 
-            Integer result = callableStatement.getInt(12);
+            return getOutputWarning(callableStatement.getInt(12), callableStatement.getArray(13));
 
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(13));
-            }
-
-            List<Permiso> permisos = new ArrayList<>();
-            Array arrayTipo = callableStatement.getArray(11);
-
-            if (arrayTipo != null) {
-                Object[] rows = (Object[]) arrayTipo.getArray();
-                for (Object row : rows) {
-                    Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
-                    Permiso permiso = Permiso.builder()
-                            .codigoProyecto((String) cols[0])
-                            .codUsrGrant((String) cols[1])
-                            .valGrant((String) cols[2])
-                            .desEntorno((String) cols[3])
-                            .tipObjeto((String) cols[4])
-                            .mcaGrantOption((String) cols[5])
-                            .mcaPdc((String) cols[6])
-                            .mcaHabilitado((String) cols[7])
-                            .codPeticion((String) cols[8])
-                            .codUsr((String) cols[9])
-                            .fecActu((java.util.Date) cols[10])
-                            .codUsrAlta((String) cols[11])
-                            .fecAlta((java.util.Date) cols[12])
-                            .build();
-                    permisos.add(permiso);
-                }
-            }
-            return permisos;
         } catch (SQLException e) {
             LogWrapper.error(log, "[PermisosService.guardarPermiso] Error:  %s", e.getMessage());
             throw new ServiceException(e);
@@ -250,7 +221,7 @@ public class PermisosServiceImpl extends ServiceSupport implements PermisosServi
     }
 
     @Override
-    public List<Sinonimo> guardarSinonimo(String codProyecto, String codUsrGrant, String codOwnerSyn, String desEntorno, String tipoObjeto, String funcionNombre, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException {
+    public OutputWarning guardarSinonimo(String codProyecto, String codUsrGrant, String codOwnerSyn, String desEntorno, String tipoObjeto, String funcionNombre, String mcaIncluirPDC, String mcaHabilitado, String codPeticion, String codUsr) throws ServiceException {
         String runSP = createCall("p_mnto_syn_general", MDSQLConstants.CALL_13_ARGS);
 
         try (Connection conn = dataSource.getConnection();
@@ -278,38 +249,8 @@ public class PermisosServiceImpl extends ServiceSupport implements PermisosServi
 
             callableStatement.execute();
 
-            Integer result = callableStatement.getInt(12);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(13));
-            }
-
-            List<Sinonimo> sinonimos = new ArrayList<>();
-            Array arraySinonimos = callableStatement.getArray(11);
-
-            if (arraySinonimos != null) {
-                Object[] rows = (Object[]) arraySinonimos.getArray();
-                for (Object row : rows) {
-                    Object[] cols = ((oracle.jdbc.OracleStruct) row).getAttributes();
-                    Sinonimo sinonimo = Sinonimo.builder()
-                            .codigoProyecto((String) cols[0])
-                            .codUsrGrant((String) cols[1])
-                            .codOwnerSyn((String) cols[2])
-                            .desEntorno((String) cols[3])
-                            .tipObjeto((String) cols[4])
-                            .valReglaSyn((String) cols[5])
-                            .mcaPdc((String) cols[6])
-                            .mcaHabilitado((String) cols[7])
-                            .codPeticion((String) cols[8])
-                            .codUsr((String) cols[9])
-                            .fecActu((java.util.Date) cols[10])
-                            .codUsrAlta((String) cols[11])
-                            .fecAlta((java.util.Date) cols[12])
-                            .build();
-                    sinonimos.add(sinonimo);
-                }
-            }
-            return sinonimos;
+            return getOutputWarning(callableStatement.getInt(12), callableStatement.getArray(13));
+            
         } catch (SQLException e) {
             LogWrapper.error(log, "[PermisosService.guardarSinonimo] Error:  %s", e.getMessage());
             throw new ServiceException(e);

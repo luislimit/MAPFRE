@@ -13,7 +13,10 @@ import org.apache.commons.collections.CollectionUtils;
 
 import com.mdval.ui.PanelLogotipo;
 import com.mdval.utils.DateFormatter;
-import com.mdval.utils.LiteralesSingleton;
+import com.mdval.utils.LiteralesSingleton; 
+import java.awt.Component;
+import javax.swing.AbstractButton;
+import javax.swing.JLabel;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -64,6 +67,8 @@ public abstract class DialogSupport extends JDialog {
 
 	/**
 	 * 
+     * @param parent
+     * @param modal
 	 */
 	public DialogSupport(FrameSupport parent, boolean modal) {
 		super(parent, modal);
@@ -73,6 +78,9 @@ public abstract class DialogSupport extends JDialog {
 
 	/**
 	 * 
+     * @param parent
+     * @param modal
+     * @param params
 	 */
 	public DialogSupport(FrameSupport parent, boolean modal, Map<String, Object> params) {
 		super(parent, modal);
@@ -160,9 +168,32 @@ public abstract class DialogSupport extends JDialog {
 	 */
 	private void initLiterals() throws IOException {
 		literales = LiteralesSingleton.getInstance();
-
 		setupLiterals();
 	}
+
+        public void setTitulo(){
+            String codigo = this.getClass().getSimpleName();
+            String texto = literales.getLiteral(codigo + ".title");
+            if (texto.isEmpty()){
+               texto = codigo; 
+            }
+            setTitle(texto);
+        }
+
+        public void setTexto(Component component, String codigo){
+            String texto = literales.getLiteral(this.getClass().getSimpleName() + "." + codigo);
+            if (texto.isEmpty()){
+               texto = literales.getLiteral(codigo);
+               if (texto.isEmpty()){
+                   texto = codigo;
+               }
+            }
+            if (component instanceof AbstractButton){ //chk, btn
+                ((AbstractButton)component).setText(texto);
+            }else if (component instanceof JLabel){
+                ((JLabel)component).setText(texto);
+            }
+        }
 
 	/**
 	 * @param width

@@ -6,14 +6,12 @@
 package com.mdsql.ui.form;
 
 import com.mdsql.bussiness.entities.SubProyecto;
-import com.mdsql.ui.adapter.DoubleClickMouseAdapter;
 import com.mdsql.ui.adapter.FormGenerarPermisosPersonalizadosMouseAdapter;
 import com.mdsql.ui.form.listener.FormGenerarPermisosPersonalizadosListener;
 import com.mdsql.ui.model.PermisosColumnaTableModel;
 import com.mdsql.ui.model.SinonimosObjetoTableModel;
 import com.mdsql.ui.model.cabeceras.TablaPermisosColumnaCabecera;
 import com.mdsql.ui.model.cabeceras.TablaSinonimosObjetoCabecera;
-import com.mdsql.ui.renderer.TableSelectionRenderer;
 import com.mdsql.ui.utils.DialogSupportModeloPermiso;
 import com.mdsql.ui.utils.MDSQLUIHelper;
 import com.mdval.ui.model.cabeceras.Cabecera;
@@ -24,7 +22,6 @@ import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -70,10 +67,10 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
         txtPeticion = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
-        lblTablaPermisos = new javax.swing.JLabel();
+        lblPermisos = new javax.swing.JLabel();
         scrollPanePermisos = new javax.swing.JScrollPane();
         tblPermisos = new javax.swing.JTable();
-        lblTablaSinonimos = new javax.swing.JLabel();
+        lblSinonimos = new javax.swing.JLabel();
         scrollPaneSinonimos = new javax.swing.JScrollPane();
         tblSinonimos = new javax.swing.JTable();
         btnGenerar = new javax.swing.JButton();
@@ -107,7 +104,7 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
 
         btnLimpiar.setText("Limpiar");
 
-        lblTablaPermisos.setText("Permisos");
+        lblPermisos.setText("Permisos");
 
         tblPermisos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -120,10 +117,9 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
                 "Receptor", "Modelo", "Objeto", "Columna", "Tipo Objeto", "Permiso", "Entorno", "Grant Option", "Incluir en PDC", "Habilitada", "Petición"
             }
         ));
-        tblPermisos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         scrollPanePermisos.setViewportView(tblPermisos);
 
-        lblTablaSinonimos.setText("Sinónimos");
+        lblSinonimos.setText("Sinónimos");
 
         tblSinonimos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,7 +132,6 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
                 "Receptor", "Modelo", "Objeto", "Tipo Objeto", "Entorno", "Propietario", "Incluir en PDC", "Habilitada", "Petición", "Función Nombre"
             }
         ));
-        tblSinonimos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         scrollPaneSinonimos.setViewportView(tblSinonimos);
 
         btnGenerar.setText("Generar");
@@ -154,8 +149,8 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
                     .addComponent(scrollPaneSinonimos)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTablaPermisos)
-                            .addComponent(lblTablaSinonimos)
+                            .addComponent(lblPermisos)
+                            .addComponent(lblSinonimos)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblModeloProyecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -183,18 +178,16 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
+                .addGap(550, 550, 550)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(550, 550, 550)
                         .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(550, 550, 550)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, 0))
+                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnBuscar, btnCancelar, btnGenerar});
@@ -229,11 +222,11 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTablaPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrollPanePermisos, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTablaSinonimos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblSinonimos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrollPaneSinonimos, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -260,10 +253,10 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
     private javax.swing.JScrollPane jScrollPaneNombreObjeto;
     private javax.swing.JLabel lblModeloProyecto;
     private javax.swing.JLabel lblNombreObjeto;
+    private javax.swing.JLabel lblPermisos;
     private javax.swing.JLabel lblPeticion;
+    private javax.swing.JLabel lblSinonimos;
     private javax.swing.JLabel lblSubModelo;
-    private javax.swing.JLabel lblTablaPermisos;
-    private javax.swing.JLabel lblTablaSinonimos;
     private javax.swing.JLabel lblTipoObjeto;
     private javax.swing.JScrollPane scrollPanePermisos;
     private javax.swing.JScrollPane scrollPaneSinonimos;
@@ -294,36 +287,26 @@ public class FormGenerarPermisosPersonalizados extends DialogSupportModeloPermis
 
     @Override
     protected void setupLiterals() {
-        setTitle(literales.getLiteral("FormGenerarPermisosPersonalizados.title"));
-        lblModeloProyecto.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.lblModeloProyecto"));
-        lblSubModelo.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.lblSubModelo"));
-        lblNombreObjeto.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.lblNombreObjeto"));
-        lblPeticion.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.lblPeticion"));
-        lblTablaPermisos.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.lblTablaPermisos"));
-        btnBuscar.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.btnBuscar"));
-        btnLimpiar.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.btnLimpiar"));
-        lblTablaSinonimos.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.lblTablaSinonimos"));
-        btnGenerar.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.btnGenerar"));
-        btnCancelar.setText(literales.getLiteral("FormGenerarPermisosPersonalizados.btnCancelar"));
+        setTitulo();
+        setTexto(lblModeloProyecto, "lblModeloProyecto");
+        setTexto(lblSubModelo, "lblSubModelo");
+        setTexto(lblNombreObjeto, "lblNombreObjeto");
+        setTexto(lblPeticion, "lblPeticion");
+        setTexto(lblPermisos, "lblPermisos");
+        setTexto(btnBuscar, "btnBuscar");
+        setTexto(btnLimpiar, "btnLimpiar");
+        setTexto(lblSinonimos, "lblSinonimos");
+        setTexto(btnGenerar, "btnGenerar");
+        setTexto(btnCancelar, "btnCancelar");
     }
 
     @Override
     protected void initModels() {
         Cabecera cabeceraPermisos = new TablaPermisosColumnaCabecera();
-        MDSQLUIHelper.setTableModel(tblPermisos, new PermisosColumnaTableModel(cabeceraPermisos));
+        MDSQLUIHelper.setTableModelRenderer(tblPermisos, new PermisosColumnaTableModel(cabeceraPermisos), null);
         //
         Cabecera cabeceraSinonimo = new TablaSinonimosObjetoCabecera();
-        MDSQLUIHelper.setTableModel(tblSinonimos, new SinonimosObjetoTableModel(cabeceraSinonimo));
-        //
-        tblPermisos.setDefaultRenderer(String.class, new TableSelectionRenderer());
-        tblPermisos.setCellSelectionEnabled(true);
-        tblPermisos.setRowSelectionAllowed(true);
-        tblPermisos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //
-        tblSinonimos.setDefaultRenderer(String.class, new TableSelectionRenderer());
-        tblSinonimos.setCellSelectionEnabled(true);
-        tblSinonimos.setRowSelectionAllowed(true);
-        tblSinonimos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        MDSQLUIHelper.setTableModelRenderer(tblSinonimos, new SinonimosObjetoTableModel(cabeceraSinonimo), null);
 
         // Tratamiento doble click
         FormGenerarPermisosPersonalizadosMouseAdapter doubleClickMouseAdapter = new FormGenerarPermisosPersonalizadosMouseAdapter();

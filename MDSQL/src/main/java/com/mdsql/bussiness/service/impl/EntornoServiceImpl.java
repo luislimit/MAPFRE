@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mdsql.bussiness.entities.Entorno;
-import com.mdsql.bussiness.entities.OutputConsultarEntornos;
+import com.mdsql.bussiness.entities.OutputConsulta;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.bussiness.service.EntornoService;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
@@ -31,14 +32,13 @@ public class EntornoServiceImpl extends ServiceSupport implements EntornoService
     private DataSource dataSource;
 
     @Override
-    public OutputConsultarEntornos consultarEntornos(String nomBBDD, String nomEsquema, String claveEncriptacion, String mcaHabilitado) throws ServiceException {
+    public OutputConsulta<Entorno> consultarEntornos(String nomBBDD, String nomEsquema, String claveEncriptacion, String mcaHabilitado) throws ServiceException {
         String runSP = createCall("p_busca_entornos", MDSQLConstants.CALL_07_ARGS);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
-        	
-        	String claveMandar = MDSQLAppHelper.obtenerClaveEncriptacion(claveEncriptacion);
-        	
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
+
+            String claveMandar = MDSQLAppHelper.obtenerClaveEncriptacion(claveEncriptacion);
+
             String typeEntorno = createCallType(MDSQLConstants.T_T_ENTORNO);
             String typeError = createCallTypeError();
 
@@ -54,19 +54,10 @@ public class EntornoServiceImpl extends ServiceSupport implements EntornoService
 
             callableStatement.execute();
 
-            Integer result = callableStatement.getInt(6);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(7));
-            }
-
-            OutputConsultarEntornos outputConsultarEntornos = new OutputConsultarEntornos();
-            outputConsultarEntornos.setResult(result);
-			
-			// Hay avisos
-			if (result == 2) {
-				outputConsultarEntornos.setServiceException(buildException(callableStatement.getArray(7)));
-			}
+            OutputWarning outputWarning = getOutputWarning(callableStatement.getInt(6), callableStatement.getArray(7));
+            
+            OutputConsulta<Entorno> output = new OutputConsulta<>();
+            output.setOutputWarning(outputWarning);
             
             List<Entorno> entornos = new ArrayList<>();
             Array arrayEntornos = callableStatement.getArray(5);
@@ -86,10 +77,10 @@ public class EntornoServiceImpl extends ServiceSupport implements EntornoService
 
                     entornos.add(entorno);
                 }
-                
-                outputConsultarEntornos.setEntornos(entornos);
+
+                output.setLista(entornos);
             }
-            return outputConsultarEntornos;
+            return output;
         } catch (SQLException | IndexOutOfBoundsException e) {
             LogWrapper.error(log, "[EntornoService.consultarEntornos] Error:  %s", e.getMessage());
             throw new ServiceException(e);
@@ -97,14 +88,13 @@ public class EntornoServiceImpl extends ServiceSupport implements EntornoService
     }
 
     @Override
-    public void guardarEntorno(String nomBBDD, String nomEsquema, String claveEncriptacion, String password, String mcaHabilitado, String comentario, String codUsr) throws ServiceException {
+    public OutputWarning guardarEntorno(String nomBBDD, String nomEsquema, String claveEncriptacion, String password, String mcaHabilitado, String comentario, String codUsr) throws ServiceException {
         String runSP = createCall("p_mnto_entorno", MDSQLConstants.CALL_09_ARGS);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-        	String claveMandar = MDSQLAppHelper.obtenerClaveEncriptacion(claveEncriptacion);
-        	
+            String claveMandar = MDSQLAppHelper.obtenerClaveEncriptacion(claveEncriptacion);
+
             String typeError = createCallTypeError();
 
             logProcedure(runSP, nomBBDD, nomEsquema, claveMandar, password, mcaHabilitado, comentario, codUsr);
@@ -122,11 +112,7 @@ public class EntornoServiceImpl extends ServiceSupport implements EntornoService
 
             callableStatement.execute();
 
-            Integer result = callableStatement.getInt(8);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(9));
-            }
+            return getOutputWarning(callableStatement.getInt(8), callableStatement.getArray(9));
 
         } catch (SQLException | IndexOutOfBoundsException e) {
             LogWrapper.error(log, "[EntornoService.guardarEntorno] Error:  %s", e.getMessage());

@@ -7,21 +7,20 @@ package com.mdsql.ui.utils;
 
 import com.mdsql.bussiness.entities.Grant;
 import com.mdsql.bussiness.entities.Modelo;
-import com.mdsql.bussiness.entities.OutputConsultaTiposObjeto;
+import com.mdsql.bussiness.entities.OutputConsulta;
 import com.mdsql.bussiness.entities.Propietario;
 import com.mdsql.bussiness.service.PermisosService;
 import com.mdsql.bussiness.service.PropietarioService;
 import com.mdsql.bussiness.service.TipoObjetoService;
 import com.mdsql.ui.model.GrantComboBoxModel;
-import com.mdsql.ui.model.PermisoComboBoxModel;
 import com.mdsql.ui.model.PermisoSinonimoComboBoxModel;
 import com.mdsql.ui.model.PropietarioComboBoxModel;
 import com.mdsql.ui.model.SiNoOpcionalComboBoxModel;
-import com.mdsql.ui.model.TipoObjetoComboBoxModel;
+import com.mdsql.ui.model.StringComboBoxModel;
 import com.mdsql.ui.model.VigenteHistoricoComboBoxModel;
 import com.mdsql.ui.renderer.CmbStringRenderer;
-import com.mdsql.ui.renderer.GrantRenderer;
-import com.mdsql.ui.renderer.PropietarioRenderer;
+import com.mdsql.ui.renderer.CmbGrantRenderer;
+import com.mdsql.ui.renderer.CmbPropietarioRenderer;
 import com.mdsql.utils.MDSQLAppHelper;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
@@ -117,7 +116,7 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
                 PermisosService permisosService = (PermisosService) getService(MDSQLConstants.PERMISOS_SERVICE);
                 List<String> permisos = permisosService.consultarPermisosPorTipoObjeto(tipoObjeto);
                 if (CollectionUtils.isNotEmpty(permisos)) {
-                    PermisoComboBoxModel permisoComboBoxModel = new PermisoComboBoxModel(permisos);
+                    StringComboBoxModel permisoComboBoxModel = new StringComboBoxModel(permisos);
                     cmbPermiso.setModel(permisoComboBoxModel);
                     if (permisos.size() == 1) {
                         cmbPermiso.setSelectedItem(permisos.get(0));
@@ -202,12 +201,12 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
 
         JComboBox cmbReceptorPermisos = dialogSupportModeloPermiso.getCmbReceptorPermisos();
         if (cmbReceptorPermisos != null) {
-            cmbReceptorPermisos.setRenderer(new GrantRenderer());
+            cmbReceptorPermisos.setRenderer(new CmbGrantRenderer());
         }
 
         JComboBox cmbPropietarioSinonimo = dialogSupportModeloPermiso.getCmbPropietarioSinonimo();
         if (cmbPropietarioSinonimo != null) {
-            cmbPropietarioSinonimo.setRenderer(new PropietarioRenderer());
+            cmbPropietarioSinonimo.setRenderer(new CmbPropietarioRenderer());
         }
 
         JComboBox cmbPermisoSinonimo = dialogSupportModeloPermiso.getCmbPermisoSinonimo();
@@ -260,28 +259,60 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
 
     private void fillCmbTipoObjeto() throws ServiceException {
         TipoObjetoService tipoObjetoService = (TipoObjetoService) getService(MDSQLConstants.TIPO_OBJETO_SERVICE);
-        OutputConsultaTiposObjeto outputConsultaTiposObjeto = tipoObjetoService.consultarTiposObjeto();
+        OutputConsulta<String> output = tipoObjetoService.consultarTiposObjeto();
 
         // Si hay avisos se muestran
-        MDSQLUIHelper.showWarnings(dialogSupportModeloPermiso, outputConsultaTiposObjeto.getServiceException());
+        MDSQLUIHelper.showWarnings(dialogSupportModeloPermiso, output.getWarnings());
 
-        if (CollectionUtils.isNotEmpty(outputConsultaTiposObjeto.getTiposObjeto())) {
-            TipoObjetoComboBoxModel tipoObjetoComboBoxModel = new TipoObjetoComboBoxModel(outputConsultaTiposObjeto.getTiposObjeto());
+        if (CollectionUtils.isNotEmpty(output.getLista())) {
+            StringComboBoxModel tipoObjetoComboBoxModel = new StringComboBoxModel(output.getLista());
             dialogSupportModeloPermiso.getCmbTipoObjeto().setModel(tipoObjetoComboBoxModel);
         }
     }
 
     @Override
-    public void clearForm() {
+    public void clearDepsModelo() {
         JComboBox cmbReceptorPermisos = dialogSupportModeloPermiso.getCmbReceptorPermisos();
         if (cmbReceptorPermisos != null) {
             cmbReceptorPermisos.setSelectedIndex(-1);
+            cmbReceptorPermisos.setModel(new GrantComboBoxModel());
         }
 
         JComboBox cmbPropietarioSinonimo = dialogSupportModeloPermiso.getCmbPropietarioSinonimo();
         if (cmbPropietarioSinonimo != null) {
             cmbPropietarioSinonimo.setSelectedIndex(-1);
+            cmbPropietarioSinonimo.setModel(new PropietarioComboBoxModel());
+        }
+
+        JComboBox cmbPermiso = dialogSupportModeloPermiso.getCmbPermiso();
+        if (cmbPermiso != null) {
+            cmbPermiso.setSelectedIndex(-1);
+            cmbPermiso.setModel(new StringComboBoxModel());
+        }
+        super.clearDepsModelo();
+    }
+
+    @Override
+    public void clearForm() {
+        int index;
+
+        JComboBox cmbReceptorPermisos = dialogSupportModeloPermiso.getCmbReceptorPermisos();
+        if (cmbReceptorPermisos != null) {
+            index = cmbReceptorPermisos.getModel() != null && cmbReceptorPermisos.getModel().getSize() == 1 ? 0 : -1;
+            cmbReceptorPermisos.setSelectedIndex(index);
+        }
+
+        JComboBox cmbPropietarioSinonimo = dialogSupportModeloPermiso.getCmbPropietarioSinonimo();
+        if (cmbPropietarioSinonimo != null) {
             cmbPropietarioSinonimo.setEnabled(true);
+            index = cmbPropietarioSinonimo.getModel() != null && cmbPropietarioSinonimo.getModel().getSize() == 1 ? 0 : -1;
+            cmbPropietarioSinonimo.setSelectedIndex(index);
+        }
+
+        JComboBox cmbPermiso = dialogSupportModeloPermiso.getCmbPermiso();
+        if (cmbPermiso != null) {
+            cmbPermiso.setSelectedIndex(-1);
+            cmbPermiso.setEnabled(true);
         }
 
         JComboBox cmbPermisoSinonimo = dialogSupportModeloPermiso.getCmbPermisoSinonimo();
@@ -309,12 +340,6 @@ public class ListenerSupportModeloPermiso extends ListenerSupportModelo implemen
         JComboBox cmbTipoObjeto = dialogSupportModeloPermiso.getCmbTipoObjeto();
         if (cmbTipoObjeto != null) {
             cmbTipoObjeto.setSelectedIndex(-1);
-        }
-
-        JComboBox cmbPermiso = dialogSupportModeloPermiso.getCmbPermiso();
-        if (cmbPermiso != null) {
-            cmbPermiso.setSelectedIndex(-1);
-            cmbPermiso.setEnabled(true);
         }
 
         JTextField txtFuncionNombre = dialogSupportModeloPermiso.getTxtFuncionNombre();

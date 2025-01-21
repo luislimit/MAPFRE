@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1105, 729]"/>
+    </Property>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="lblBBDD" min="-2" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lblModeloProyecto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblSubModelo" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblPeticion" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblSolicitadaPor" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblEsquema" alignment="1" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <Component id="lblEsquemaHistorico" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="lblGenerarHistorico" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblBBDDHistorico" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblDescripcion" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblDemanda" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblNombreTabla" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblTipoOperacion" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="cmbSubModelo" max="32767" attributes="0"/>
+                                  <Component id="cmbBBDD" pref="214" max="32767" attributes="0"/>
+                                  <Component id="chkGenerarHistorico" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtPeticion" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtSolicitadaPor" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtEsquema" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtBBDDHistorico" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtEsquemaHistorico" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="scrollPaneDescripcion" pref="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="txtModeloProyecto" min="-2" pref="141" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnModeloProyecto" min="-2" pref="24" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="txtDemanda" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtNombreTabla" max="32767" attributes="0"/>
+                                  <Component id="txtTipoOperacion" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="btnRecuperarUltimoProcesado" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="scrollPaneTblNotas" max="32767" attributes="0"/>
+                          <Component id="scrollPaneTblUltimasPeticiones" alignment="0" max="32767" attributes="0"/>
+                          <Component id="scpDescripcionAviso" max="32767" attributes="0"/>
+                          <Component id="lblNotasAvisos" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblDescripcionAviso" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblUltimasPeticiones" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
+                      <Component id="btnLimpiar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="330" max="32767" attributes="0"/>
+                      <Component id="btnParametros" min="-2" pref="117" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnVerProcesado" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnProcesar" min="-2" pref="118" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnCancelar" min="-2" pref="118" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnModeloProyecto" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtModeloProyecto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="lblModeloProyecto" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblNotasAvisos" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblSubModelo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="cmbSubModelo" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtPeticion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="lblPeticion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtSolicitadaPor" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="lblSolicitadaPor" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblEsquema" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="txtEsquema" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cmbBBDD" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="lblBBDD" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="chkGenerarHistorico" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="lblGenerarHistorico" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtBBDDHistorico" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="lblBBDDHistorico" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtEsquemaHistorico" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="lblEsquemaHistorico" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="scrollPaneTblNotas" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="lblDescripcionAviso" min="-2" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="scpDescripcionAviso" min="-2" pref="67" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="lblUltimasPeticiones" min="-2" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="scrollPaneTblUltimasPeticiones" pref="301" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnCancelar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="btnProcesar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="btnVerProcesado" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="btnParametros" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="btnLimpiar" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtDemanda" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="lblDemanda" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="scrollPaneDescripcion" max="32767" attributes="0"/>
+                          <Component id="lblDescripcion" alignment="0" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblNombreTabla" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="txtNombreTabla" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblTipoOperacion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="txtTipoOperacion" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnRecuperarUltimoProcesado" min="-2" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="lblModeloProyecto">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Modelo o proyecto"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtModeloProyecto">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnModeloProyecto">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/loupe.png"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSubModelo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Submodelo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbSubModelo">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new SubProyectoComboBoxModel()" type="code"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;SubProyecto&gt;()"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;SubProyecto&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPeticion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Petici&#xf3;n"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtPeticion">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSolicitadaPor">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Solicitada por"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtSolicitadaPor">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblEsquema">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Esquema"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtEsquema">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblBBDD">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="BBDD"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbBBDD">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new BBDDComboBoxModel()" type="code"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;&gt;()"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;BBDD&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblGenerarHistorico">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generar hist&#xf3;rico"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkGenerarHistorico">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblBBDDHistorico">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="BBDD hist&#xf3;rico"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtBBDDHistorico">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblEsquemaHistorico">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Esquema hist&#xf3;rico"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtEsquemaHistorico">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblDemanda">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Demanda"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtDemanda">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblDescripcion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Descripci&#xf3;n"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scrollPaneDescripcion">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="txtDescripcion">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="lblNombreTabla">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nombre Tabla"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtNombreTabla">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTipoOperacion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tipo de Operaci&#xf3;n"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtTipoOperacion">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnRecuperarUltimoProcesado">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Recuperar &#xfa;ltimo procesado"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnLimpiar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Limpiar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNotasAvisos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Notas / avisos"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scrollPaneTblNotas">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblNotas">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="4" rowCount="4">
+                <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                <Column editable="true" title="Title 4" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="lblDescripcionAviso">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Descripci&#xf3;n Aviso"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scpDescripcionAviso">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="txtDescripcionAviso">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="lblUltimasPeticiones">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xda;ltimas peticiones"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scrollPaneTblUltimasPeticiones">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tblUltimasPeticiones">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="4" rowCount="4">
+                <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                <Column editable="true" title="Title 4" type="java.lang.Object"/>
+              </Table>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="btnParametros">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Par&#xe1;metros"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnVerProcesado">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver procesado"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnProcesar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Procesar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCancelar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cancelar"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

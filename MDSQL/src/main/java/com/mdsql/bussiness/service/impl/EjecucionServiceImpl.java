@@ -1,25 +1,8 @@
 package com.mdsql.bussiness.service.impl;
 
-import java.math.BigDecimal;
-import java.sql.Array;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Struct;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.mdsql.bussiness.entities.OutputRegistraEjecucion;
-import com.mdsql.bussiness.entities.OutputRegistraEjecucionParche;
 import com.mdsql.bussiness.entities.OutputRegistraEjecucionType;
+import com.mdsql.bussiness.entities.OutputWarning;
 import com.mdsql.bussiness.entities.ScriptType;
 import com.mdsql.bussiness.entities.TextoLinea;
 import com.mdsql.bussiness.entities.Type;
@@ -27,47 +10,41 @@ import com.mdsql.bussiness.service.EjecucionService;
 import com.mdsql.utils.MDSQLConstants;
 import com.mdval.exceptions.ServiceException;
 import com.mdval.utils.LogWrapper;
-
-import lombok.SneakyThrows;
+import java.math.BigDecimal;
+import java.sql.Array;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.internal.OracleConnection;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author hcarreno
  */
 @Service(MDSQLConstants.EJECUCION_SERVICE)
 @Slf4j
-public class EjecucionServiceImpl extends ServiceSupport implements EjecucionService {
+public class EjecucionServiceImpl extends ServiceSupportScript implements EjecucionService {
 
     @Autowired
     private DataSource dataSource;
 
-
     @Override
-    @SneakyThrows
-    public OutputRegistraEjecucion registraEjecucion(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> lineas) {
-        String runSP = createCall("p_registra_ejecucion", MDSQLConstants.CALL_13_ARGS);
+    public OutputRegistraEjecucion registraEjecucion(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> lineas)
+            throws ServiceException {
+        String runSP = createCall("p_registra_ejecucion", 13);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
-
-            String tableLinea = createCallType(MDSQLConstants.T_T_LINEA);
-            String recordLinea = createCallType(MDSQLConstants.T_R_LINEA);
-
-            String typeError = createCallTypeError();
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             logProcedure(runSP, idProceso, numeroOrden, codigoUsuario, lineas);
 
-            Struct[] structLinea = new Struct[lineas.size()];
-
-            int arrayIndexLinea = 0;
-            for (TextoLinea data : lineas) {
-                structLinea[arrayIndexLinea++] = conn.createStruct(recordLinea,
-                        new Object[]{data.getValor()});
-            }
-
-            Array arrayLinea = ((OracleConnection) conn).createOracleArray(tableLinea, structLinea);
+            Array arrayLinea = toDBListTextoLinea(conn, lineas);
 
             callableStatement.setBigDecimal(1, idProceso);
             callableStatement.setBigDecimal(2, numeroOrden);
@@ -81,40 +58,17 @@ public class EjecucionServiceImpl extends ServiceSupport implements EjecucionSer
             callableStatement.registerOutParameter(10, Types.VARCHAR);
             callableStatement.registerOutParameter(11, Types.VARCHAR);
 
-            callableStatement.registerOutParameter(12, Types.INTEGER);
-            callableStatement.registerOutParameter(13, Types.ARRAY, typeError);
+            OutputWarning result = executeStatement(callableStatement);
 
-            callableStatement.execute();
-
-            Integer result = callableStatement.getInt(12);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(13));
-            }
-            
             OutputRegistraEjecucion outputRegistraEjecucion = new OutputRegistraEjecucion();
-            outputRegistraEjecucion.setResult(result);
-            
-            // Hay avisos
-            if (result == 2) {
-            	outputRegistraEjecucion.setServiceException(buildException(callableStatement.getArray(13)));
-         	}
-
-            BigDecimal codigoEstadoProceso = callableStatement.getBigDecimal(5);
-            String descripcionEstadoProceso = callableStatement.getString(6);
-            String nombreScript = callableStatement.getString(7);
-            BigDecimal codigoEstadoScript = callableStatement.getBigDecimal(8);
-            String descripcionEstadoScript = callableStatement.getString(9);
-            String txtCuadreOperacion = callableStatement.getString(10);
-            String txtCuadreObj = callableStatement.getString(11);
-
-            outputRegistraEjecucion.setCodigoEstadoProceso(codigoEstadoProceso);
-            outputRegistraEjecucion.setDescripcionEstadoProceso(descripcionEstadoProceso);
-            outputRegistraEjecucion.setNombreScript(nombreScript);
-            outputRegistraEjecucion.setCodigoEstadoScript(codigoEstadoScript);
-            outputRegistraEjecucion.setDescripcionEstadoScript(descripcionEstadoScript);
-            outputRegistraEjecucion.setTxtCuadreOperacion(txtCuadreOperacion);
-            outputRegistraEjecucion.setTxtCuadreObj(txtCuadreObj);
+            outputRegistraEjecucion.setOutputWarning(result);
+            outputRegistraEjecucion.setCodigoEstadoProceso(callableStatement.getBigDecimal(5));
+            outputRegistraEjecucion.setDescripcionEstadoProceso(callableStatement.getString(6));
+            outputRegistraEjecucion.setNombreScript(callableStatement.getString(7));
+            outputRegistraEjecucion.setCodigoEstadoScript(callableStatement.getBigDecimal(8));
+            outputRegistraEjecucion.setDescripcionEstadoScript(callableStatement.getString(9));
+            outputRegistraEjecucion.setTxtCuadreOperacion(callableStatement.getString(10));
+            outputRegistraEjecucion.setTxtCuadreObj(callableStatement.getString(11));
 
             return outputRegistraEjecucion;
 
@@ -125,30 +79,17 @@ public class EjecucionServiceImpl extends ServiceSupport implements EjecucionSer
     }
 
     @Override
-    @SneakyThrows
-    public OutputRegistraEjecucionType registraEjecucionType(BigDecimal idProceso, String codigoUsuario, List<TextoLinea> logScript) {
-        String runSP = createCall("p_registra_ejecucion_type", MDSQLConstants.CALL_08_ARGS);
+    public OutputRegistraEjecucionType registraEjecucionType(BigDecimal idProceso, String codigoUsuario, List<TextoLinea> logScript)
+            throws ServiceException {
+        String runSP = createCall("p_registra_ejecucion_type", 8);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
-            String tableLinea = createCallType(MDSQLConstants.T_T_LINEA);
-            String recordLinea = createCallType(MDSQLConstants.T_R_LINEA);
-
-            String typeError = createCallTypeError();
             String typeType = createCallType(MDSQLConstants.T_T_TYPE);
 
             logProcedure(runSP, idProceso, codigoUsuario, logScript);
 
-            Struct[] structLinea = new Struct[logScript.size()];
-
-            int arrayIndexLinea = 0;
-            for (TextoLinea data : logScript) {
-                structLinea[arrayIndexLinea++] = conn.createStruct(recordLinea,
-                        new Object[]{data.getValor()});
-            }
-
-            Array arrayLinea = ((OracleConnection) conn).createOracleArray(tableLinea, structLinea);
+            Array arrayLinea = toDBListTextoLinea(conn, logScript);
 
             callableStatement.setBigDecimal(1, idProceso);
             callableStatement.setString(2, codigoUsuario);
@@ -157,24 +98,10 @@ public class EjecucionServiceImpl extends ServiceSupport implements EjecucionSer
             callableStatement.registerOutParameter(5, Types.VARCHAR);
             callableStatement.registerOutParameter(6, Types.ARRAY, typeType);
 
-            callableStatement.registerOutParameter(7, Types.INTEGER);
-            callableStatement.registerOutParameter(8, Types.ARRAY, typeError);
+            OutputWarning result = executeStatement(callableStatement);
 
-            callableStatement.execute();
-
-            Integer result = callableStatement.getInt(7);
-
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(8));
-            }
-            
             OutputRegistraEjecucionType outputRegistraEjecucionType = new OutputRegistraEjecucionType();
-            outputRegistraEjecucionType.setResult(result);
-            
-            // Hay avisos
-            if (result == 2) {
-            	outputRegistraEjecucionType.setServiceException(buildException(callableStatement.getArray(8)));
-         	}
+            outputRegistraEjecucionType.setOutputWarning(result);
 
             BigDecimal codigoEstadoProceso = callableStatement.getBigDecimal(4);
             String descripcionEstadoProceso = callableStatement.getString(5);
@@ -205,44 +132,28 @@ public class EjecucionServiceImpl extends ServiceSupport implements EjecucionSer
                     types.add(type);
                 }
             }
-
             outputRegistraEjecucionType.setCodigoEstadoProceso(codigoEstadoProceso);
             outputRegistraEjecucionType.setDescripcionEstadoProceso(descripcionEstadoProceso);
             outputRegistraEjecucionType.setListaType(types);
 
             return outputRegistraEjecucionType;
 
-        } catch (
-                SQLException e) {
+        } catch (SQLException e) {
             LogWrapper.error(log, "[EjecucionService.registraEjecucionType] Error: %s", e.getMessage());
             throw new ServiceException(e);
         }
     }
 
     @Override
-    @SneakyThrows
-    public OutputRegistraEjecucionParche registraEjecucionParche(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> logScript, String indRepara) {
-        String runSP = createCall("p_registra_ejecucion_parche", MDSQLConstants.CALL_14_ARGS);
+    public OutputRegistraEjecucion registraEjecucionParche(BigDecimal idProceso, BigDecimal numeroOrden, String codigoUsuario, List<TextoLinea> logScript, String indRepara)
+            throws ServiceException {
+        String runSP = createCall("p_registra_ejecucion_parche", 14);
 
-        try (Connection conn = dataSource.getConnection();
-             CallableStatement callableStatement = conn.prepareCall(runSP)) {
-
-            String tableLinea = createCallType(MDSQLConstants.T_T_LINEA);
-            String recordLinea = createCallType(MDSQLConstants.T_R_LINEA);
-
-            String typeError = createCallTypeError();
+        try (Connection conn = dataSource.getConnection(); CallableStatement callableStatement = conn.prepareCall(runSP)) {
 
             logProcedure(runSP, idProceso, numeroOrden, codigoUsuario, logScript);
 
-            Struct[] structLinea = new Struct[logScript.size()];
-
-            int arrayIndexLinea = 0;
-            for (TextoLinea data : logScript) {
-                structLinea[arrayIndexLinea++] = conn.createStruct(recordLinea,
-                        new Object[]{data.getValor()});
-            }
-
-            Array arrayLinea = ((OracleConnection) conn).createOracleArray(tableLinea, structLinea);
+            Array arrayLinea = toDBListTextoLinea(conn, logScript);
 
             callableStatement.setBigDecimal(1, idProceso);
             callableStatement.setBigDecimal(2, numeroOrden);
@@ -257,39 +168,21 @@ public class EjecucionServiceImpl extends ServiceSupport implements EjecucionSer
             callableStatement.registerOutParameter(11, Types.VARCHAR);
             callableStatement.registerOutParameter(12, Types.VARCHAR);
 
-            callableStatement.registerOutParameter(13, Types.INTEGER);
-            callableStatement.registerOutParameter(14, Types.ARRAY, typeError);
+            OutputWarning result = executeStatement(callableStatement);
 
-            callableStatement.execute();
+            OutputRegistraEjecucion output = new OutputRegistraEjecucion();
+            output.setOutputWarning(result);
+            output.setCodigoEstadoProceso(callableStatement.getBigDecimal(6));
+            output.setDescripcionEstadoProceso(callableStatement.getString(7));
+            output.setNombreScript(callableStatement.getString(8));
+            output.setCodigoEstadoScript(callableStatement.getBigDecimal(9));
+            output.setDescripcionEstadoScript(callableStatement.getString(10));
+            output.setTxtCuadreOperacion(callableStatement.getString(11));
+            output.setTxtCuadreObj(callableStatement.getString(12));
 
-            Integer result = callableStatement.getInt(13);
+            return output;
 
-            if (result == 0) {
-                throw buildException(callableStatement.getArray(14));
-            }
-
-            BigDecimal codigoEstadoProceso = callableStatement.getBigDecimal(6);
-            String descripcionEstadoProceso = callableStatement.getString(7);
-            String nombreScript = callableStatement.getString(8);
-            BigDecimal codigoEstadoScript = callableStatement.getBigDecimal(9);
-            String descripcionEstadoScript = callableStatement.getString(10);
-            String txtCuadreOperacion = callableStatement.getString(11);
-            String txtCuadreObjeto = callableStatement.getString(12);
-
-            OutputRegistraEjecucionParche outputRegistraEjecucionParche = OutputRegistraEjecucionParche.builder()
-                    .codigoEstadoProceso(codigoEstadoProceso)
-                    .descripcionEstadoProceso(descripcionEstadoProceso)
-                    .nombreScript(nombreScript)
-                    .codigoEstadoScript(codigoEstadoScript)
-                    .descripcionEstadoScript(descripcionEstadoScript)
-                    .txtCuadreOperacion(txtCuadreOperacion)
-                    .txtCuadreObjeto(txtCuadreObjeto)
-                    .build();
-
-            return outputRegistraEjecucionParche;
-
-        } catch (
-                SQLException e) {
+        } catch (SQLException e) {
             LogWrapper.error(log, "[EjecucionService.registraEjecucionParche] Error: %s", e.getMessage());
             throw new ServiceException(e);
         }
@@ -324,7 +217,6 @@ public class EjecucionServiceImpl extends ServiceSupport implements EjecucionSer
             LogWrapper.error(log, "[EjecucionService.fillScripType] Error: %s", e.getMessage());
         }
     }
-
 
     /**
      * @param scriptType

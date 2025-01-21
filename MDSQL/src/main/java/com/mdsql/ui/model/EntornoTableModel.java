@@ -41,17 +41,20 @@ public class EntornoTableModel extends DefaultTableModel<Entorno> {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Entorno row = data.get(rowIndex);
 
-		if (columnIndex == 0) {
-			return row.getBbdd();
-		} else if (1 == columnIndex) {
-			return row.getEsquema();
-		} else if (2 == columnIndex) {
-			return row.getPassword();
-		} else if (3 == columnIndex) {
-			return row.getComentario();
-		} else if (4 == columnIndex) {
-			return row.getHabilitado();
-		}
+            switch (columnIndex) {
+                case 0:
+                    return row.getBbdd();
+                case 1:
+                    return row.getEsquema();
+                case 2:
+                    return row.getPassword();
+                case 3:
+                    return row.getComentario();
+                case 4:
+                    return row.getHabilitado();
+                default:
+                    break;
+            }
 
 		return null;
 	}
